@@ -1,0 +1,21 @@
+<ion-view view-title="*Date of Receipt*">
+    <!-- for date of receipt please put script to plug-in the date for each receipt-->
+    <ion-content class="home-page">
+
+      <ion-list show-delete="shouldShowDelete" can-swipe="listCanSwipe">
+        <div class="receipt-label padding-top-large">
+            <p>Store Name</p> <!-- update code to plug-in actual Store Name -->
+            <p class="float-right">Total: $155</p> <!-- update code to plug-in
+              actual Total -->
+        </div>
+        <ion-item ng-repeat="image in vm.receiptImages" >
+          <img ng-src="{{image.path}}">
+          <!-- This creates separate "cards" for each image,
+          but here I think all the images should be on one "card"
+          in the future I think we will use panorama for longer
+          receipts so we will only have 1 image-->
+        </ion-item>
+      </ion-list>
+
+    </ion-content>
+</ion-view>

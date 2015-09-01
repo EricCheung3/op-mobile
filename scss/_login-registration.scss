@@ -1,0 +1,73 @@
+// login and registration
+
+.login-register-content {
+  @extend .margin-horizontal-large;
+
+  margin-top: 30px;
+  color: white;
+
+  a {
+    color: $positive;
+    text-decoration: none;
+  }
+
+  .remember-me {
+    margin-top: 15px;
+    text-align: left;
+  }
+
+  p {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  button {
+    font-size: $font-size-large;
+  }
+
+  .login-logo {
+    height: 90px;
+    margin-bottom: 20px;
+
+    #login-logo-img {
+      @extend .center;
+      height: 100%;
+    }
+  }
+
+  .login-register-form{
+    .list {
+      margin: 0px;
+    }
+  }
+
+  h5 {
+    color: $light;
+    text-align: center;
+  }
+
+  .forgot-pass {
+    margin-bottom: 40px;
+  }
+
+  .social-media-login-register {
+    margin-top: 25px;
+    display: block;
+    text-align: center;
+
+    img {
+      margin-left: 5px;
+      margin-right: 5px;
+      height: 60px;
+      display: inline-block;
+    }
+  }
+
+  .signup {
+    margin-top: 40px;
+  }
+
+  .login {
+    margin-top: 35px;
+  }
+}

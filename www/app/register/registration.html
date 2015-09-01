@@ -1,0 +1,71 @@
+<ion-contents>
+
+  <div class="login-register-content">
+
+    <div class="login-logo">
+        <img id="login-logo-img" src="img/login/login-logo.png">
+    </div>
+
+    <form class="login-register-form" ng-submit="vm.register(vm.registration)"
+            novalidate="" role="form" name="userRegistrationForm">
+        <div class="list list-inset">
+            <!-- email -->
+            <label class="item item-input"
+            ng-class="{ 'has-error' : userRegistrationForm.email.$invalid,
+                        'valid-input' : userRegistrationForm.email.$valid}">
+                <input type="email" placeholder="Your Email" name="email"
+                ng-model="vm.registration.email" required>
+            </label>
+
+            <!-- username -->
+            <label class="item item-input"
+            ng-class="{ 'has-error' : userRegistrationForm.username.$invalid,
+                        'valid-input' : userRegistrationForm.username.$valid}">
+                <input type="text" placeholder="Create Username" name="username"
+                ng-model="vm.registration.username" required>
+            </label>
+
+            <!-- password -->
+            <label class="item item-input"
+            ng-class="{ 'has-error' : userRegistrationForm.password.$invalid,
+                        'valid-input' : userRegistrationForm.password.$valid}">
+                <input type="password" placeholder="Password" name="password"
+                ng-model="vm.registration.password" required>
+            </label>
+
+            <!-- confirm password -->
+            <label class="item item-input"
+            ng-class="{ 'has-error' : userRegistrationForm.confirmPassword.$invalid,
+                        'valid-input' : userRegistrationForm.confirmPassword.$valid}">
+                <input type="password" placeholder="Confirm Password" name="confirmPassword"
+                ng-model="vm.registration.confirmPassword" compare-to="vm.registration.password">
+            </label>
+            <ng-messages for="userRegistrationForm.confirmPassword.$error" role="alert">
+                <ng-messages-include src="app/common/templates/form-errors.html"></ng-messages-include>
+                <ng-message class="form-error" when="compareTo">Must match the password</ng-message>
+            </ng-messages>
+        </div>
+        <div>
+            <button class="button button-block button-positive" type="submit"
+                ng-disabled="userRegistrationForm.$invalid">
+                Register Now
+            </button>
+        </div>
+    </form>
+
+    <div class="social-media-login-register">
+        <h5> Or sign up with </h5>
+        <div class="social-media-icons">
+            <img src="img/login/facebook.png">
+            <img src="img/login/google+.png">
+            <img src="img/login/twitter.png">
+        </div>
+    </div>
+
+    <div class="login">
+        <h5>Already have an account? <a ui-sref="login">Log in Now.</a></h5>
+    </div>
+
+  </div>
+
+</ion-contents>

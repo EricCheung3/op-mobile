@@ -1,0 +1,56 @@
+<ion-view view-title="Timeline">
+  <div class="float-button">
+      <md-fab-speed-dial md-open="vm.openFab" md-direction="up" class="md-scale">
+        <md-fab-trigger>
+          <md-button aria-label="menu" class="md-fab md-warn" ng-click="vm.switchFabMenu()">
+            <md-tooltip md-visible="vm.tooltipVisible" md-direction="left">Menu</md-tooltip>
+            <md-icon md-svg-src="img/icons/add.svg"></md-icon>
+          </md-button>
+        </md-fab-trigger>
+        <md-fab-actions>
+          <md-button aria-label="snap by camera" class="md-fab md-raised md-mini"
+              ng-click="vm.takePicture()">
+            <md-tooltip md-visible="vm.tooltipVisible" md-direction="left">Snap by camera</md-tooltip>
+            <md-icon md-svg-src="img/icons/camera.svg"></md-icon>
+          </md-button>
+          <md-button aria-label="crop from gallary" class="md-fab md-raised md-mini"
+              ng-click="vm.cropFromGallery()">
+            <md-tooltip md-visible="vm.tooltipVisible" md-direction="left">Crop from gallary</md-tooltip>
+            <md-icon md-svg-src="img/icons/crop.svg"></md-icon>
+          </md-button>
+        </md-fab-actions>
+      </md-fab-speed-dial>
+  </div>
+
+    <ion-content class="home-page">
+        <ion-refresher
+          pulling-text="Pull to refresh..."
+          on-refresh="vm.pullToRefresh()">
+        </ion-refresher>
+
+        <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
+            <ion-item ng-repeat="receipt in vm.receipts" >
+                <div class="receipt-label">
+                    <p>Store Name</p> <!-- update code to plug-in actual Store Name -->
+                    <p class="float-right">Total: $155</p> <!-- update code to plug-in
+                      actual Total -->
+                </div>
+                <div id="receipt-img" >
+                    <img ng-src="{{receipt.path}}" ng-click="vm.showReceipt(receipt.id)">
+                </div>
+                <ion-option-button class="ion-minus-circled" ng-click="delete(receipt.path)">
+                    delete
+                </ion-option-button>
+                <div class="receipt-label">
+                    <p class="float-right padding-top-small"> August 28, 2015 </p>
+                    <!-- update code to plug-in actual Date -->
+                </div>
+            </ion-item>
+        </ion-list>
+
+        <ion-infinite-scroll
+            ng-if="vm.moreReceiptsCanBeLoaded()"
+            on-infinite="vm.scrollToLoadMore()">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

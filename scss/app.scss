@@ -1,0 +1,110 @@
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #387ef5 !default;
+$calm:                            #11c1f3 !default;
+$balanced:                        #33cd5f !default;
+$energized:                       #ffc900 !default;
+$assertive:                       #ef473a !default;
+$royal:                           #886aea !default;
+$dark:                            #444 !default;
+*/
+
+// Colors
+// -------------------------------
+$positive:                        #01ced1;
+$balanced:                        #00e19a;
+
+// Base
+// -------------------------------
+$base-background-color:           #20203a;
+
+
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+// Include all of Ionic
+@import "www/lib/ionic/scss/ionic";
+
+
+// your slick styles can go here...
+
+// centering a div or an image
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// large horizontal margin
+.margin-horizontal-large {
+  margin-right: 16px;
+  margin-left: 16px;
+}
+
+$margin-large: 16px;
+
+.float-right {
+  float: right;
+}
+
+.padding-top-small {
+  padding-top: 6px;
+}
+
+.padding-top-large {
+  padding-top: 16px;
+}
+
+// LOGIN and REGISTRATION PAGE ----
+
+@import 'login-registration';
+
+// FORM VALIDATION ----------------
+
+@import 'form-validation';
+
+// HOME PAGE ----------------------
+
+@import 'home';
+
+
+
+// when Sass processes, both Ionic's Sass and your Sass will combine
+// into one file and saved in your app's directory as css/app.css
+
+
+// FAB button
+.float-button {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  width: 30px;
+  padding: 30px;
+  font-size: 40px;
+  position: fixed;
+  bottom: 40px; /* Adjust to where you want it */
+  right: 12px; /* Adjust to where you want it */
+  z-index: 9999;
+}
+
+.float-button .height_fix {
+  margin-top: 100%;
+}
+
+.float-button .content {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  margin-top: -20px; /* Note, this must be half the font size */
+  color: $light;
+}

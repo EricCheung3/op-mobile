@@ -1,0 +1,12 @@
+{
+  "name": "OpenPrice",
+  "app_id": "407d8351",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
+}

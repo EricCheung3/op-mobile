@@ -1,0 +1,26 @@
+{
+  "name": "openpriceMobile",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.1.0",
+    "ngCordova": "~0.1.20-alpha",
+    "angular": "1.4.5",
+    "angular-animate": "1.4.5",
+    "angular-sanitize": "1.4.5",
+    "angular-messages": "1.4.5",
+    "angular-ui-router": "0.2.15",
+    "angular-hal": "0.1.5",
+    "angular-base64": "2.0.5",
+    "ionic-service-core": "~0.1.10",
+    "angular-material": "~0.10.1"
+  },
+  "dependencies": {
+
+  },
+  "resolutions": {
+    "angular": "1.4.5",
+    "angular-sanitize": "1.4.5",
+    "angular-animate": "1.4.5",
+    "angular-ui-router": "0.2.15"
+  }
+}

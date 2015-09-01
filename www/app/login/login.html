@@ -1,0 +1,47 @@
+<ion-contents>
+
+  <div class="login-register-content">
+
+      <div class="login-logo">
+          <img id="login-logo-img" src="img/login/login-logo.png">
+      </div>
+
+      <form class="login-register-form" ng-submit="vm.login(vm.credentials)">
+          <div class="list list-inset">
+              <label class="item item-input">
+                  <input type="text" placeholder="Username"
+                  ng-model="vm.credentials.username">
+              </label>
+              <label class="item item-input">
+                  <input type="password" placeholder="Password"
+                  ng-model="vm.credentials.password">
+              </label>
+          </div>
+          <input class="remember-me" type="checkbox" name="rememberme" value="remember" checked> Remember Me
+          <div class="login-button">
+            <button class="button button-block button-positive" type="submit">Log in</button>
+          </div>
+      </form>
+
+      <div class="forgot-pass">
+          <p><a href="?"> Forgot your password?</a></p>
+      </div>
+
+      <div class="social-media-login-register">
+          <h5> Or log in with </h5>
+          <div class="social-media-icons">
+              <img src="img/login/facebook.png">
+              <img src="img/login/google+.png">
+              <img src="img/login/twitter.png">
+          </div>
+      </div>
+
+      <div class="signup">
+          <h5> Don't have an account yet?
+            <a ui-sref="register">Sign up Now!</a>
+          </h5>
+      </div>
+
+  </div>
+
+</ion-content>
