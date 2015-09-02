@@ -15,10 +15,7 @@
         </ion-list>
 
           <div class="buttons">
-            <button class="button button-positive" ng-click="vm.Cancel()">
-              Cancel
-            </button>
-            <button class="button button-positive" ng-click="vm.AddToShoppingList()">
+            <button class="button button-full button-positive" ng-click="vm.AddToShoppingList()">
               AddToShoppingList
             </button>
         </div>
@@ -31,6 +28,13 @@
           </ion-item>
         </ion-list>
       </div>
-
+      <!-- receipt dislay part-->
+      <ion-item ng-repeat="image in vm.receiptImages" >
+        <img ng-src="{{image.path}}">
+        <!-- This creates separate "cards" for each image,
+        but here I think all the images should be on one "card"
+        in the future I think we will use panorama for longer
+        receipts so we will only have 1 image-->
+      </ion-item>
     </ion-content>
 </ion-view>
