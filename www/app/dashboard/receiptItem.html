@@ -2,20 +2,35 @@
     <!-- for date of receipt please put script to plug-in the date for each receipt-->
     <ion-content class="home-page">
 
-      <ion-list show-delete="shouldShowDelete" can-swipe="listCanSwipe">
-        <div class="receipt-label padding-top-large">
-            <p>Store Name</p> <!-- update code to plug-in actual Store Name -->
-            <p class="float-right">Total: $155</p> <!-- update code to plug-in
-              actual Total -->
+      <ion-toggle ng-model="$root.EditModel">Edit Items</ion-toggle>
+
+      <div id="EditModel" ng-show="EditModel" ng-if="$root.EditModel">
+        <ion-list >
+          <ion-item ng-repeat="item in vm.receiptItems">
+            <ion-checkbox ng-model="item.checked" >
+              {{item.name}}
+              <!-- <tt>{{item.checked}}</tt><br/> -->
+            </ion-checkbox>
+          </ion-item>
+        </ion-list>
+
+          <div class="buttons">
+            <button class="button button-positive" ng-click="vm.Cancel()">
+              Cancel
+            </button>
+            <button class="button button-positive" ng-click="vm.AddToShoppingList()">
+              AddToShoppingList
+            </button>
         </div>
-        <ion-item ng-repeat="image in vm.receiptImages" >
-          <img ng-src="{{image.path}}">
-          <!-- This creates separate "cards" for each image,
-          but here I think all the images should be on one "card"
-          in the future I think we will use panorama for longer
-          receipts so we will only have 1 image-->
-        </ion-item>
-      </ion-list>
+      </div>
+
+      <div id="ShowModel" ng-show="ShowModel" ng-if="!$root.EditModel">
+        <ion-list >
+          <ion-item ng-repeat="item in vm.receiptItems">
+              {{item.name}}
+          </ion-item>
+        </ion-list>
+      </div>
 
     </ion-content>
 </ion-view>
