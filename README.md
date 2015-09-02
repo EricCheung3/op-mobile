@@ -51,16 +51,13 @@ Ask admin to add your account to groundtruthinc team.
 
 Setup [SSH key for Bitbucket](https://confluence.atlassian.com/display/BITBUCKET/How+to+install+a+public+key+on+your+Bitbucket+account)
 
-Fork the project from [GroundTruth Open Price Mobile Project](https://bitbucket.org/groundtruthinc/openprice-mobile)
-to your personal account through Web UI at Bitbucket.
-
-See [Software Development Life Cycle document](https://bitbucket.org/groundtruthinc/openpriceproj/wiki/SDLC)
-for detail process.
-
 ## Run OpenPrice Mobile Project locally first time ##
 
 ### Checkout code ###
-Check out the code from Bitbucket your private repository for **openprice-mobile**.
+Check out the code from Bitbucket 
+```
+git clone git@bitbucket.org:groundtruthinc/openprice-mobile.git
+```
 
 ### Install dependencies ###
 
@@ -92,4 +89,31 @@ You can connect your Android phone with your computer and run mobile app in it:
 ionic build android
 ionic run android
 ```
+
+## On-going Development Process ##
+The master branch is for production release, and for each developer, we are all working on 
+release branch, such as release1, release2, etc.
+
+
+So we need to switch to development branch, such as release1:
+
+```
+git checkout release1
+```
+
+After you have done code changes, you first need to commit it, for example:
+```
+git add .
+git commit -m 'my code change for issue-31'
+```
+
+Then you merge with remote release branch, then push the changes:
+
+```
+git pull
+git push
+```
+
+If `git pull` return merge error, you need to manually fix the merge conflict, before push.
+
 
