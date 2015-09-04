@@ -56,6 +56,15 @@
                     }
                 }
             })
+            .state('app.dashboard.shoppinglist', {
+                url: '/shoppinglist',
+                views: {
+                    'shoppinglist-tab': {
+                        templateUrl: 'app/dashboard/shoppingList.html',
+                        controller: 'shoppingListController as vm'
+                    }
+                }
+            })
             .state('app.dashboard.friends', {
                 url: '/friends',
                 views: {
