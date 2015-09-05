@@ -3,5 +3,23 @@
         <p>
             ShoppingList
         </p>
+
+        <!-- <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
+          <ion-item ng-repeat="store in vm.stores" ng-click="vm.showStoreItems(store.id)">
+              <p> {{store.name}} </p>
+              <ion-option-button class="ion-minus-circled" ng-click="delete(store.id)">
+                  delete
+              </ion-option-button>
+          </ion-item>
+        </ion-list> -->
+
+        <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
+          <ion-item ng-repeat="store in vm.stores" ng-click="vm.showStoreItems(store.id)">
+              <p> {{store.name}} </p>
+              <ion-option-button class="button-assertive" ng-click="vm.deleteStore(store.id)">
+                  delete
+              </ion-option-button>
+          </ion-item>
+        </ion-list>
     </ion-content>
 </ion-view>

@@ -13,7 +13,7 @@
                 <div id="img" >
                     <img ng-src="{{receipt.path}}" style="width:100%" ng-click="vm.showReceipt(receipt.id)">
                 </div>
-                <ion-option-button class="ion-minus-circled" ng-click="delete(receipt.path)">
+                <ion-option-button class="ion-minus-circled" ng-click="vm.deleteReceipt(receipt.id)">
                     delete
                 </ion-option-button>
             </ion-item>

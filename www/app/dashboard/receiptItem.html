@@ -8,8 +8,8 @@
         <ion-list >
           <ion-item ng-repeat="item in vm.receiptItems">
             <ion-checkbox ng-model="item.checked" >
-              {{item.name}}
-              <!-- <tt>{{item.checked}}</tt><br/> -->
+              <p>{{item.name}} </p>
+              <p>price: {{item.unitPrice}}</p>
             </ion-checkbox>
           </ion-item>
         </ion-list>
@@ -24,7 +24,7 @@
       <div id="ShowModel" ng-show="ShowModel" ng-if="!$root.EditModel">
         <ion-list >
           <ion-item ng-repeat="item in vm.receiptItems">
-              {{item.name}}
+              <p>{{item.name}} ----price: {{item.unitPrice}}</p>
           </ion-item>
         </ion-list>
       </div>

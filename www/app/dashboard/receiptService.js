@@ -8,9 +8,13 @@
     receiptService.$inject = ['$log', '$rootScope', 'apiService', '$q', 'halClient', '$http'];
     function receiptService(   $log,   $rootScope,   apiService ,  $q,   halClient ,  $http) {
         var imageCache = new Object();
+        var storesCache = new Object();
+        var storeItemsCache = new Object();
 
         return {
             'getReceiptResource' : getReceiptResource,
+            'getStoresResource' : getStoresResource,
+            'getStoreItemsResource' : getStoreItemsResource,
             'loadFirstPageOfUserReceipts' : loadFirstPageOfUserReceipts,
             'getImageBase64Data' : getImageBase64Data
         };
@@ -37,6 +41,71 @@
 
             return deferred.promise;
         };
+
+        function getStoresResource(){
+            var stores = [];
+            var deferred = $q.defer();
+            if(storesCache.length > 0){
+                console.log("read store from storesCache");
+                deferred.resolve(storesCache);
+            }else{
+                apiService
+                    .getUserResource()
+                    .then(function (userResource) {
+                        userResource.$get('stores')
+                        .then(function(storeResource){
+                            if (storeResource.$has('stores')) {
+                                return storeResource.$get('stores');
+                            }else {
+                                return $q.reject("NO Stores yet!");
+                            }
+                        })
+                        .then(function(storeList){
+                            stores.push(storeList);
+                            storesCache = storeList;
+                            deferred.resolve(storesCache);
+                        });
+                    });
+            }
+
+            return deferred.promise;
+        };
+
+        function getStoreItemsResource(storeId) {
+            var storeItems = [];
+            var deferred = $q.defer();
+
+            if(storeItemsCache[storeId]){
+                console.log("read items from itesCache");
+                deferred.resolve(storeItemsCache[storeId]);
+            }else {
+                apiService.getUserResource()
+                .then(function (userResource) {
+                    userResource.$get('store',{'storeId': storeId})
+                    .then(function(store) {
+                        store.$get('items')
+                        .then(function(itemsResource) {
+                            if (itemsResource.$has('shoppingItems')) {
+                                itemsResource.$get('shoppingItems')
+                                .then(function(items){
+                                    storeItems.push(items);
+                                    storeItemsCache[storeId] = items;
+                                    deferred.resolve(storeItemsCache[storeId]);
+                                    // storeItems = items;
+                                    // deferred.resolve(storeItems);
+                                });
+                            }else {
+                                console.log("NO Items yet!");
+                                return $q.reject("NO Items yet!");
+                            }
+
+                        });
+                    });
+                });
+            }
+
+            return deferred.promise;
+        }
 
         function loadFirstPageOfUserReceipts(callback) {
             var resultReceipts = [];

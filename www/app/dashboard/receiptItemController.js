@@ -11,16 +11,18 @@
               }
         });
 
-    receiptItemController.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'receiptService'];
+    receiptItemController.$inject = ['$log', '$rootScope', '$scope', '$state', '$stateParams', 'receiptService', 'apiService'];
 
-    function receiptItemController(   $log,   $rootScope ,  $scope ,  $state ,  $stateParams ,  receiptService) {
+    function receiptItemController(   $log,   $rootScope ,  $scope ,  $state ,  $stateParams ,  receiptService ,  apiService) {
         $log.debug('==> receiptsItemController');
 
         var vm = this;
         vm.showItems = showItems;
+        vm.AddToShoppingList = AddToShoppingList;
         vm.receiptImages = [];
         vm.receiptItems = [];
 
+        $scope.ShowModel = true;
 
         var receiptId = $stateParams.receiptId;
         console.log("receiptId", receiptId);
@@ -34,7 +36,6 @@
                     console.log("receipt items ", items);
                     vm.receiptItems = items;
                 })
-
             });
 
 
@@ -42,7 +43,42 @@
             $state.go('app.dashboard.receiptItems',{receiptId:receiptId});
         };
 
-        $scope.ShowModel = true;
+
+        function AddToShoppingList(){
+            console.log("=======>AddToShoppingList");
+            var addItemList = [];
+            for(var i=0;i<vm.receiptItems.length; i++){
+                if(vm.receiptItems[i].checked){
+                    addItemList.push(vm.receiptItems[i]);
+                }
+            }
+            console.log("selected items:",addItemList);
+
+            var object =
+              {
+                "storeId" : "3b50a3fc-xxxx-11e4-a322-1697f9250001",
+                "items":
+                  [{
+                    "name": "banana",
+                    "price": "0.99"
+                  },
+                  {
+                    "name": "apple",
+                    "price": "3.99"
+                  }
+                ]
+              };
+            // post to database
+            //FIXME: please change to real data come from parser(OCR)
+            apiService.getUserResource()
+            .then(function (userResource) {
+                userResource.$post('shoppingList', {}, object)
+                  .then(function(r){
+                      console.log("result", "success");
+                      alert("add items to shoppingList success!");
+                  });
+            });
+        };
 
 
     };

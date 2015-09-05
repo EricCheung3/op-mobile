@@ -23,6 +23,7 @@
         vm.scrollToLoadMore = scrollToLoadMore;
         vm.moreReceiptsCanBeLoaded = moreReceiptsCanBeLoaded;
         vm.showReceipt = showReceipt;
+        vm.deleteReceipt = deleteReceipt;
 
         vm.shouldShowDelete = false; //?
         vm.listCanSwipe = true; //?
@@ -83,6 +84,13 @@
         function showReceipt (receiptId) {
             $state.go('app.dashboard.receiptItem',{receiptId:receiptId});
         };
+
+        //FIXME: delete receipt from database
+        function deleteReceipt(receiptId){
+            console.log("=====>delete receit");
+
+        };
+
 
     } // end of function receiptsController
 })();

@@ -65,6 +65,15 @@
                     }
                 }
             })
+            .state('app.dashboard.store', {
+                url: '/shoppinglist/:storeId',
+                views: {
+                    'shoppinglist-tab': {
+                        templateUrl: 'app/dashboard/storeItems.html',
+                        controller: 'storeItemsController as vm'
+                    }
+                }
+            })
             .state('app.dashboard.friends', {
                 url: '/friends',
                 views: {
