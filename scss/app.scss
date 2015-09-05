@@ -22,7 +22,7 @@ $balanced:                        #00e19a;
 
 // Base
 // -------------------------------
-$base-background-color:           #20203a;
+$base-background-color:           white;
 
 
 
@@ -48,7 +48,15 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   margin-left: 16px;
 }
 
+.inline {
+  display: inline-block;
+}
+
 $margin-large: 16px;
+
+.dark-background {
+  background-color: #20203a !important;
+}
 
 .float-right {
   float: right;
@@ -73,6 +81,10 @@ $margin-large: 16px;
 // HOME PAGE ----------------------
 
 @import 'home';
+
+// SHOPPING LIST ------------------
+
+@import 'shoppinglist';
 
 
 

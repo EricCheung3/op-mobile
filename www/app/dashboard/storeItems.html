@@ -1,11 +1,9 @@
 <ion-view view-title="StoreItems">
-    <ion-content class="padding">
-        <p>
-            StoreItems
-        </p>
+    <ion-content>
         <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
           <ion-item ng-repeat="item in vm.items">
-              <p> {{item.itemName}}   price:  {{item.itemPrice}} </p>
+              <p class="inline"> {{item.itemName}} </p>
+              <p class="inline float-right"> ${{item.itemPrice}} </p>
               <ion-option-button class="ion-minus-circled" ng-click="vm.deleteItem(item.id)">
                   delete
               </ion-option-button>

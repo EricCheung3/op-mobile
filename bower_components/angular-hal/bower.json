@@ -1,0 +1,16 @@
+{
+  "name": "angular-hal",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "main": "angular-hal.js",
+  "dependencies": {
+    "rfc6570": "~0.1",
+    "angular": "~1"
+  },
+  "devDependencies": {
+    "angular-mocks": "*"
+  }
+}

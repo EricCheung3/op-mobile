@@ -1,0 +1,27 @@
+{
+  "name": "angular-hal",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "main": "angular-hal.js",
+  "dependencies": {
+    "rfc6570": "~0.1",
+    "angular": "~1"
+  },
+  "devDependencies": {
+    "angular-mocks": "*"
+  },
+  "homepage": "https://github.com/elmerbulthuis/angular-hal",
+  "version": "0.1.5",
+  "_release": "0.1.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.5",
+    "commit": "e2cd86e4c0d5d6a86536ba0fd06c3c6db2f88f42"
+  },
+  "_source": "git://github.com/elmerbulthuis/angular-hal.git",
+  "_target": "0.1.5",
+  "_originalSource": "angular-hal"
+}
