@@ -1,0 +1,9 @@
+{
+  "name": "rfc6570",
+  "main": "rfc6570.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ]
+}

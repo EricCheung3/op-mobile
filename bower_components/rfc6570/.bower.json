@@ -1,0 +1,20 @@
+{
+  "name": "rfc6570",
+  "main": "rfc6570.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "homepage": "https://github.com/elmerbulthuis/rfc6570",
+  "version": "0.1.8",
+  "_release": "0.1.8",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.8",
+    "commit": "175bba157a285e41abe4ad39cd64a3806aa21918"
+  },
+  "_source": "git://github.com/elmerbulthuis/rfc6570.git",
+  "_target": "~0.1",
+  "_originalSource": "rfc6570"
+}
