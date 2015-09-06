@@ -14,7 +14,8 @@
         return {
             'getReceiptResource' : getReceiptResource,
             'getStoresResource' : getStoresResource,
-            'getStoreItemsResource' : getStoreItemsResource,
+            'loadFirstPageOfUserStoreItems' : loadFirstPageOfUserStoreItems,
+            'loadUserStoreItemsMore' : loadUserStoreItemsMore,
             'loadFirstPageOfUserReceipts' : loadFirstPageOfUserReceipts,
             'getImageBase64Data' : getImageBase64Data
         };
@@ -71,39 +72,84 @@
             return deferred.promise;
         };
 
-        function getStoreItemsResource(storeId) {
-            var storeItems = [];
-            var deferred = $q.defer();
 
-            if(storeItemsCache[storeId]){
-                console.log("read items from itesCache");
-                deferred.resolve(storeItemsCache[storeId]);
-            }else {
-                apiService.getUserResource()
+        function loadFirstPageOfUserStoreItems(storeId, callback) {
+            var storeItems = [];
+            var itemsPage;
+
+            return apiService
+                .getUserResource()
                 .then(function (userResource) {
                     userResource.$get('store',{'storeId': storeId})
                     .then(function(store) {
-                        store.$get('items')
-                        .then(function(itemsResource) {
-                            if (itemsResource.$has('shoppingItems')) {
-                                itemsResource.$get('shoppingItems')
-                                .then(function(items){
-                                    storeItems.push(items);
-                                    storeItemsCache[storeId] = items;
-                                    deferred.resolve(storeItemsCache[storeId]);
-                                    // storeItems = items;
-                                    // deferred.resolve(storeItems);
-                                });
-                            }else {
-                                console.log("NO Items yet!");
-                                return $q.reject("NO Items yet!");
-                            }
-
-                        });
+                        return store.$get('items');
+                    })
+                    .then(function(itemsResource) {
+                        itemsPage = itemsResource;
+                        if (itemsResource.$has('shoppingItems')) {
+                            return itemsResource.$get('shoppingItems');
+                        }else {
+                            console.log("NO Items yet!");
+                            return $q.reject("NO Items yet!");
+                        }
+                    }) // return after $get(shoppingItems)
+                    .then(function(items){
+                        storeItems = items;
+                        storeItemsCache[storeId] = items;
+                        storeItemsCache.page = itemsPage;
+                    })
+                    .catch ( function(err){
+                        console.error('ERROR code', err); // TODO handle error
+                    })
+                    .finally( function() {
+                        callback(storeItems, itemsPage);
                     });
                 });
-            }
 
+        };
+
+        function loadUserStoreItemsMore(storeId, callback) {
+            var storeItems = [];
+            var itemsPage;
+            var deferred = $q.defer();
+            var cache = storeItemsCache[storeId];
+
+            if(cache){
+                console.log("read items from itemsCache");
+                console.log("cache", storeItemsCache[storeId]);
+                deferred.resolve(storeItemsCache);
+                callback(storeItemsCache[storeId], storeItemsCache.page);
+            }else {
+              apiService
+                  .getUserResource()
+                  .then(function (userResource) {
+                      userResource.$get('store',{'storeId': storeId})
+                      .then(function(store) {
+                          return store.$get('items');
+                      })
+                      .then(function(itemsResource) {
+                          itemsPage = itemsResource;
+                          if (itemsResource.$has('shoppingItems')) {
+                              return itemsResource.$get('shoppingItems');
+                          }else {
+                              console.log("NO Items yet!");
+                              return $q.reject("NO Items yet!");
+                          }
+                      }) // return after $get(shoppingItems)
+                      .then(function(items){
+                          storeItems = items;
+                          storeItemsCache[storeId] = items;
+                          storeItemsCache.page = itemsPage;
+                          deferred.resolve(storeItemsCache);
+                      })
+                      .catch ( function(err){
+                          console.error('ERROR code', err); // TODO handle error
+                      })
+                      .finally( function() {
+                          callback(storeItems, itemsPage);
+                      });
+                  });
+            }
             return deferred.promise;
         }
 

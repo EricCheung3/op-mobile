@@ -53,17 +53,22 @@
                 }
             }
             console.log("selected items:",addItemList);
+            // var itemsObject =
+            //   {
+            //     "storeId" : receipt.storeId,
+            //     "items" : addItemList
+            //   };
 
             var object =
               {
                 "storeId" : "3b50a3fc-xxxx-11e4-a322-1697f9250001",
                 "items":
                   [{
-                    "name": "banana",
-                    "price": "0.99"
+                    "name": "pork-rib",
+                    "price": "9.99"
                   },
                   {
-                    "name": "apple",
+                    "name": "meat",
                     "price": "3.99"
                   }
                 ]

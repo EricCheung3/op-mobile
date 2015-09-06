@@ -3,6 +3,12 @@
         <p>
             StoreItems
         </p>
+        <!-- pull to refresh -->
+        <ion-refresher
+          pulling-text="Pull to refresh..."
+          on-refresh="vm.pullToRefresh()">
+        </ion-refresher>
+
         <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
           <ion-item ng-repeat="item in vm.items">
               <p> {{item.itemName}}   price:  {{item.itemPrice}} </p>
@@ -11,6 +17,10 @@
               </ion-option-button>
           </ion-item>
         </ion-list>
-
+        <!--  scroll to load more-->
+        <ion-infinite-scroll
+            ng-if="vm.moreItemsCanBeLoaded()"
+            on-infinite="vm.scrollToLoadMore()">
+        </ion-infinite-scroll>
     </ion-content>
 </ion-view>
