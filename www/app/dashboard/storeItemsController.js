@@ -14,6 +14,7 @@
         vm.shouldShowDelete = false;
         vm.listCanSwipe = true;
 
+        vm.store = null;
         vm.items = [];
         vm.lastItemsPage = null;
         vm.deleteItem = deleteItem;
@@ -24,15 +25,21 @@
         var storeId = $stateParams.storeId;
         console.log("storeId", storeId);
 
-        // receiptService.getStoreItemsResource(storeId)
-        // .then(function(items){
-        //     vm.items = items;
-        //     console.log("items", items);
-        // });
+        //  get store info according to storeId
+        apiService
+            .getUserResource()
+            .then(function (userResource) {
+                userResource.$get('store', {storeId:storeId})
+                .then(function(store){
+                    vm.store = store.name;
+                });
+            });
+
+
         receiptService.loadFirstPageOfUserStoreItems(storeId, function(storeItems, itemsPage) {
             vm.items = storeItems;
             vm.lastItemsPage = itemsPage;
-            console.log("first page items", storeItems);
+            console.log("Load first page items", storeItems);
         });
 
 
@@ -66,7 +73,7 @@
                         vm.items.push(item);
                     });
 
-                    console.log("load more", vm.items);
+                    // console.log("load more", vm.items);
                 })
                 .finally(function() {
                     $scope.$broadcast('scroll.infiniteScrollComplete');

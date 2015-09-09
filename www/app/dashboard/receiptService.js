@@ -108,6 +108,7 @@
 
         };
 
+        //FIXME: cache has a little bug
         function loadUserStoreItemsMore(storeId, callback) {
             var storeItems = [];
             var itemsPage;

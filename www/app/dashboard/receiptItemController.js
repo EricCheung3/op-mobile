@@ -46,33 +46,30 @@
 
         function AddToShoppingList(){
             console.log("=======>AddToShoppingList");
-            var addItemList = [];
+            var item = new Object();
+            var items = [];
+
             for(var i=0;i<vm.receiptItems.length; i++){
                 if(vm.receiptItems[i].checked){
-                    addItemList.push(vm.receiptItems[i]);
+                    item["name"] = vm.receiptItems[i];
+                    item["price"] = "2.98";
+                    items.push(item);
                 }
             }
-            console.log("selected items:",addItemList);
-            // var itemsObject =
-            //   {
-            //     "storeId" : receipt.storeId,
-            //     "items" : addItemList
-            //   };
+
+            // test data 
+            var item1 = new Object();
+            item1["name"] = "banana";
+            item1["price"] = "0.98";
+            items.push(item1);
 
             var object =
               {
-                "storeId" : "3b50a3fc-xxxx-11e4-a322-1697f9250001",
-                "items":
-                  [{
-                    "name": "pork-rib",
-                    "price": "9.99"
-                  },
-                  {
-                    "name": "meat",
-                    "price": "3.99"
-                  }
-                ]
+                "storeId" : "3b50a3fc-xxxx-11e4-a322-1697f9250001", //receipt.storeId
+                "items" : items
               };
+            console.log("obect", object);
+
             // post to database
             //FIXME: please change to real data come from parser(OCR)
             apiService.getUserResource()

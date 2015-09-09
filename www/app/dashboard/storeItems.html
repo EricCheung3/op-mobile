@@ -1,6 +1,7 @@
-<ion-view view-title="StoreItems">
+<ion-view view-title="{{vm.store}}">
+    <ion-nav-title> {{vm.store}} </ion-nav-title>
+
     <ion-content>
-        <!-- pull to refresh -->
         <ion-refresher
           pulling-text="Pull to refresh..."
           on-refresh="vm.pullToRefresh()">
@@ -8,7 +9,7 @@
 
         <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
           <ion-item ng-repeat="item in vm.items">
-              <p class="inline"> {{item.itemName}} </p>
+              <h1 class="inline"> {{item.itemName}} </h1>
               <p class="inline float-right"> ${{item.itemPrice}} </p>
               <ion-option-button class="ion-minus-circled" ng-click="vm.deleteItem(item.id)">
                   delete
