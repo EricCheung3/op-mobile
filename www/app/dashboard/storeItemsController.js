@@ -86,9 +86,11 @@
 
 
 
-        function deleteItem(itemId){
-            vm.items.splice(vm.items.indexOf(itemId), 1);
-            console.log("DELETE-ITEM", itemId);
+        function deleteItem(index){
+            console.log("DELETE-ITEM", vm.items[index].id);
+            vm.items[index].$del('self');
+            vm.items.splice(index, 1);
+
         };
 
     }; // end of storeController

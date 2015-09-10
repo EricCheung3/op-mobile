@@ -51,17 +51,11 @@
 
             for(var i=0;i<vm.receiptItems.length; i++){
                 if(vm.receiptItems[i].checked){
-                    item["name"] = vm.receiptItems[i];
+                    item["name"] = vm.receiptItems[i].name;
                     item["price"] = "2.98";
                     items.push(item);
                 }
             }
-
-            // test data 
-            var item1 = new Object();
-            item1["name"] = "banana";
-            item1["price"] = "0.98";
-            items.push(item1);
 
             var object =
               {

@@ -17,8 +17,7 @@
         vm.scrollToLoadMore = scrollToLoadMore;
         vm.moreReceiptsCanBeLoaded = moreReceiptsCanBeLoaded;
         vm.showReceipt = showReceipt;
-
-        //vm.takePicture = takePicture;
+        vm.deleteReceipt = deleteReceipt;
 
         vm.shouldShowDelete = false; //?
         vm.listCanSwipe = true; //?
@@ -40,6 +39,7 @@
         // when enter the receipts screen, load first page of receipts (default are three receipts)
         receiptService.loadFirstPageOfUserReceipts( function(receipts, receiptListsPage) {
             vm.receipts = receipts;
+            console.log("receipt",receipts);
             vm.lastReceiptListPage = receiptListsPage;
         });
 
@@ -106,6 +106,12 @@
             vm.tooltipVisible = false;
             $state.go('app.dashboard.receiptItem',{receiptId:receiptId});
         };
+
+        function deleteReceipt(index) {
+            console.log("vm.receipts[]",vm.receipts[index]);
+            //vm.receipts.splice(index, 1); // delete works but not delete from database
+            vm.receipts[index].$del('self');
+        }
 
         function takePicture() {
             $log.debug('call takePicture()');

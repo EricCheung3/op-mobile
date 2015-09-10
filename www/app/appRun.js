@@ -11,7 +11,7 @@
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
 
-        apiService.init('http://108.59.83.3/');
+        apiService.init('http://104.197.47.140/');
 
 
         $ionicPlatform.ready(function() {
