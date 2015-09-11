@@ -9,9 +9,9 @@
 
         <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
           <ion-item ng-repeat="(index, item) in vm.items">
-              <h1 class="inline"> {{item.itemName}} </h1>
+              <p class="inline"> {{item.itemName}} </p>
               <p class="inline float-right"> ${{item.itemPrice}} </p>
-              <ion-option-button class="ion-minus-circled" ng-click="vm.deleteItem(index)">
+              <ion-option-button class="button-assertive" ng-click="vm.deleteItem(index)">
                   delete
               </ion-option-button>
           </ion-item>

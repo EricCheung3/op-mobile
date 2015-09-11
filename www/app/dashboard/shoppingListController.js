@@ -19,7 +19,6 @@
         vm.listCanSwipe = true;
 
 
-
         receiptService.getStoresResource()
         .then(function(stores){
             console.log("stores", stores);
@@ -30,9 +29,11 @@
             $state.go('app.dashboard.store',{storeId:storeId});
         };
 
-        function deleteStore(storeId){
-            vm.stores.splice(vm.stores.indexOf(storeId), 1);
-            console.log("DELETE-STORE",storeId);
+        function deleteStore(index){
+
+            console.log("DELETE-STORE",vm.stores[index]);
+            vm.stores[index].$del('self');
+            vm.stores.splice(index, 1);
         };
 
     }; // end of shoppingListController
