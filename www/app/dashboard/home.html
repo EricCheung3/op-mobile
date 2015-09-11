@@ -42,8 +42,9 @@
                     delete
                 </ion-option-button>
                 <div class="receipt-label">
-                    <p class="float-right padding-top-small"> August 28, 2015 </p>
-                    <!-- update code to plug-in actual Date -->
+                    <p class="float-right padding-top-small"> {{vm.date | date:'hh:mm:ss  yyyy-MM-dd'}} </p>
+                    <p class="float-right padding-top-small"> {{receipt.createdTime | date:'hh:mm:ss  yyyy-MM-dd'}} </p>
+
                 </div>
             </ion-item>
         </ion-list>

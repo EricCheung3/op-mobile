@@ -35,7 +35,7 @@
 
         // receiptImages to control multi-upload
         vm.receiptImages = null;
-
+        vm.date = null;
         // when enter the receipts screen, load first page of receipts (default are three receipts)
         receiptService.loadFirstPageOfUserReceipts( function(receipts, receiptListsPage) {
             vm.receipts = receipts;
@@ -192,10 +192,10 @@
           });
         };
 
-
+vm.date = new Date();
         function upload() {
             $log.debug('call upload()');
-
+            vm.date = new Date();
             if(vm.imgUpload!=null){
               $ionicLoading.show({template: 'Uploading to server ...'});
               apiService

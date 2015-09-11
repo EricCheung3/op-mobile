@@ -22,7 +22,6 @@
         vm.receiptImages = [];
         vm.receiptItems = [];
 
-        $scope.ShowModel = true;
 
         var receiptId = $stateParams.receiptId;
         console.log("receiptId", receiptId);

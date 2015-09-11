@@ -2,32 +2,42 @@
     <!-- for date of receipt please put script to plug-in the date for each receipt-->
     <ion-content class="home-page">
 
-      <ion-toggle ng-model="$root.EditModel">Edit Items</ion-toggle>
+      <ion-toggle ng-model="EditModel">Edit Items</ion-toggle>
 
-      <div id="EditModel" ng-show="EditModel" ng-if="$root.EditModel">
+      <div ng-show="EditModel">
         <ion-list >
           <ion-item ng-repeat="item in vm.receiptItems">
             <ion-checkbox ng-model="item.checked" >
-              <p>{{item.name}} </p>
-              <!-- <p>price: {{item.unitPrice}}</p> -->
+              <p class="inline">{{item.name}} </p>
+              <p class="inline float-right padding-top-small">price: {{item.unitPrice}}</p>
             </ion-checkbox>
           </ion-item>
         </ion-list>
 
-          <div class="buttons">
+        <div class="buttons">
             <button class="button button-full button-positive" ng-click="vm.AddToShoppingList()">
               AddToShoppingList
             </button>
         </div>
       </div>
 
-      <div id="ShowModel" ng-show="ShowModel" ng-if="!$root.EditModel">
+      <div ng-hide="EditModel">
         <ion-list >
           <ion-item ng-repeat="item in vm.receiptItems">
-              <p>{{item.name}} ----price: {{item.unitPrice}}</p>
+              <p class="inline">{{item.name}}</p>
+              <p class="inline float-right padding-top-small"> price: {{item.unitPrice}} </p>
           </ion-item>
         </ion-list>
       </div>
+      <br/>
+      <div ng-show="!checked" class="ng-hide">
+        <p class="inline">Do you satisfy with this result?</p>
+        <p class="inline float-right">
+            YES:<input type="checkbox" ng-model="checked" >
+            NO: <input type="checkbox" ng-model="checked" >
+        </p>
+      </div>
+
       <!-- receipt dislay part-->
       <ion-item ng-repeat="image in vm.receiptImages" >
         <img ng-src="{{image.path}}">
