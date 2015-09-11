@@ -46,11 +46,12 @@
 
         function AddToShoppingList(){
             console.log("=======>AddToShoppingList");
-            var item = new Object();
             var items = [];
 
             for(var i=0;i<vm.receiptItems.length; i++){
                 if(vm.receiptItems[i].checked){
+                    var item = new Object();
+                    console.log("vm.receiptItems[i].name", vm.receiptItems[i].name);
                     item["name"] = vm.receiptItems[i].name;
                     item["price"] = "2.98";
                     items.push(item);
