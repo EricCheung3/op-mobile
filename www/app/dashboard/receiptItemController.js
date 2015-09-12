@@ -17,29 +17,37 @@
         $log.debug('==> receiptsItemController');
 
         var vm = this;
+        vm.receipt;
         vm.showItems = showItems;
         vm.AddToShoppingList = AddToShoppingList;
         vm.receiptImages = [];
         vm.receiptItems = [];
 
+        $scope.rating = [];
+        $scope.ratingResultY = function() {
+            vm.receipt.$put('feedback', {}, {"rating":1});
+            $scope.rating[$scope.receiptId] = 1;
+        }
+        $scope.ratingResultN = function() {
+            $vm.receipt.$put('rating', {}, {"rating":0});
+            $scope.rating[$scope.receiptId] = 1;
+        }
 
-        var receiptId = $stateParams.receiptId;
-        console.log("receiptId", receiptId);
-        // get all images of the receipt
+        $scope.receiptId = $stateParams.receiptId;
+
         receiptService
-            .getReceiptResource(receiptId)
-            .then( function(receipt) {
+            .getReceiptResource2($scope.receiptId, function(receipt, receiptItems){
+                vm.receipt = receipt;
                 vm.receiptImages = receipt.images;
-                // get all items of the receipt according to its receiptId
-                receipt.$get('items').then(function(items){
-                    console.log("receipt items ", items);
-                    vm.receiptItems = items;
-                })
+                vm.receiptItems = receiptItems;
+
+                $scope.rating[$scope.receiptId] = receipt.rating;
+                console.log("receipt rating", $scope.rating[$scope.receiptId]);
             });
 
 
         function showItems () {
-            $state.go('app.dashboard.receiptItems',{receiptId:receiptId});
+            $state.go('app.dashboard.receiptItems',{receiptId:$scope.receiptId});
         };
 
 

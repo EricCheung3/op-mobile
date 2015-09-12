@@ -10,9 +10,12 @@
         var imageCache = new Object();
         var storesCache = new Object();
         var storeItemsCache = new Object();
+        var receiptCache = new Object();
+        var receiptItemsCache = new Object();
 
         return {
             'getReceiptResource' : getReceiptResource,
+            'getReceiptResource2' : getReceiptResource2,
             'getStoresResource' : getStoresResource,
             'loadFirstPageOfUserStoreItems' : loadFirstPageOfUserStoreItems,
             'loadUserStoreItemsMore' : loadUserStoreItemsMore,
@@ -22,7 +25,7 @@
 
         function getReceiptResource(receiptId) {
             var deferred = $q.defer();
-            var receiptImages = [] ;
+
             apiService
                 .getUserResource()
                 .then( function(userResource) {
@@ -41,6 +44,32 @@
                 });
 
             return deferred.promise;
+        };
+
+        function getReceiptResource2(receiptId, callback) {
+            var receiptItems = [];
+            var receipt;
+            if(receiptItemsCache[receiptId]!=null && receiptCache.rating!=null){
+                console.log("read from cache");
+                callback(receiptCache, receiptItemsCache[receiptId]);
+            }else {
+              getReceiptResource(receiptId)
+                .then(function(receipt) {
+                    // console.log("receipt rating", receipt.rating);
+                    receiptCache = receipt;
+                    receipt.$get('items').then(function(items){
+                        receiptItems = items;
+                        receiptItemsCache[receiptId]  = items;
+                        console.log("receipt items ", receiptItems);
+                    })
+                    .catch ( function(err){
+                        console.error('ERROR code', err); // TODO handle error
+                    })
+                    .finally( function() {
+                        callback(receiptCache, receiptItems);
+                    });
+                });
+          }
         };
 
         function getStoresResource(){

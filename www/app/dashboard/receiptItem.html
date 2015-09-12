@@ -30,11 +30,11 @@
         </ion-list>
       </div>
       <br/>
-      <div ng-show="!checked" class="ng-hide">
+      <div ng-if="rating[receiptId]==nul" >
         <p class="inline">Do you satisfy with this result?</p>
         <p class="inline float-right">
-            YES:<input type="checkbox" ng-model="checked" >
-            NO: <input type="checkbox" ng-model="checked" >
+            YES:<input type="checkbox" ng-model="yes" ng-change="ratingResultY()">
+            NO: <input type="checkbox" ng-model="no" ng-change="ratingResultN()">
         </p>
       </div>
 
