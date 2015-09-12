@@ -108,9 +108,8 @@
         };
 
         function deleteReceipt(index) {
-            console.log("vm.receipts[]",vm.receipts[index]);
-            //vm.receipts.splice(index, 1); // delete works but not delete from database
             vm.receipts[index].$del('self');
+            vm.receipts.splice(index, 1);
         }
 
         function takePicture() {

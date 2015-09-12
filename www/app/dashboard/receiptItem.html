@@ -30,11 +30,11 @@
         </ion-list>
       </div>
       <br/>
-      <div ng-if="rating[receiptId]==nul" >
+      <div ng-if="rating[receiptId] == null" >
         <p class="inline">Do you satisfy with this result?</p>
         <p class="inline float-right">
-            YES:<input type="checkbox" ng-model="yes" ng-change="ratingResultY()">
-            NO: <input type="checkbox" ng-model="no" ng-change="ratingResultN()">
+            <input type="checkbox" ng-model="yes" ng-change="ratingResultY()"> GOOD
+            <input type="checkbox" ng-model="no" ng-change="ratingResultN()"> BAD
         </p>
       </div>
 

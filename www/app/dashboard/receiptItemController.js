@@ -29,11 +29,19 @@
             $scope.rating[$scope.receiptId] = 1;
         }
         $scope.ratingResultN = function() {
-            $vm.receipt.$put('rating', {}, {"rating":0});
-            $scope.rating[$scope.receiptId] = 1;
+            vm.receipt.$put('feedback', {}, {"rating":0});
+            $scope.rating[$scope.receiptId] = 0;
         }
 
         $scope.receiptId = $stateParams.receiptId;
+
+        // receiptService
+        //     .getReceiptResource($scope.receiptId)
+        //     .then(function (receipt) {
+        //       receipt.$get('items').then(function(items){
+        //           receiptItems = items;
+        //       })
+        //     });
 
         receiptService
             .getReceiptResource2($scope.receiptId, function(receipt, receiptItems){
