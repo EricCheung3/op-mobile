@@ -30,7 +30,7 @@
         </ion-list>
       </div>
       <br/>
-      <div ng-if="rating[receiptId] == null" >
+      <div ng-if="rating[receiptId] == null && delay=='true'">
         <p class="inline">Do you satisfy with this result?</p>
         <p class="inline float-right">
             <input type="checkbox" ng-model="yes" ng-change="ratingResultY()"> GOOD

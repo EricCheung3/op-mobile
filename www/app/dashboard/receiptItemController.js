@@ -22,7 +22,7 @@
         vm.AddToShoppingList = AddToShoppingList;
         vm.receiptImages = [];
         vm.receiptItems = [];
-
+        $scope.delay = false;
         $scope.rating = [];
         $scope.ratingResultY = function() {
             vm.receipt.$put('feedback', {}, {"rating":1});
@@ -50,6 +50,7 @@
                 vm.receiptItems = receiptItems;
 
                 $scope.rating[$scope.receiptId] = receipt.rating;
+                $scope.delay = "true";
                 console.log("receipt rating", $scope.rating[$scope.receiptId]);
             });
 
