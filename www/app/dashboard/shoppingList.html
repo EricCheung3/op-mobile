@@ -1,9 +1,9 @@
-<ion-view view-title="ShoppingList">
+<ion-view view-title="Shopping Lists">
     <ion-content>
       
         <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
-          <ion-item ng-repeat="(index, store) in vm.stores" ng-click="vm.showStoreItems(store.id)">
-              <h1> {{store.name}} </h1>
+          <ion-item ng-repeat="(index, store) in vm.stores" ng-click="vm.showStoreItems(store.id)" >
+              <div> {{store.name}} </div>
               <ion-option-button class="ion-minus-circled" ng-click="vm.deleteStore(index)">
                   delete
               </ion-option-button>

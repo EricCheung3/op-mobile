@@ -6,9 +6,9 @@
           pulling-text="Pull to refresh..."
           on-refresh="vm.pullToRefresh()">
         </ion-refresher>
-        <div><input type="text" ng-model="searchItems" placeholder="search items" autofocus> </div>
+        <div class="padding-horizontal-small padding-vertical-small"><input type="text" ng-model="searchItems" placeholder="search items" autofocus> </div>
         <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
-          <ion-item ng-repeat="(index, item) in vm.items | filter:searchItems">
+          <ion-item ng-repeat="(index, item) in vm.items | filter:searchItems" class=" store-items padding-horizontal-small padding-vertical-large">
               <p class="inline"> {{item.itemName}} </p>
               <p class="inline float-right"> ${{item.itemPrice}} </p>
               <ion-option-button class="button-assertive" ng-click="vm.deleteItem(index)">

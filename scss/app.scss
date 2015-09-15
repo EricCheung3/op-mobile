@@ -42,17 +42,48 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   margin-right: auto;
 }
 
-// large horizontal margin
+// MARGINS
 .margin-horizontal-large {
   margin-right: 16px;
   margin-left: 16px;
 }
 
+.margin-horizontal-small {
+  margin-right: 6px;
+  margin-left: 6px;
+}
+
+.margin-vertical-large {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.margin-vertical-small {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+
+// PADDINGS
+.padding-horizontal-small {
+  padding-right: 6px;
+  padding-left: 6px;
+}
+
+.padding-vertical-small {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.padding-vertical-large {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+// end of PADDING
+
 .inline {
   display: inline-block;
 }
-
-$margin-large: 16px;
 
 .dark-background {
   background-color: #20203a !important;
@@ -69,6 +100,11 @@ $margin-large: 16px;
 .padding-top-large {
   padding-top: 16px;
 }
+
+// ION ITEM styles
+
+
+
 
 // LOGIN and REGISTRATION PAGE ----
 

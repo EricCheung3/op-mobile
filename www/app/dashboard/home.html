@@ -30,7 +30,7 @@
 
         <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
             <ion-item ng-repeat="(index, receipt) in vm.receipts" >
-                <div class="receipt-label">
+                <div class="receipt-label margin-horizontal-small">
                     <p>Store Name</p> <!-- update code to plug-in actual Store Name -->
                     <p class="float-right">Total: $155</p> <!-- update code to plug-in
                       actual Total -->
@@ -41,7 +41,7 @@
                 <ion-option-button class="ion-minus-circled" ng-click="vm.deleteReceipt(index)">
                     delete
                 </ion-option-button>
-                <div class="receipt-label">
+                <div class="receipt-label margin-horizontal-small">
                     <p class="float-right padding-top-small"> {{vm.date | date:'hh:mm:ss  yyyy-MM-dd'}} </p>
                     <!-- <p class="float-right padding-top-small"> {{receipt.createdTime | date:'hh:mm:ss  yyyy-MM-dd'}} </p> -->
 
