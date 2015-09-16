@@ -1,6 +1,15 @@
 .store-items {
-	  .item-content {
-      padding: 0px 0px 0px 0px !important;
-      height: 20px;
-  }
+	.item-content {
+    	padding: 0px 0px 0px 0px !important;
+    	height: 20px;
+  	}
+}
+
+.item-checkbox {
+	padding: 0px 6px 0px 60px !important;
+	height: 54px;
+}
+
+.item p {
+	margin: 0;
 }

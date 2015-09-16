@@ -1,46 +1,49 @@
 <ion-view view-title="*Date of Receipt*">
     <!-- for date of receipt please put script to plug-in the date for each receipt-->
-    <ion-content class="home-page">
+    <ion-content class="home-page grey-background">
 
-      <ion-toggle ng-model="EditModel">Edit Items</ion-toggle>
+      <ion-toggle ng-model="EditModel" class="grey-background">Select items</ion-toggle>
 
       <div ng-show="EditModel">
         <ion-list >
           <ion-item ng-repeat="item in vm.receiptItems">
             <ion-checkbox ng-model="item.checked" >
               <p class="inline">{{item.name}} </p>
-              <p class="inline float-right padding-top-small">price: {{item.unitPrice}}</p>
+              <p class="inline float-right">price: {{item.unitPrice}}</p>
             </ion-checkbox>
           </ion-item>
         </ion-list>
 
         <div class="buttons">
-            <button class="button button-full button-positive" ng-click="vm.AddToShoppingList()">
-              AddToShoppingList
+            <button class="button button-full button-positive large-button-height" ng-click="vm.AddToShoppingList()">
+              Add to shopping list
             </button>
         </div>
       </div>
 
       <div ng-hide="EditModel">
         <ion-list >
-          <ion-item ng-repeat="item in vm.receiptItems" class="store-items padding-horizontal-small padding-vertical-large">
-              <p class="inline">{{item.name}}</p>
-              <p class="inline float-right padding-top-small"> price: {{item.unitPrice}} </p>
+          <ion-item ng-repeat="item in vm.receiptItems">
+              <div class="margin-vertical-large margin-horizontal-small standard-list-height">
+                  <p class="inline">{{item.name}}</p>
+                  <p class="inline float-right"> price: {{item.unitPrice}} </p>
+              </div>
           </ion-item>
         </ion-list>
       </div>
-      <br/>
-      <div ng-if="rating[receiptId] == null && delay=='true'">
-        <p class="inline">Are you satisfied with the results?</p>
-        <p class="inline float-right">
-            <input type="checkbox" ng-model="yes" ng-change="ratingResultY()"> GOOD
-            <input type="checkbox" ng-model="no" ng-change="ratingResultN()"> BAD
-        </p>
+
+      <div ng-hide="EditModel" ng-if="rating[receiptId] == null && delay=='true'">
+        <h3 class="padding-top-large text-center">How did we do?</h3>
+          <div class="row margin-bottom-large">
+            <div class="col button button-balanced text-center">GOOD RESULTS</div>
+            <div class="col button button-assertive text-center">BAD RESULTS</div>
+          </div>
       </div>
 
       <!-- receipt dislay part-->
-      <ion-item ng-repeat="image in vm.receiptImages" >
-        <img ng-src="{{image.path}}">
+      <ion-item ng-hide="EditModel" ng-repeat="image in vm.receiptImages" >
+        <p class="padding-left-small padding-top-medium padding-bottom-medium">Original photo</p>
+        <img class="vertical-align-bottom" ng-src="{{image.path}}">
         <!-- This creates separate "cards" for each image,
         but here I think all the images should be on one "card"
         in the future I think we will use panorama for longer
