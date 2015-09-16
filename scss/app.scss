@@ -25,6 +25,11 @@ $balanced:                        #00e19a;
 $base-background-color:           white;
 
 
+// Universal Sizes 
+// -------------------------------
+$large:                           16px;
+$medium:                          10px;
+$small:                           6px !important;
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
@@ -33,101 +38,175 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 @import "www/lib/ionic/scss/ionic";
 
 
-// your slick styles can go here...
-
-// centering a div or an image
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.text-center {
-  text-align: center;
-}
-
 
 // --------------------------MARGINS
+// --------LARGE
 .margin-horizontal-large {
-  margin-right: 16px;
-  margin-left: 16px;
-}
-
-.margin-horizontal-small {
-  margin-right: 6px;
-  margin-left: 6px;
+  margin-right: $large;
+  margin-left: $large;
 }
 
 .margin-vertical-large {
-  margin-top: 16px;
-  margin-bottom: 16px;
-}
-
-.margin-vertical-small {
-  margin-top: 6px;
-  margin-bottom: 6px;
+  margin-top: $large;
+  margin-bottom: $large;
 }
 
 .margin-top-large {
-  margin-top: 16px;
+  margin-top: $large;
 }
 
 .margin-bottom-large {
-  margin-bottom: 16px;
+  margin-bottom: $large;
 }
 
-.margin-left-small {
-  margin-left: 6px;
+.margin-left-large {
+  margin-left: $large;
 }
 
-.margin-right-small {
-  margin-right: 6px;
+.margin-right-large {
+  margin-right: $large;
+}
+
+//-------MEDIUM
+.margin-horizontal-medium {
+  margin-right: $medium;
+  margin-left: $medium;
+}
+
+.margin-vertical-medium {
+  margin-top: $medium;
+  margin-bottom: $medium;
 }
 
 .margin-top-medium {
-  margin-top: 10px;
+  margin-top: $medium;
+}
+
+.margin-bottom-medium {
+  margin-bottom: $medium;
+}
+
+.margin-left-medium {
+  margin-left: $medium;
+}
+
+.margin-right-medium {
+  margin-right: $medium;
+}
+
+//-------SMALL
+.margin-horizontal-small {
+  margin-right: $small;
+  margin-left: $small;
+}
+
+.margin-vertical-small {
+  margin-top: $small;
+  margin-bottom: $small;
+}
+
+.margin-top-small {
+  margin-top: $small;
+}
+
+.margin-bottom-small {
+  margin-bottom: $small;
+}
+
+.margin-left-small {
+  margin-left: $small;
+}
+
+.margin-right-small {
+  margin-right: $small;
 }
 
 
-// -------------------------PADDINGS
-.padding-horizontal-small {
-  padding-right: 6px;
-  padding-left: 6px;
-}
-
-.padding-vertical-small {
-  padding-top: 6px;
-  padding-bottom: 6px;
+// --------------------------PADDINGS
+// --------LARGE
+.padding-horizontal-large {
+  padding-right: $large;
+  padding-left: $large;
 }
 
 .padding-vertical-large {
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.padding-top-small {
-  padding-top: 6px;
+  padding-top: $large;
+  padding-bottom: $large;
 }
 
 .padding-top-large {
-  padding-top: 16px;
+  padding-top: $large;
 }
 
 .padding-bottom-large {
-  padding-bottom: 16px;
+  padding-bottom: $large;
+}
+
+.padding-left-large {
+  padding-left: $large;
+}
+
+.padding-right-large {
+  padding-right: $large;
+}
+
+//-------MEDIUM
+.padding-horizontal-medium {
+  padding-right: $medium;
+  padding-left: $medium;
+}
+
+.padding-vertical-medium {
+  padding-top: $medium;
+  padding-bottom: $medium;
 }
 
 .padding-top-medium {
-  padding-top: 10px;
+  padding-top: $medium;
 }
 
 .padding-bottom-medium {
-  padding-bottom: 10px;
+  padding-bottom: $medium;
+}
+
+.padding-left-medium {
+  padding-left: $medium;
+}
+
+.padding-right-medium {
+  padding-right: $medium;
+}
+
+//-------SMALL
+.padding-horizontal-small {
+  padding-right: $small;
+  padding-left: $small;
+}
+
+.padding-vertical-small {
+  padding-top: $small;
+  padding-bottom: $small;
+}
+
+.padding-top-small {
+  padding-top: $small;
+}
+
+.padding-bottom-small {
+  padding-bottom: $small;
 }
 
 .padding-left-small {
-  padding-left: 6px;
+  padding-left: $small;
 }
+
+.padding-right-small {
+  padding-right: $small;
+}
+
+
+
+
 
 // ------------------SIZES
 .standard-list-height {
@@ -153,6 +232,17 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 .vertical-align-bottom {
   vertical-align: bottom;
+}
+
+// centering a div or an image
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-center {
+  text-align: center;
 }
 
 
