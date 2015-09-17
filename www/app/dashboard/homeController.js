@@ -69,7 +69,9 @@
         };
 
         function moreReceiptsCanBeLoaded() {
-            return vm.lastReceiptListPage !== null && vm.lastReceiptListPage.$has("next");
+            if(vm.lastReceiptListPage){
+                return vm.lastReceiptListPage !== null && vm.lastReceiptListPage.$has("next");
+            }    
         };
 
         function scrollToLoadMore(){
