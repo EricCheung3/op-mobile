@@ -70,8 +70,10 @@
 
         function moreReceiptsCanBeLoaded() {
             if(vm.lastReceiptListPage){
-                return vm.lastReceiptListPage !== null && vm.lastReceiptListPage.$has("next");
-            }    
+                return vm.lastReceiptListPage.$has("next");
+            }else {
+                return false;
+            }
         };
 
         function scrollToLoadMore(){
