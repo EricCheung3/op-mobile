@@ -35,8 +35,8 @@
       <div ng-hide="EditModel" ng-if="rating[receiptId] == null && delay=='true'">
         <h3 class="padding-top-large text-center">How did we do?</h3>
           <div class="row margin-bottom-large">
-            <div class="col button button-balanced text-center">GOOD RESULTS</div>
-            <div class="col button button-assertive text-center">BAD RESULTS</div>
+            <div class="col button button-balanced text-center" ng-click="ratingResultY()">GOOD RESULTS</div>
+            <div class="col button button-assertive text-center" ng-click="ratingResultN()">BAD RESULTS</div>
           </div>
       </div>
 
