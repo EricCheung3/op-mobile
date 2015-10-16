@@ -12,7 +12,7 @@
         $stateProvider
             .state('register', {
                 url: '/register',
-                templateUrl: "app/register/registration.html",
+                templateUrl: "app/authentication/register/registration.html",
                 controller: 'registrationController as vm'
             })
             ;

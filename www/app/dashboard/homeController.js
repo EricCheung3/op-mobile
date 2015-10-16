@@ -177,9 +177,10 @@
               {
                 text: 'Finish' ,
                 onTap: function(e) {
-                    console.log("Finish and send request to server to get receipt items");
                     vm.receiptImages = null;
                     //FIXME: send request to server to get receipt items
+                    //NOTE: DONE
+                    vm.pullToRefresh();
                 }
               },
               {
@@ -195,7 +196,8 @@
           });
         };
 
-vm.date = new Date();
+        vm.date = new Date();
+
         function upload() {
             $log.debug('call upload()');
             vm.date = new Date();

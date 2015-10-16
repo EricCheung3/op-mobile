@@ -10,11 +10,11 @@
     function config(   $stateProvider,   $urlRouterProvider) {
 
 		$stateProvider
-            .state('login', {
+            .state('reset', {
                 cache: false,
-                url: '/login',
-                templateUrl: 'app/login/login.html',
-                controller : 'loginController as vm'
+                url: '/reset',
+                templateUrl: 'app/authentication/reset/reset.tmpl.html',
+                controller : 'resetController as vm'
             })
             ;
 

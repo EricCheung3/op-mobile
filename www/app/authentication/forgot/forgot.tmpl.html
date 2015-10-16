@@ -1,0 +1,34 @@
+
+<ion-contents class="dark-background">
+
+  <div class="login-register-content">
+
+    <div class="login-logo">
+        <img id="login-logo-img" src="img/login/login-logo.png">
+    </div>
+
+    <form class="login-forgot-form" ng-submit="vm.resetClick(vm.user)"
+            novalidate="" role="form" name="forgotPasswordForm">
+        <div class="list list-inset">
+            <!-- email -->
+            <!-- add 60 seconds to reset password with link -->
+            <label class="item item-input"
+            ng-class="{ 'has-error' : forgotPasswordForm.email.$invalid,
+                        'valid-input' : forgotPasswordForm.email.$valid}">
+                <input type="email" placeholder="Your Email" name="email"
+                ng-model="vm.user.email" required>
+            </label>
+
+        </div>
+
+        <md-button class="md-raised md-primary full-width" type="submit" ng-disabled="forgot.$invalid">Send Link</md-button>
+
+    </form>
+
+    <div class="login">
+        <h5>Remember password? <a ui-sref="login">Log in Now.</a></h5>
+    </div>
+
+  </div>
+
+</ion-contents>
