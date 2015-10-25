@@ -19,12 +19,6 @@
                 .then( function( websiteResource ) {
                     // add email not exist check
                     return websiteResource.$post('forgetPassword', {}, reset);
-                })
-                .then(function() {
-                    $state.go('reset');
-                }).
-                then(function() {
-                    $state.go('forgot');
                 });
         }
     }

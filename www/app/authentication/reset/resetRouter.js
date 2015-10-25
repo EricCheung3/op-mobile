@@ -12,7 +12,7 @@
 		$stateProvider
             .state('reset', {
                 cache: false,
-                url: '/reset',
+                url: '/resetPassword/:id',
                 templateUrl: 'app/authentication/reset/reset.tmpl.html',
                 controller : 'resetController as vm'
             })

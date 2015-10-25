@@ -3,30 +3,34 @@
 
     angular
         .module('openpriceMobile')
-        .controller('ResetController', ResetController);
+        .controller('resetController', resetController);
 
     /* @ngInject */
-    function ResetController($scope, $state, $stateParams, $mdToast, $filter, $http, triSettings, apiService) {
+    function resetController($scope, $state, $stateParams, $mdToast, $filter, $http, apiService) {
         var vm = this;
-        vm.triSettings = triSettings;
+
         vm.user = {
-            newPassword: '',
+            password: '',
             confirm: ''
         };
         vm.resetClick = resetClick;
-        // var id = $stateParams.id;
-        var id = "78e0784f-46ef-4640-9434-be56ce24ed50";
+        var id = $stateParams.id;
+
         ////////////////
 
-        function resetClick(newPassword) {
+        function resetClick(resetFrom) {
+            var pwd = {"newPassword": resetFrom.password};
+            console.log(pwd);
             apiService
                 .getWebsiteResource()
                 .then( function( websiteResource ) {
-                    return websiteResource.$get('resetPassword/'+id);
+                    return websiteResource.$put('resetPassword/'+id, {}, pwd);
                 })
-                .then(function(data) {
-                    console.log("data",data);
+                .then(function(res){
+                    console.log("res", res);
+                    $state.go('login');
                 });
+
         }
     }
 })();

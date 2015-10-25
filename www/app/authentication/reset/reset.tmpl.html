@@ -1,31 +1,32 @@
-<div layout="row" flex layout-padding layout-fill layout-align="center center">
-    <div flex="40" flex-lg="50" flex-md="70" flex-sm="100">
-        <md-card>
 
-            <md-content class="md-padding">
-                <p> Reset password</p>
-                <form name="reset" ng-submit="vm.resetClick(vm.user)"
-                        novalidate="" role="form">
-                        <md-input-container>
-                            <label for="password">reset</label>
-                            <input id="password" label="password" name="password" type="password" ng-model="vm.user.password" tri-same-password="reset.confirm" ng-minlength="8" required/>
-                            <ng-messages for="signup.password.$error" ng-if="signup.password.$dirty"></ng-messages>
-                        </md-input-container>
+<ion-contents class="dark-background">
 
-                        <md-input-container>
-                            <label for="password" >confirm</label>
-                            <input id="confirm" label="confirm" name="confirm" type="password" ng-model="vm.user.confirm" tri-same-password="reset.password" ng-minlength="8" required/>
-                            <ng-messages for="signup.confirm.$error" ng-if="signup.confirm.$dirty"></ng-messages>
-                        </md-input-container>
-
-                    <md-button class="md-raised md-primary full-width margin-left-0 margin-right-0 margin-top-10 margin-bottom-10"
-                    type="submit" ng-disabled="forgot.$invalid" > Reset</md-button>
-
-                    <md-button class="md-primary full-width margin-left-0 margin-right-0 margin-top-10 margin-bottom-10"
-                    href="#/login" > Login</md-button>
-                </form>
-            </md-content>
-        </md-card>
-
+  <div class="login-register-content">
+    <div class="login-logo">
+        <img id="login-logo-img" src="img/login/login-logo.png">
     </div>
-</div>
+
+    <form name="reset" ng-submit="vm.resetClick(vm.user)"
+            novalidate="" role="form">
+
+            <div class="list list-inset">
+              <md-input-container>
+                  <!-- <label for="password">new password</label> -->
+                  <input id="password" label="password" name="password" type="password" placeholder="new password" ng-model="vm.user.password" tri-same-password="reset.confirm" ng-minlength="8" required/>
+                  <ng-messages for="reset.password.$error" ng-if="reset.password.$dirty"></ng-messages>
+              </md-input-container>
+          </div>
+          <div class="list list-inset">
+            <md-input-container>
+                <!-- <label for="password" >confirm</label> -->
+                <input id="confirm" label="confirm" name="confirm" type="password" placeholder="new password again" ng-model="vm.user.confirm" tri-same-password="reset.password" ng-minlength="8" required/>
+                <ng-messages for="reset.confirm.$error" ng-if="reset.confirm.$dirty"></ng-messages>
+            </md-input-container>
+          </div>
+        <md-button class="md-raised md-primary full-width" type="submit" ng-disabled="reset.$invalid" > Reset</md-button>
+    </form>
+
+
+  </div>
+
+</ion-contents>
