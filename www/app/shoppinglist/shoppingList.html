@@ -1,6 +1,32 @@
-<ion-view view-title="Shopping Lists">
+<ion-view view-title="My Stores"> <!-- NEED to add "+" icon on the top right for this page to add new stores -->
     <ion-content>
-      
+
+        <!-- I created this ion-list for styling purposes -->
+        <ion-list>
+            <ion-item>
+                <div class="inline">
+                    Superstore
+                </div>
+                <!-- This is the "shopping list in progress" icon on the right. It is shown when there is a shopping list in progress. Will need swipe left to delete functionality as well. -->
+                <div class="inline float-right">
+                    <i class="icon icon-medium positive ion-ios-compose"></i>
+                </div>
+            </ion-item>
+            <ion-item>
+                <div class="inline">
+                    Safeway
+                </div>
+                <!-- This is the "shopping list in progress" icon on the right. It is shown when there is a shopping list in progress (SAME AS ABOVE) -->
+                <div class="inline float-right">
+                    <i class="icon icon-medium positive ion-ios-compose"></i>
+                </div>
+            </ion-item>
+            <ion-item>
+                COSTCO
+            </ion-item>
+        </ion-list>
+        <!-- END OF STYLING EXAMPLE -->
+
         <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
           <ion-item ng-repeat="(index, store) in vm.stores" ng-click="vm.showStoreItems(store.id)" >
               <div> {{store.name}} </div>
