@@ -14,6 +14,7 @@
         vm.stores = [];
         vm.showStoreItems = showStoreItems;
         vm.deleteStore = deleteStore;
+        vm.addNewStore = addNewStore;
 
         vm.shouldShowDelete = false;
         vm.listCanSwipe = true;
@@ -34,6 +35,10 @@
             console.log("DELETE-STORE",vm.stores[index]);
             vm.stores[index].$del('self');
             vm.stores.splice(index, 1);
+        };
+
+        function addNewStore(){
+            console.log("add new store at here");
         };
 
     }; // end of shoppingListController
