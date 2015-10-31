@@ -11,14 +11,34 @@
         </div>
 
         <!-- Reka, please add shopping list style at here  -->
+        <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
+          <ion-item ng-click="vm.itemDetail()">
+              <p class="inline"> APPLE </p>  <p class="inline float-right"> $2.00 </p>
+              <ion-option-button class="button-assertive" ng-click="vm.deleteItem(index)"> Delete </ion-option-button>
+              <ion-option-button class="button-positive" ng-click="vm.editItem(index)"> Edit </ion-option-button>
+              <div ng-show="vm.show">
+                Detail of this item
+                <p>NAME: APPLE </p>
+                <p>PRICE: $2.00 </p>
+                <p> ... ... </p>
+              </div>
+
+          </ion-item>
+        </ion-list>
+
 
         <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
-          <ion-item ng-repeat="(index, item) in vm.items | filter:searchItems" class=" store-items padding-horizontal-small padding-vertical-large">
+          <ion-item ng-repeat="(index, item) in vm.items | filter:searchItems" class=" store-items padding-horizontal-small padding-vertical-large" ng-click="vm.itemDetail()">
               <p class="inline"> {{item.itemName}} </p>
               <p class="inline float-right"> ${{item.itemPrice}} </p>
-              <ion-option-button class="button-assertive" ng-click="vm.deleteItem(index)">
-                  delete
-              </ion-option-button>
+              <ion-option-button class="button-assertive" ng-click="vm.deleteItem(index)"> delete </ion-option-button>
+              <ion-option-button class="button-positive" ng-click="vm.editItem(index)"> Edit </ion-option-button>
+              <div ng-show="vm.show">
+                Detail of this item
+                <p>NAME: {{item.itemName}}  </p>
+                <p>PRICE: ${{item.itemPrice}} </p>
+                <p> ... ... </p>
+              </div>
           </ion-item>
         </ion-list>
         <!--  scroll to load more-->

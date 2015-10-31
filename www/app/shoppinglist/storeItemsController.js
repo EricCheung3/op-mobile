@@ -18,6 +18,9 @@
         vm.items = [];
         vm.lastItemsPage = null;
         vm.deleteItem = deleteItem;
+        vm.editItem = editItem;
+        vm.itemDetail = itemDetail;
+        vm.show = false;
         vm.pullToRefresh = pullToRefresh;
         vm.moreItemsCanBeLoaded = moreItemsCanBeLoaded;
         vm.scrollToLoadMore = scrollToLoadMore;
@@ -54,11 +57,11 @@
                 // Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');
             });
-        }
+        };
 
         function moreItemsCanBeLoaded() {
             return vm.lastItemsPage !== null && vm.lastItemsPage.$has("next");
-        }
+        };
 
         function scrollToLoadMore() {
             console.log("===========> scroll to load more");
@@ -82,15 +85,24 @@
                 console.log("No next page now...");
                 $scope.$broadcast('scroll.infiniteScrollComplete');
             }
-        }
+        };
 
-
+        function editItem(index){
+            console.log("edit item test");
+            // need server API supporting
+            // vm.items[index].$put(...)
+        };
 
         function deleteItem(index){
             console.log("DELETE-ITEM", vm.items[index].id);
             vm.items[index].$del('self');
             vm.items.splice(index, 1);
 
+        };
+
+        function itemDetail() {
+            console.log("items detail test");
+            vm.show = !vm.show;
         };
 
     }; // end of storeController
