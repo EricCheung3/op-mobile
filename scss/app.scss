@@ -19,6 +19,7 @@ $dark:                            #444 !default;
 // -------------------------------
 $positive:                        #01ced1;
 $balanced:                        #00e19a;
+$dark:                            #282828 !default;
 
 // Base
 // -------------------------------
@@ -40,6 +41,11 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 
 // --------------------------MARGINS
+
+.no-margin {
+  margin: 0px !important;
+}
+
 // --------LARGE
 .margin-horizontal-large {
   margin-right: $large;
@@ -123,6 +129,11 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 
 // --------------------------PADDINGS
+
+.no-padding {
+  padding: 0px !important;
+}
+
 // --------LARGE
 .padding-horizontal-large {
   padding-right: $large;
@@ -222,6 +233,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 // -------------------POSITIONING
+
 .inline {
   display: inline-block;
 }
@@ -238,6 +250,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   vertical-align: bottom;
 }
 
+.vertical-align-center {
+  vertical-align: center;
+}
+
 // centering a div or an image
 .center {
   display: block;
@@ -245,10 +261,24 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   margin-right: auto;
 }
 
+
+// -------------------TEXT
+
 .text-center {
   text-align: center;
 }
 
+.white-text {
+  color: #FFFFFF !important;
+}
+
+.grey-text {
+  opacity: .65;
+}
+
+.capital-letters {
+  text-transform: uppercase;
+}
 
 // -------------------COLORS
 .dark-background {
@@ -259,12 +289,16 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   background-color: $stable;
 }
 
-
 // BUTTON styles
 
 .button {
   border: none;
   margin: 0px !important;
+}
+
+.swipe-button {
+  padding: $large !important;
+  width: 52px;
 }
 
 
