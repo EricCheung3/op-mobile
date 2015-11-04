@@ -1,9 +1,8 @@
 <ion-view view-title="My Stores">
+
     <ion-nav-buttons side="right">
       <button class="button icon icon-medium ion-plus" ng-click="vm.addNewStore()"></button>
     </ion-nav-buttons>
-
-    <ion-content>
 
         <!-- <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe"> -->
         <ion-list show-delete="false" can-swipe="true" swipe-direction="both">
@@ -16,15 +15,31 @@
               <ion-option-button side="left" class="button-light icon ion-heart" > add </ion-option-button>
           </ion-item>
 
-          <ion-item>
-              COSTCO
-          </ion-item>
-          <ion-item ng-repeat="(index, store) in vm.stores" ng-click="vm.showStoreItems(store.id)" >
-              <div> {{store.name}} </div>
-              <ion-option-button class="ion-minus-circled" ng-click="vm.deleteStore(index)">
-                  delete
-              </ion-option-button>
-          </ion-item>
-        </ion-list>
-    </ion-content>
+  <ion-content>
+
+    <!-- <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe"> -->
+    <ion-list show-delete="false" can-swipe="true" swipe-direction="both">
+
+      <ion-item ng-click="vm.showStoreItems(2)">
+        <div class="inline"> Superstore   </div>
+        <div class="inline float-right">
+            <i class="icon icon-medium positive ion-edit"></i>
+        </div>
+        <ion-option-button side="left" class="ion-minus-circled" ng-click="vm.deleteStore(index)"> delete </ion-option-button>
+        <ion-option-button side="left" class="button-light icon ion-heart" > add </ion-option-button>
+      </ion-item>
+
+      <ion-item>
+          COSTCO
+      </ion-item>
+      <ion-item ng-repeat="(index, store) in vm.stores" ng-click="vm.showStoreItems(store.id)" >
+        <div> {{store.name}} </div>
+        <ion-option-button class="ion-minus-circled" ng-click="vm.deleteStore(index)">
+            delete
+        </ion-option-button>
+      </ion-item>
+
+    </ion-list>
+
+  </ion-content>
 </ion-view>

@@ -1,7 +1,6 @@
 .store-items {
 	.item-content {
     	padding: 0px 0px 0px 0px !important;
-    	height: 20px;
   	}
 }
 
@@ -12,4 +11,49 @@
 
 .item p {
 	margin: 0;
+}
+
+
+.shopping-item-details p{
+	opacity: .54;
+	font-size: 10px;
+}
+
+.list-border {
+  border-top: 0px !important;
+   .category {
+    border: 0px !important;
+  }
+}
+
+.category {
+  p {
+    @extend .white-text;
+  }
+  @extend .capital-letters;
+}
+
+.category-icon {
+	height: 32px;
+  position: absolute;
+  top: 9.5px;
+}
+
+.category-price {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.search-bar {
+  background-color: $positive;
+  input {
+    width: 100%;
+    padding-left: 10px !important;
+    border-radius: 2px;
+  }
+}
+
+.quantity-minus {
+  border-left: 1px solid rgba(255,255,255,.3) !important;
 }
