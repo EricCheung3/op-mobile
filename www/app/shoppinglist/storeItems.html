@@ -1,7 +1,7 @@
 <ion-view view-title="{{vm.store}}">
   <ion-nav-title> <i class="icon icon-medium ion-edit"></i> {{vm.store}} <!-- added a placeholder for now --> Superstore </ion-nav-title>
 
-  <!-- This is the CLEAR button on the top right, please make it functional -->
+  <!-- This is the CLEAR button on the top right, please make it functional ** NOTE: please make a popup message to ask the user if they are sure they want to clear their entire list -->
   <ion-nav-buttons side="right">
     <button class="button button-positive" ng-click="vm.clearShoppingList()"> Clear </button>
   </ion-nav-buttons>
@@ -25,7 +25,7 @@
         <p class="inline float-right vertical-align-bottom white-text"> Total: $7.53 +</p>
       </ion-item>
 
-      <!-- STYLING for CATEGORY  -->
+      <!-- STYLING for CATEGORY ** NOTE: clicking on category names hides the items on the category and vice versa, please add this functionality  -->
       <ion-item class="category item-dark">
         <img class="inline category-icon" src="img/custom_icons/fruit.png">
         <div class="center" style="width: 50%;"><p class="center inline text-center">Fruit</p></div>
@@ -72,13 +72,14 @@
 
     
     <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
-      <ion-item ng-repeat="(index, item) in vm.items | filter:searchItems" class=" store-items padding-horizontal-small padding-vertical-large" ng-click="vm.itemDetail()">
-        <p class="inline"> {{item.itemName}} </p>
-        <p class="inline float-right"> ${{item.itemPrice}} </p>
-        <ion-option-button class="button-assertive" ng-click="vm.deleteItem(index)"> delete </ion-option-button>
-        <ion-option-button class="button-positive" ng-click="vm.editItem(index)"> Edit </ion-option-button>
+      <ion-item class="store-items" ng-repeat="(index, item) in vm.items | filter:searchItems" class=" store-items padding-horizontal-small padding-vertical-large" ng-click="vm.itemDetail()">
+        <p class="inline padding-vertical-large vertical-align-bottom padding-left-large"> {{item.itemName}} </p>
+        <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large"> ${{item.itemPrice}} </p>
+
+        <ion-option-button class="button-positive swipe-button" ng-click="vm.editItem(index)"> <i class="icon icon-medium center ion-ios-plus-outline"></i> </ion-option-button>
+        <ion-option-button class="button-positive swipe-button quantity-minus" ng-click="vm.deleteItem(index)"> <i class="icon icon-medium center ion-ios-minus-outline"></i> </ion-option-button>
+
         <div ng-show="vm.show">
-          Detail of this item
           <p>{{item.itemName}}  </p>
           <p>${{item.itemPrice}} </p> <!-- price should only be displayed for items that have a price/kg price such as vegetables, fruits, etc. -->
           <p> ... ... </p>

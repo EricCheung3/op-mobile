@@ -1,33 +1,26 @@
 <ion-view view-title="Dashboard">
-    <ion-tabs class="tabs-positive tabs-icon-top">
+    <ion-tabs class="tabs-positive tabs-icon-only">
 
-        <!--<ion-tab title="Folders" ui-sref="app.dashboard.folders"
-          icon-on="ion-ios-albums" icon-off="ion-ios-albums-outline">
-            <ion-nav-view name="folders-tab"></ion-nav-view>
-        </ion-tab>-->
-
-        <!-- This is the shopping list page -->
-        <ion-tab class="capital-letters" title="Shopping Lists" ui-sref="app.dashboard.shoppinglist"
-          icon-on="ion-ios-list" icon-off="ion-ios-list-outline">
-            <ion-nav-view title="Receipts" ui-sref="app.dashboard.shoppinglist" name="shoppinglist-tab"></ion-nav-view>
-        </ion-tab>
-
-        <!-- This is the add receipt page !!!NOT FUNCTIONAL???!!! -->
-        <ion-tab class="capital-letters" title="Add Receipts" ui-sref="app.dashboard.camera"
-          icon-on="ion-ios-camera" icon-off="ion-ios-camera-outline">
-            <ion-nav-view title="Camera" ui-sref="app.dashboard.camera" name="camera-tab"></ion-nav-view>
-        </ion-tab>
-
-        <!-- This is the new receipts page -->
-        <ion-tab class="capital-letters" title="Receipts" ui-sref="app.dashboard.home"
-          icon-on="ion-ios-albums" icon-off="ion-ios-albums-outline">
+        <ion-tab title="Home" ui-sref="app.dashboard.home"
+          icon-on="ion-ios-home" icon-off="ion-ios-home-outline">
             <ion-nav-view name="home-tab"></ion-nav-view>
         </ion-tab>
 
-        <!--<ion-tab title="Friends" ui-sref="app.dashboard.friends"
+        <ion-tab title="Folders" ui-sref="app.dashboard.folders"
+          icon-on="ion-ios-albums" icon-off="ion-ios-albums-outline">
+            <ion-nav-view name="folders-tab"></ion-nav-view>
+        </ion-tab>
+
+        <ion-tab title="Receipts" ui-sref="app.dashboard.shoppinglist"
+          icon-on="ion-ios-list" icon-off="ion-ios-list-outline">
+            <ion-nav-view title="Receipts" ui-sref="app.dashboard.shoppinglist"
+                          name="shoppinglist-tab"></ion-nav-view>
+        </ion-tab>
+
+        <ion-tab title="Friends" ui-sref="app.dashboard.friends"
           icon-on="ion-ios-people" icon-off="ion-ios-people-outline">
             <ion-nav-view name="friends-tab"></ion-nav-view>
-        </ion-tab>-->
+        </ion-tab>
 
     </ion-tabs>
 </ion-view>

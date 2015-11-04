@@ -1,7 +1,7 @@
 <ion-view view-title="My Stores">
 
   <ion-nav-buttons side="right">
-    <button class="button button-icon icon ion-plus" ng-click="vm.addNewStore()"></button>
+    <button class="button button-icon icon ion-ios-plus-empty" ng-click="vm.addNewStore()"></button>
   </ion-nav-buttons>
 
   <ion-content>
@@ -9,23 +9,22 @@
     <!-- <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe"> -->
     <ion-list show-delete="false" can-swipe="true" swipe-direction="both">
 
-      <ion-item ng-click="vm.showStoreItems(2)">
+      <ion-item class="mystores" ng-click="vm.showStoreItems(2)">
         <div class="inline"> Superstore   </div>
         <div class="inline float-right">
             <i class="icon icon-medium positive ion-edit"></i>
         </div>
-        <ion-option-button side="left" class="ion-minus-circled" ng-click="vm.deleteStore(index)"> delete </ion-option-button>
-        <ion-option-button side="left" class="button-light icon ion-heart" > add </ion-option-button>
+        <ion-option-button class="button-assertive swipe-button" ng-click="vm.deleteStore(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-button>
       </ion-item>
 
-      <ion-item>
-          COSTCO
+      <ion-item class="mystores">
+        <div class="inline"> COSTCO </div>
+        <ion-option-button class="button-assertive swipe-button" ng-click="vm.deleteStore(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-button>
       </ion-item>
+
       <ion-item ng-repeat="(index, store) in vm.stores" ng-click="vm.showStoreItems(store.id)" >
         <div> {{store.name}} </div>
-        <ion-option-button class="ion-minus-circled" ng-click="vm.deleteStore(index)">
-            delete
-        </ion-option-button>
+        <ion-option-button class="button-assertive swipe-button" ng-click="vm.deleteStore(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-button>
       </ion-item>
 
     </ion-list>
