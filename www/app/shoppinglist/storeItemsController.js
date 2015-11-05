@@ -5,9 +5,9 @@
         .module('openpriceMobile')
         .controller('storeItemsController', storeItemsController);
 
-    storeItemsController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', '$stateParams', 'receiptService'];
+    storeItemsController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', '$stateParams', 'receiptService', '$ionicPopup', '$state'];
 
-    function storeItemsController(   $log,   $rootScope,   $scope,   $location,   apiService ,  $stateParams ,  receiptService) {
+    function storeItemsController(   $log,   $rootScope,   $scope,   $location,   apiService ,  $stateParams ,  receiptService ,  $ionicPopup ,  $state) {
         $log.debug('==> storeController');
 
         var vm = this;
@@ -20,7 +20,13 @@
         vm.deleteItem = deleteItem;
         vm.editItem = editItem;
         vm.itemDetail = itemDetail;
-        vm.show = false;
+        vm.clearShoppingList = clearShoppingList;
+        vm.show = [];
+        vm.show[1] = false;
+        vm.show[2] = false;
+        vm.goShoppingMode =goShoppingMode;
+        vm.doneShoppingMode = doneShoppingMode;
+        vm.shoppingMode = false;
         vm.pullToRefresh = pullToRefresh;
         vm.moreItemsCanBeLoaded = moreItemsCanBeLoaded;
         vm.scrollToLoadMore = scrollToLoadMore;
@@ -43,6 +49,10 @@
             vm.items = storeItems;
             vm.lastItemsPage = itemsPage;
             console.log("Load first page items", storeItems);
+            // click to display detail
+            vm.items.forEach(function (item) {
+                vm.show[item] = false;
+            });
         });
 
 
@@ -100,9 +110,40 @@
 
         };
 
-        function itemDetail() {
-            console.log("items detail test");
-            vm.show = !vm.show;
+        function itemDetail(item) {
+            vm.show[item] = !vm.show[item];
+        };
+
+        function goShoppingMode(){
+            vm.shoppingMode = !vm.shoppingMode;
+        };
+
+        function doneShoppingMode(){
+            vm.shoppingMode = !vm.shoppingMode;
+            $state.go('app.dashboard.home');
+        };
+
+        function clearShoppingList(){
+            var popup = $ionicPopup.confirm({
+              // title: 'clear the ShoppingList',
+              template: 'Are you sure to delete this shopping list?',
+              buttons: [
+                { text: 'Cancel' ,
+                  type: 'button-positive',
+                  onTap: function(e) {
+                      popup.close();
+                  }
+                },
+                { text: 'Delete',
+                  type: 'button-positive',
+                  onTap: function(e) {
+                      console.log("clear the ShoppingList");
+                      // delete function at here
+                      popup.close();
+                  }
+                }
+              ]
+            });
         };
 
     }; // end of storeController

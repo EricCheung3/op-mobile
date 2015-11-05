@@ -8,6 +8,7 @@
 
     <!-- <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe"> -->
     <ion-list show-delete="false" can-swipe="true" swipe-direction="both">
+
       <ion-item class="mystores" ng-click="vm.showStoreItems(2)">
         <div class="inline"> Superstore   </div>
         <div class="inline float-right">
@@ -21,11 +22,14 @@
         <ion-option-button class="button-assertive swipe-button" ng-click="vm.deleteStore(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-button>
       </ion-item>
 
-      <ion-item ng-repeat="(index, store) in vm.stores" ng-click="vm.showStoreItems(store.id)" >
-        <div> {{store.name}} </div>
+
+      <!-- NOTE: Following is real data don't touch it -->
+
+      <ion-item class="mystores" ng-repeat="(index, store) in vm.stores" ng-click="vm.showStoreItems(store.id)" >
+        <div class="inline"> {{store.name}} </div>
+        <div class="inline float-right"> <i class="icon icon-medium positive ion-edit"></i> </div>
         <ion-option-button class="button-assertive swipe-button" ng-click="vm.deleteStore(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-button>
       </ion-item>
-
     </ion-list>
 
   </ion-content>

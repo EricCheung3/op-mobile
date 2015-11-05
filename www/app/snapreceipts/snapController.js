@@ -55,7 +55,7 @@
         function cropFromGallery() {
             $log.debug('call cropFromGallery()');
             var isAndroid = ionic.Platform.isAndroid();
-            
+
             var options = {
                 quality: 50,
                 allowEdit:true,
@@ -146,7 +146,7 @@
                 });
 
             }else{
-                alert("Please snap a receipt ");
+                console.log("Please snap a receipt ");
             }
 
         };

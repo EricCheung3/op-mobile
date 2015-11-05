@@ -43,19 +43,10 @@
                     }
                 }
             })
-            .state('app.dashboard.folders', {
-                url: '/folders',
-                views: {
-                    'folders-tab': {
-                        templateUrl: 'app/folders/folders.html',
-                        controller: 'foldersController as vm'
-                    }
-                }
-            })
             .state('app.dashboard.camera', {
                 url: '/camera',
                 views: {
-                    'home-tab': {
+                    'snap-tab': {
                         templateUrl: 'app/snapreceipts/snap.html',
                         controller: 'snapController as vm'
                     }
@@ -79,12 +70,30 @@
                     }
                 }
             })
+            .state('app.dashboard.shoppingMode', {
+                url: '/shoppingMode',
+                views: {
+                    'shoppinglist-tab': {
+                        templateUrl: 'app/shopping-mode/shoppingMode.html',
+                        controller: 'shoppingModeController as vm'
+                    }
+                }
+            })
             .state('app.dashboard.friends', {
                 url: '/friends',
                 views: {
                     'friends-tab': {
                         templateUrl: 'app/friends/friends.html',
                         controller: 'friendsController as vm'
+                    }
+                }
+            })
+            .state('app.dashboard.folders', {
+                url: '/folders',
+                views: {
+                    'folders-tab': {
+                        templateUrl: 'app/folders/folders.html',
+                        controller: 'foldersController as vm'
                     }
                 }
             })

@@ -6,7 +6,7 @@
     <button class="button button-positive" ng-click="vm.clearShoppingList()"> Clear </button>
   </ion-nav-buttons>
 
-  <ion-content has-bouncing="false" ng-show="!vm.shoppingMode">
+  <ion-content has-bouncing="false">
 
     <div class="padding-horizontal-small padding-bottom-small search-bar">
       <input class="padding-left-medium padding-vertical-small" type="text" ng-model="searchItems" placeholder="add new item" autofocus>
@@ -98,31 +98,10 @@
     <!-- <ion-infinite-scroll ng-if="vm.moreItemsCanBeLoaded()" on-infinite="vm.scrollToLoadMore()"> </ion-infinite-scroll> -->
 
     <ion-item class="store-items">
-      <button class="bar bar-footer bar-positive center" ng-click="vm.goShoppingMode()">Go Shopping</button> </div>
+      <button class="bar bar-footer bar-positive center" ng-click="vm.doneShopping()">Done Shopping</button> </div>
     <ion-item>
   </ion-content>
 
-  <!-- NOTE: Hi, Reka:  Here is the Shopping Mode NOT shopping-mode folder-->
-  <!-- Please do some changes in the following content -->
-  <ion-content ng-show="vm.shoppingMode">
-    <ion-item class="store-items" ng-click="vm.itemDetail(2)">
-      <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">Orange</p>
-      <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i><p class="inline padding-vertical-large vertical-align-bottom grey-text">2</p>
-      <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$5.10</p>
-
-      <ion-option-button class="button-positive swipe-button" ng-click="vm.editItem(index)"> <i class="icon icon-medium center ion-ios-compose-outline"></i> </ion-option-button>
-      <ion-option-button class="button-assertive swipe-button" ng-click="vm.deleteItem(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-button>
-
-      <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[2]">
-        <p>Navel Oranges</p>
-        <p>$2.55/kg</p>
-      </div>
-    </ion-item>
-
-    <ion-item class="store-items">
-      <button class="bar bar-footer bar-positive center" ng-click="vm.doneShoppingMode()">Done Shopping</button> </div>
-    <ion-item>
-  </ion-contet>
   <!-- CAN'T SEE THIS? this should appear instead of the bottom-nav-bar -->
 
 
