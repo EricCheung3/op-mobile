@@ -43,12 +43,23 @@
                     }
                 }
             })
-            .state('app.dashboard.camera', {
-                url: '/camera',
+            .state('app.dashboard.snap', {
+                url: '/snap',
+                cache: false,
                 views: {
                     'snap-tab': {
-                        templateUrl: 'app/snapreceipts/snap.html',
+                        // templateUrl: 'app/receiptsnap/snap.html',
                         controller: 'snapController as vm'
+                    }
+                }
+            })
+            .state('app.dashboard.crop', {
+                url: '/crop',
+                cache: false,
+                views: {
+                    'crop-tab': {
+                        // templateUrl: 'app/receiptscrop/snap.html',
+                        controller: 'cropController as vm'
                     }
                 }
             })

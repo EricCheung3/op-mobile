@@ -3,12 +3,12 @@
 
     angular
         .module('openpriceMobile')
-        .controller('snapController', snapController);
+        .controller('cropController', cropController);
 
-    snapController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', 'tokenStorage', '$cordovaCamera','$cordovaFileTransfer','$ionicLoading', '$cordovaFile', '$http', '$ionicPopup'];
+    cropController.$inject = ['$log', '$state', '$rootScope', '$scope', '$location', 'apiService', 'tokenStorage', '$cordovaCamera','$cordovaFileTransfer','$ionicLoading', '$cordovaFile', '$http', '$ionicPopup'];
 
-    function snapController(   $log,   $rootScope,   $scope,   $location,   apiService ,  tokenStorage,   $cordovaCamera,  $cordovaFileTransfer,  $ionicLoading,   $cordovaFile ,  $http,   $ionicPopup) {
-        $log.debug('==> snapController');
+    function cropController(   $log,   $state ,  $rootScope,   $scope,   $location,   apiService ,  tokenStorage,   $cordovaCamera,  $cordovaFileTransfer,  $ionicLoading,   $cordovaFile ,  $http,   $ionicPopup) {
+        $log.debug('==> cropController');
 
         /* jshint validthis: true */
         var vm = this;
@@ -21,7 +21,7 @@
 
         // receiptImages to control multi-upload
         vm.receiptImages = null;
-
+        vm.cropFromGallery();
         function takePicture() {
             $log.debug('call takePicture()');
             document.addEventListener("deviceready", function () {
@@ -46,6 +46,7 @@
                     console.log('imgURI_takePicture====>'+vm.imgURI);
                 },function(err){
                     console.log(err);
+                    $state.go('app.dashboard.home');
                 }).then(function(){
                     vm.upload();
                 });
@@ -90,6 +91,7 @@
                     console.log("Finish and send request to server to get receipt items");
                     vm.receiptImages = null;
                     //FIXME: send request to server to get receipt items
+                    $state.go('app.dashboard.home', {}, {reload: true});
                 }
               },
               {
@@ -147,6 +149,7 @@
 
             }else{
                 console.log("Please snap a receipt ");
+                $state.go('app.dashboard.home');
             }
 
         };

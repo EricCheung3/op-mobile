@@ -1,21 +1,25 @@
 <ion-view view-title="Dashboard">
     <ion-tabs class="tabs-positive tabs-icon-only">
 
-        <ion-tab class="capital-letters" title="Home" ui-sref="app.dashboard.home"
+        <ion-tab title="Home" ui-sref="app.dashboard.home"
           icon-on="ion-ios-home" icon-off="ion-ios-home-outline">
             <ion-nav-view name="home-tab"></ion-nav-view>
         </ion-tab>
 
-        <ion-tab class="capital-letters" title="ShoppingList" ui-sref="app.dashboard.shoppinglist"
+        <ion-tab title="ShoppingList" ui-sref="app.dashboard.shoppinglist"
           icon-on="ion-ios-list" icon-off="ion-ios-list-outline">
             <ion-nav-view name="shoppinglist-tab"></ion-nav-view>
         </ion-tab>
 
-        <ion-tab class="capital-letters" title="SnapReceipts" ui-sref="app.dashboard.camera"
+        <ion-tab title="SnapReceipts" ui-sref="app.dashboard.snap"
           icon-on="ion-ios-camera" icon-off="ion-ios-camera-outline">
             <ion-nav-view name="snap-tab"></ion-nav-view>
         </ion-tab>
 
+        <ion-tab title="CropReceipts" ui-sref="app.dashboard.crop"
+          icon-on="ion-ios-albums" icon-off="ion-ios-albums-outline">
+            <ion-nav-view name="crop-tab"></ion-nav-view>
+        </ion-tab>
         <!-- Don't have friends module
         <ion-tab title="Folders" ui-sref="app.dashboard.folders"
           icon-on="ion-ios-albums" icon-off="ion-ios-albums-outline">
