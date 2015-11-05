@@ -46,7 +46,6 @@
                     console.log('imgURI_takePicture====>'+vm.imgURI);
                 },function(err){
                     console.log(err);
-                    $state.go('app.dashboard.home');
                 }).then(function(){
                     vm.upload();
                 });

@@ -5,17 +5,11 @@
         .module('openpriceMobile')
         .controller('snapController', snapController);
 
-    snapController.$inject = ['$log', '$state', '$window', '$rootScope', '$scope', '$location', 'apiService', 'tokenStorage', '$cordovaCamera','$cordovaFileTransfer','$ionicLoading', '$cordovaFile', '$http', '$ionicPopup'];
+    snapController.$inject = ['$log', '$state', '$rootScope', '$scope', '$location', 'apiService', 'tokenStorage', '$cordovaCamera','$cordovaFileTransfer','$ionicLoading', '$cordovaFile', '$http', '$ionicPopup'];
 
-    function snapController(   $log,   $state ,  $window ,  $rootScope,   $scope,   $location,   apiService ,  tokenStorage,   $cordovaCamera,  $cordovaFileTransfer,  $ionicLoading,   $cordovaFile ,  $http,   $ionicPopup) {
+    function snapController(   $log,   $state ,  $rootScope,   $scope,   $location,   apiService ,  tokenStorage,   $cordovaCamera,  $cordovaFileTransfer,  $ionicLoading,   $cordovaFile ,  $http,   $ionicPopup) {
         $log.debug('==> snapController');
 
-
-         $scope.$on( "$ionicView.enter", function( scopes, states ) {
-             if( states.fromCache && states.stateName == "snap-tab" ) {
-                 reloadItems();
-             }
-         });
         /* jshint validthis: true */
         var vm = this;
         vm.imgURI = 'img/background.png';
@@ -28,7 +22,6 @@
         // receiptImages to control multi-upload
         vm.receiptImages = null;
         vm.takePicture();
-        // $window.location.reload(true);
         function takePicture() {
             $log.debug('call takePicture()');
             document.addEventListener("deviceready", function () {
