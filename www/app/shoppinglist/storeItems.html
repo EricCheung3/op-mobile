@@ -1,9 +1,14 @@
 <ion-view view-title="{{vm.store}}">
-  <ion-nav-title> <i class="icon icon-medium ion-edit"></i> {{vm.store}}
-    <!-- added a placeholder for now --> Superstore </ion-nav-title>
+  <ion-nav-title> 
+    <i ng-show="!vm.shoppingMode" class="icon ion-edit"></i>
+    <i ng-show="vm.shoppingMode" class="icon ion-ios-cart"></i>
+     {{vm.store}}
+    <!-- added a placeholder for now --> Superstore 
+  </ion-nav-title>
 
   <ion-nav-buttons side="right">
-    <button class="button button-positive" ng-click="vm.clearShoppingList()"> Clear </button>
+    <button ng-show="!vm.shoppingMode" class="button button-positive" ng-click="vm.clearShoppingList()"> Clear </button>
+    <button ng-show="vm.shoppingMode" class="button button-icon icon ion-ios-plus-empty" ng-click="vm.addNewItem()"></button> <!-- TIGER! Add new item function DOES NOT EXIST! pleas make it! -->
   </ion-nav-buttons>
 
   <ion-content has-bouncing="false" ng-show="!vm.shoppingMode">
@@ -70,6 +75,7 @@
 
     </ion-list>
 
+
     <!-- NOTE: following is real data, don't touch it -->
     <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
       <!-- clicking on category names hides the items on the category and vice versa-->
@@ -97,33 +103,33 @@
     <!--  scroll to load more -->
     <!-- <ion-infinite-scroll ng-if="vm.moreItemsCanBeLoaded()" on-infinite="vm.scrollToLoadMore()"> </ion-infinite-scroll> -->
 
-    <ion-item class="store-items">
-      <button class="bar bar-footer bar-positive center" ng-click="vm.goShoppingMode()">Go Shopping</button> </div>
-    <ion-item>
+    <!-- I cannot move this to the bottom of the screen if the items don't fill up the screen -->
+    <button class="bar bar-positive center mode-switch-button capital-letters" ng-click="vm.goShoppingMode()">Go Shopping</button>
+
   </ion-content>
 
   <!-- NOTE: Hi, Reka:  Here is the Shopping Mode NOT shopping-mode folder-->
   <!-- Please do some changes in the following content -->
   <ion-content ng-show="vm.shoppingMode">
-    <ion-item class="store-items" ng-click="vm.itemDetail(2)">
-      <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">Orange</p>
-      <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i><p class="inline padding-vertical-large vertical-align-bottom grey-text">2</p>
-      <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$5.10</p>
+    <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe">
+      <ion-item class="store-items" ng-click="vm.itemDetail(2)">
+        <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">Orange</p>
+        <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i><p class="inline padding-vertical-large vertical-align-bottom grey-text">2</p>
+        <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$5.10</p>
 
-      <ion-option-button class="button-positive swipe-button" ng-click="vm.editItem(index)"> <i class="icon icon-medium center ion-ios-compose-outline"></i> </ion-option-button>
-      <ion-option-button class="button-assertive swipe-button" ng-click="vm.deleteItem(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-button>
+        <!-- This should be swipe right! and I don't know how to make the item info text more grey (by changing opacity) when the item is swiped -->
+        <ion-option-button class="swipe-button button-light" ng-click="vm.editItem(index)"> <i class="icon positive icon-medium center ion-ios-checkmark"></i> </ion-option-button>
 
-      <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[2]">
-        <p>Navel Oranges</p>
-        <p>$2.55/kg</p>
-      </div>
-    </ion-item>
+        <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[2]">
+          <p>Navel Oranges</p>
+          <p>$2.55/kg</p>
+        </div>
+      </ion-item>
+    </ion-list>
 
-    <ion-item class="store-items">
-      <button class="bar bar-footer bar-positive center" ng-click="vm.doneShoppingMode()">Done Shopping</button> </div>
-    <ion-item>
+    <button class="bar bar-positive center mode-switch-button capital-letters" ng-click="vm.doneShoppingMode()">Done Shopping</button>
+
   </ion-contet>
-  <!-- CAN'T SEE THIS? this should appear instead of the bottom-nav-bar -->
 
 
 </ion-view>
