@@ -1,9 +1,9 @@
 <ion-view view-title="{{vm.store}}">
-  <ion-nav-title> 
+  <ion-nav-title>
     <i ng-show="!vm.shoppingMode" class="icon ion-edit"></i>
     <i ng-show="vm.shoppingMode" class="icon ion-ios-cart"></i>
      {{vm.store}}
-    <!-- added a placeholder for now --> Superstore 
+    <!-- added a placeholder for now --> Superstore
   </ion-nav-title>
 
   <ion-nav-buttons side="right">
@@ -103,10 +103,13 @@
     <!--  scroll to load more -->
     <!-- <ion-infinite-scroll ng-if="vm.moreItemsCanBeLoaded()" on-infinite="vm.scrollToLoadMore()"> </ion-infinite-scroll> -->
 
-    <!-- I cannot move this to the bottom of the screen if the items don't fill up the screen -->
-    <button class="bar bar-positive center mode-switch-button capital-letters" ng-click="vm.goShoppingMode()">Go Shopping</button>
-
   </ion-content>
+
+  <!-- Bottom button -->
+  <ion-footer-bar class="bar bar-positive" >
+    <button ng-if= "!vm.shoppingMode" class="button center" ng-click="vm.goShoppingMode()">Go Shopping</button>
+    <button ng-if= "vm.shoppingMode"  class="button center" ng-click="vm.doneShoppingMode()">Done Shopping</button>
+  </ion-footer-bar>
 
   <!-- NOTE: Hi, Reka:  Here is the Shopping Mode NOT shopping-mode folder-->
   <!-- Please do some changes in the following content -->
@@ -127,9 +130,6 @@
       </ion-item>
     </ion-list>
 
-    <button class="bar bar-positive center mode-switch-button capital-letters" ng-click="vm.doneShoppingMode()">Done Shopping</button>
-
   </ion-contet>
-
 
 </ion-view>
