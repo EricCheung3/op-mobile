@@ -126,7 +126,7 @@
         function clearShoppingList(){
             var popup = $ionicPopup.confirm({
               // title: 'clear the ShoppingList',
-              template: '<div class="text-center"> Are you sure you want to delete this shopping list?</div>',
+              title: '<div class="text-center"> Are you sure you want to delete this shopping list?</div>',
               buttons: [
                 { text: 'Cancel' ,
                   type: 'button-positive',
