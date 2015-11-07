@@ -20,6 +20,7 @@
         vm.deleteItem = deleteItem;
         vm.editItem = editItem;
         vm.itemDetail = itemDetail;
+        vm.addNewItem = addNewItem;
         vm.clearShoppingList = clearShoppingList;
         vm.show = [];
         vm.show[1] = false;
@@ -113,6 +114,36 @@
         function itemDetail(item) {
             vm.show[item] = !vm.show[item];
         };
+        vm.item=null;
+        function addNewItem() {
+          var popup = $ionicPopup.confirm({
+            title: 'Add New Item',
+            subTitle: 'Please input item name and price',
+            template: '<input type="text" ng-model="vm.item">',
+            buttons: [
+              { text: 'Cancel' ,
+                type: 'button-positive',
+                onTap: function(e) {
+                    popup.close();
+                }
+              },
+              { text: 'Add',
+                type: 'button-positive',
+                onTap: function(e) {
+                  // add new ite function
+                  if(vm.item==null){
+                      //alert
+                      popup.close();
+                  }else {
+                      popup.close();
+                  }
+
+                }
+              }
+            ]
+          });
+        };
+
 
         function goShoppingMode(){
             vm.shoppingMode = !vm.shoppingMode;
