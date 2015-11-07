@@ -164,8 +164,8 @@
         function minusItemNumber(item){
             if(vm.number[item] > 1){
                 vm.number[item] = vm.number[item] - 1;
-            }
-            vm.price[item] = vm.price[item] - 2.43;
+                vm.price[item] = vm.price[item] - 2.43;
+            }      
         }
 
 
