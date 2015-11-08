@@ -20,6 +20,7 @@
         vm.deleteItem = deleteItem;
         vm.editItem = editItem;
         vm.itemDetail = itemDetail;
+        vm.categoryDetail = categoryDetail;
         vm.addNewItem = addNewItem;
         vm.addItemNumber = addItemNumber;
         vm.minusItemNumber = minusItemNumber;
@@ -125,7 +126,12 @@
         function itemDetail(item) {
             vm.show[item] = !vm.show[item];
         };
-        vm.item=null;
+
+        function categoryDetail(item){
+            vm.show[item] = !vm.show[item];
+        };
+
+
         function addNewItem() {
           var popup = $ionicPopup.confirm({
             title: 'Add New Item',
@@ -159,14 +165,14 @@
             vm.number[item] = vm.number[item] + 1;
             vm.price[item] = vm.price[item] + 2.43;
             // vm.price[item] = vm.price[item] + item.itemPrice;
-        }
+        };
 
         function minusItemNumber(item){
             if(vm.number[item] > 1){
                 vm.number[item] = vm.number[item] - 1;
                 vm.price[item] = vm.price[item] - 2.43;
-            }      
-        }
+            }
+        };
 
 
         function goShoppingMode(){
