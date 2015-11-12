@@ -26,7 +26,7 @@ $dark:                            #282828 !default;
 $base-background-color:           white;
 
 
-// Universal Sizes 
+// Universal Sizes
 // -------------------------------
 $large:                           16px;
 $medium:                          10px;
@@ -352,3 +352,49 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   margin-top: -20px; /* Note, this must be half the font size */
   color: $light;
 }
+
+.item-options {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  height: 100%; }
+  .item-options .button {
+    height: 100%;
+    border: none;
+    border-radius: 0;
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -moz-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center; }
+    .item-options .button:before {
+      margin: 0 auto; }
+
+.item-options-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  height: 100%; }
+  .item-options-left .button {
+    height: 100%;
+    border: none;
+    border-radius: 0;
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -moz-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center; }
+    .item-options-left .button:before {
+      margin: 0 auto; }

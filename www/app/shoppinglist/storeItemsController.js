@@ -20,10 +20,20 @@
         vm.deleteItem = deleteItem;
         vm.editItem = editItem;
         vm.itemDetail = itemDetail;
+        vm.addNewItem = addNewItem;
+        vm.addItemNumber = addItemNumber;
+        vm.minusItemNumber = minusItemNumber;
         vm.clearShoppingList = clearShoppingList;
         vm.show = [];
-        vm.show[1] = false;
-        vm.show[2] = false;
+        vm.number = [];
+        vm.price = [];
+        vm.price[1] = 2.43;// test data
+        vm.price[2] = 4.57;// test data
+
+        vm.number[1] = 1; // test data
+        vm.number[2] = 1; // test data
+        vm.show[1] = false; // test data
+        vm.show[2] = false; // test data
         vm.goShoppingMode =goShoppingMode;
         vm.doneShoppingMode = doneShoppingMode;
         vm.shoppingMode = false;
@@ -52,6 +62,8 @@
             // click to display detail
             vm.items.forEach(function (item) {
                 vm.show[item] = false;
+                vm.number[item] = 1;
+                vm.price[item] = item.itemPrice; // need to make sure
             });
         });
 
@@ -113,6 +125,49 @@
         function itemDetail(item) {
             vm.show[item] = !vm.show[item];
         };
+        vm.item=null;
+        function addNewItem() {
+          var popup = $ionicPopup.confirm({
+            title: 'Add New Item',
+            subTitle: 'Please input item name and price',
+            template: '<input type="text" ng-model="vm.item">',
+            buttons: [
+              { text: 'Cancel' ,
+                type: 'button-positive',
+                onTap: function(e) {
+                    popup.close();
+                }
+              },
+              { text: 'Add',
+                type: 'button-positive',
+                onTap: function(e) {
+                  // add new ite function
+                  if(vm.item==null){
+                      //alert
+                      popup.close();
+                  }else {
+                      popup.close();
+                  }
+
+                }
+              }
+            ]
+          });
+        };
+
+        function addItemNumber(item){ // NOTE: parameter should be index
+            vm.number[item] = vm.number[item] + 1;
+            vm.price[item] = vm.price[item] + 2.43;
+            // vm.price[item] = vm.price[item] + item.itemPrice;
+        }
+
+        function minusItemNumber(item){
+            if(vm.number[item] > 1){
+                vm.number[item] = vm.number[item] - 1;
+                vm.price[item] = vm.price[item] - 2.43;
+            }      
+        }
+
 
         function goShoppingMode(){
             vm.shoppingMode = !vm.shoppingMode;
