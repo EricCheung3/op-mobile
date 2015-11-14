@@ -5,11 +5,14 @@
   </ion-nav-buttons>
 
   <ion-content>
-
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="vm.pullToRefresh()">
+    </ion-refresher>
     <!-- <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe"> -->
     <ion-list show-delete="false" can-swipe="true" swipe-direction="both">
 
-      <ion-item class="mystores" ng-click="vm.showStoreItems(2)">
+      <!-- <ion-item class="mystores" ng-click="vm.showStoreItems(2)">
         <div class="inline">Superstore</div>
         <div class="inline float-right">
             <i class="icon icon-medium positive ion-edit"></i>
@@ -18,9 +21,9 @@
       </ion-item>
 
       <ion-item class="mystores">
-        <div class="inline">COSTCO</div>
+        <div class="inline">Safeway</div>
         <ion-option-button class="button-assertive swipe-button" ng-click="vm.deleteStore(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-button>
-      </ion-item>
+      </ion-item> -->
 
 
       <!-- NOTE: Following is real data don't touch it -->

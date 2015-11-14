@@ -17,6 +17,7 @@
             'getReceiptResource' : getReceiptResource,
             'getReceiptResource2' : getReceiptResource2,
             'getStoresResource' : getStoresResource,
+            'loadFirstPageOfUserStores' : loadFirstPageOfUserStores,
             'loadFirstPageOfUserStoreItems' : loadFirstPageOfUserStoreItems,
             'loadUserStoreItemsMore' : loadUserStoreItemsMore,
             'loadFirstPageOfUserReceipts' : loadFirstPageOfUserReceipts,
@@ -57,10 +58,10 @@
                 .then(function(receipt) {
                     // console.log("receipt rating", receipt.rating);
                     receiptCache = receipt;
-                    receipt.$get('items').then(function(items){
-                        receiptItems = items;
-                        receiptItemsCache[receiptId]  = items;
-                        console.log("receipt items ", receiptItems);
+                    receipt.$get('result').then(function(receiptResult){
+                        receiptItems = receiptResult.items;
+                        receiptItemsCache[receiptId]  = receiptResult.items;
+                        console.log("receipt items ", receiptResult);
                     })
                     .catch ( function(err){
                         console.error('ERROR code', err); // TODO handle error
@@ -71,7 +72,37 @@
                 });
           }
         };
+        function loadFirstPageOfUserStores(callback){
+            var storeList = [];
+            var storePage;
+            return apiService
+                .getUserResource()
+                .then( function(resource) {
+                    return resource.$get('stores');
+                })
+                .then( function(storeList) {
+                    storePage = storeList;
+                    console.log("storeList",storeList);
+                    if(storeList.$has('stores')){
+                        return receiptList.$get('stores');
+                    } else {
+                        return $q.reject("NO receipts!");
+                    }
+                })
+                .then( function(stores) {
+                    stores.forEach( function(store) {
+                        storeList.push(store);
+                    });
+                })
+                .catch ( function(err){
+                    console.error('ERROR code', err); // TODO handle error
+                })
+                .finally( function() {
+                    callback(storeList, storePage);
+                });
 
+
+        };
         function getStoresResource(){
             var stores = [];
             var deferred = $q.defer();
@@ -84,7 +115,9 @@
                     .then(function (userResource) {
                         userResource.$get('stores')
                         .then(function(storeResource){
+                            console.log("storeresource", storeResource);
                             if (storeResource.$has('stores')) {
+                                console.log("stores", storeResource);
                                 return storeResource.$get('stores');
                             }else {
                                 return $q.reject("NO Stores yet!");
@@ -181,7 +214,7 @@
                   });
             }
             return deferred.promise;
-        }
+        };
 
         function loadFirstPageOfUserReceipts(callback) {
             var resultReceipts = [];

@@ -12,6 +12,7 @@
 
         var vm = this;
         vm.stores = [];
+        vm.pullToRefresh = pullToRefresh;
         vm.showStoreItems = showStoreItems;
         vm.deleteStore = deleteStore;
         vm.addNewStore = addNewStore;
@@ -20,11 +21,26 @@
         vm.listCanSwipe = true;
 
 
-        receiptService.getStoresResource()
-        .then(function(stores){
-            console.log("stores", stores);
-            vm.stores = stores;
-        });
+        // receiptService.getStoresResource()
+        // .then(function(stores){
+        //     console.log("stores", stores);
+        //     vm.stores = stores;
+        // });
+        vm.pullToRefresh();
+
+        function pullToRefresh(){
+            $log.debug('==> stores pullToRefresh');
+            receiptService
+            .loadFirstPageOfUserStores( function(storeList, storeListPage) {
+                vm.stores = storeList;
+                vm.lastStoreListPage = storeListPage;
+                console.log("stores",storeList);
+            })
+            .finally( function() {
+                // Stop the ion-refresher from spinning
+                $scope.$broadcast('scroll.refreshComplete');
+            });
+        }
 
         function showStoreItems(storeId){
             $state.go('app.dashboard.store',{storeId:storeId});
