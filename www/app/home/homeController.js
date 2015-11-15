@@ -37,12 +37,12 @@
         vm.receiptImages = null;
         vm.date = null;
         // when enter the receipts screen, load first page of receipts (default are three receipts)
-        receiptService.loadFirstPageOfUserReceipts( function(receipts, receiptListsPage) {
-            vm.receipts = receipts;
-            console.log("receipt",receipts);
-            vm.lastReceiptListPage = receiptListsPage;
-        });
-
+        // receiptService.loadFirstPageOfUserReceipts( function(receipts, receiptListsPage) {
+        //     vm.receipts = receipts;
+        //     console.log("receipt",receipts);
+        //     vm.lastReceiptListPage = receiptListsPage;
+        // });
+        vm.pullToRefresh();
         function switchFabMenu() {
           //console.log('==>switchFabMenu()');
           vm.openFab = !vm.openFab;
@@ -61,6 +61,7 @@
             .loadFirstPageOfUserReceipts( function(receipts, receiptListsPage) {
                 vm.receipts = receipts;
                 vm.lastReceiptListPage = receiptListsPage;
+                console.log("receipts",receipts);
             })
             .finally( function() {
                 // Stop the ion-refresher from spinning
