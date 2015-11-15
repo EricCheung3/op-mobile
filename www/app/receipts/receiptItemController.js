@@ -62,7 +62,7 @@
               // title: 'Edit Item',
               // subTitle: 'Please input item name and price',
               scope: $scope,
-              template: '<input type="text" placeholder="Input Item name" ng-model="item1.name"><input type="text" placeholder="Input item price" ng-model="item1.price" >',
+              template: '<input type="text" placeholder="Input Item name" ng-model="item1.name"><input type="number" placeholder="Input item price" ng-model="item1.price" >',
               buttons: [
                 { text: 'Cancel' ,
                   type: 'button-positive',
@@ -80,7 +80,7 @@
             });
 
             popup.then(function(res) {
-                if (res.name!==""&&res.price!=="") {
+                if (res.name!==null&&res.price!==null&& res.name!== undefined&&res.price!== undefined) {
                   item.displayName = res.name;
                   item.displayPrice = res.price;
                   // update data to server
