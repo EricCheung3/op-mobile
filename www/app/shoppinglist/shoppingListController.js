@@ -21,12 +21,14 @@
         vm.listCanSwipe = true;
 
 
-        // receiptService.getStoresResource()
-        // .then(function(stores){
-        //     console.log("stores", stores);
-        //     vm.stores = stores;
-        // });
-        vm.pullToRefresh();
+        receiptService.getStoresResource()
+        .then(function(stores){
+            console.log("stores", stores);
+            vm.stores = stores;
+        });
+
+
+        //vm.pullToRefresh();
 
         function pullToRefresh(){
             $log.debug('==> stores pullToRefresh');

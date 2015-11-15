@@ -22,12 +22,15 @@
       </div>
 
       <div ng-hide="EditModel">
-        <ion-list >
-          <ion-item ng-repeat="item in vm.receiptItems">
+        <ion-list show-delete="false" can-swipe="true" swipe-direction="left">
+          <ion-item ng-repeat="(index,item) in vm.receiptItems">
               <div class="margin-vertical-large margin-horizontal-small standard-list-height">
                   <p class="inline">{{item.displayName}}</p>
                   <p class="inline float-right"> ${{item.displayPrice | number:2}} </p>
               </div>
+              <ion-option-buttons side="right" class="button-positive swipe-button" ng-click="vm.editItem(item)"> <i class="icon icon-medium center ion-ios-compose-outline"></i> </ion-option-buttons>
+              <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(item)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
+
           </ion-item>
         </ion-list>
       </div>

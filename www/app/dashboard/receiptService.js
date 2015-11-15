@@ -72,6 +72,7 @@
                 });
           }
         };
+
         function loadFirstPageOfUserStores(callback){
             var storeList = [];
             var storePage;
@@ -86,7 +87,7 @@
                     if(storeList.$has('stores')){
                         return receiptList.$get('stores');
                     } else {
-                        return $q.reject("NO receipts!");
+                        return $q.reject("NO stores!");
                     }
                 })
                 .then( function(stores) {
