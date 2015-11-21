@@ -13,7 +13,8 @@
     <ion-list show-delete="false" can-swipe="true" swipe-direction="left">
 
       <ion-item class="mystores" ng-click="vm.showStoreItems(2)">
-        <div class="inline">Superstore</div>
+        <img class="inline category-icon" src="img/store_icons/superstore-blue.png">
+        <div class="inline store-name">Superstore</div>
         <div class="inline float-right">
             <i class="icon icon-medium positive ion-edit"></i>
         </div>
@@ -21,7 +22,8 @@
       </ion-item>
 
       <ion-item class="mystores">
-        <div class="inline">Safeway</div>
+        <img class="inline category-icon" src="img/store_icons/safeway-blue.png">
+        <div class="inline store-name">Safeway</div>
         <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteStore(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
       </ion-item>
 
