@@ -11,7 +11,7 @@
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
 
-        apiService.init('http://104.197.105.245:7800'); // openprice-dev server
+        apiService.init('http://104.154.88.206:7800'); // openprice-dev server
 
 
         $ionicPlatform.ready(function() {
