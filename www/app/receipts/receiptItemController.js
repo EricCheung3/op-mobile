@@ -22,6 +22,7 @@
         vm.editItem = editItem;
         vm.deleteItem = deleteItem;
         vm.AddToShoppingList = AddToShoppingList;
+        vm.receiptParseResult;
         vm.receiptImages = [];
         vm.receiptItems = [];
         $scope.delay = false;
@@ -39,14 +40,15 @@
 
 
         receiptService
-            .getReceiptResource2($scope.receiptId, function(receipt, receiptItems){
+            .getReceiptResource2($scope.receiptId, function(receipt, receiptParseResult){
                 vm.receipt = receipt;
                 vm.receiptImages = receipt.images;
-                vm.receiptItems = receiptItems;
-
+                vm.receiptItems = receiptParseResult.items;
+                vm.receiptParseResult = receiptParseResult;
                 $scope.rating[$scope.receiptId] = receipt.rating;
                 $scope.delay = "true";
-                console.log("receipt rating", $scope.rating[$scope.receiptId]);
+                // console.log("receipt rating", $scope.rating[$scope.receiptId]);
+                // console.log("chainCode", receiptParseResult);
             });
 
 
@@ -106,17 +108,17 @@
                     var item = new Object();
                     console.log("vm.receiptItems[i].name", vm.receiptItems[i].displayName);
                     item["name"] = vm.receiptItems[i].displayName;
-                    item["price"] = vm.receiptItems[i].displayPrice;
+                    item["catalogCode"] = vm.receiptItems[i].catalogCode;
                     items.push(item);
                 }
             }
 
             var object =
               {
-                "storeId" : "3b50a3fc-xxxx-11e4-a322-1697f9250001", //receipt.storeId
+                "chainCode" : vm.receiptParseResult.chainCode, //receipt.chainCode
                 "items" : items
               };
-            console.log("obect", object);
+            console.log("added items obect", object);
 
             // post to database
             //FIXME: please change to real data come from parser(OCR)

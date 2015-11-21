@@ -9,7 +9,7 @@
           <ion-item ng-repeat="item in vm.receiptItems">
             <ion-checkbox ng-model="item.checked" >
               <p class="inline">{{item.displayName}} </p>
-              <p class="inline float-right">${{item.displayPrice | number:2}}</p>
+              <p class="inline float-right">${{item.displayPrice}}</p>
             </ion-checkbox>
           </ion-item>
         </ion-list>
@@ -26,7 +26,7 @@
           <ion-item ng-repeat="(index,item) in vm.receiptItems">
               <div class="margin-vertical-large margin-horizontal-small standard-list-height">
                   <p class="inline">{{item.displayName}}</p>
-                  <p class="inline float-right"> ${{item.displayPrice | number:2}} </p>
+                  <p class="inline float-right"> ${{item.displayPrice }} </p>
               </div>
               <ion-option-buttons side="right" class="button-positive swipe-button" ng-click="vm.editItem(item)"> <i class="icon icon-medium center ion-ios-compose-outline"></i> </ion-option-buttons>
               <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(item)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>

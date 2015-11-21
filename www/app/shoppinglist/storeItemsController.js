@@ -51,7 +51,7 @@
             .then(function (userResource) {
                 userResource.$get('store', {storeId:storeId})
                 .then(function(store){
-                    vm.store = store.name;
+                    vm.store = store.displayName;
                 });
             });
 
@@ -64,7 +64,7 @@
             vm.items.forEach(function (item) {
                 vm.show[item] = false;
                 vm.number[item] = 1;
-                vm.price[item] = item.itemPrice; // need to make sure
+                vm.price[item] = item.id; // need to make sure
             });
         });
 

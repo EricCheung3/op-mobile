@@ -61,12 +61,13 @@
             .loadFirstPageOfUserReceipts( function(receipts, receiptListsPage) {
                 vm.receipts = receipts;
                 vm.lastReceiptListPage = receiptListsPage;
-                console.log("receipts",receipts);
+                console.log("vm.receipts",vm.receipts);
             })
             .finally( function() {
                 // Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');
             });
+
         };
 
         function moreReceiptsCanBeLoaded() {

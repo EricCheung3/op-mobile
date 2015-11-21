@@ -48,7 +48,7 @@
         };
 
         function getReceiptResource2(receiptId, callback) {
-            var receiptItems = [];
+            var receiptParseResult;
             var receipt;
             if(receiptItemsCache[receiptId]!=null && receiptCache.rating!=null){
                 console.log("read from cache");
@@ -59,19 +59,107 @@
                     // console.log("receipt rating", receipt.rating);
                     receiptCache = receipt;
                     receipt.$get('result').then(function(receiptResult){
-                        receiptItems = receiptResult.items;
+                        receiptParseResult = receiptResult;
                         receiptItemsCache[receiptId]  = receiptResult.items;
-                        console.log("receipt items ", receiptResult);
+                        console.log("getReceiptResource2 ", receiptResult);
                     })
                     .catch ( function(err){
                         console.error('ERROR code', err); // TODO handle error
                     })
                     .finally( function() {
-                        callback(receiptCache, receiptItems);
+                        callback(receiptCache, receiptParseResult);
                     });
                 });
           }
         };
+
+        function loadFirstPageOfUserReceipts(callback) {
+            var resultReceipts = [];
+            var receiptListPage;
+            return apiService
+                .getUserResource()
+                .then( function(resource) {
+                    return resource.$get('receipts');
+                })
+                .then( function(receiptList) {
+                    receiptListPage = receiptList;
+                    if(receiptList.$has('receipts')){
+                        return receiptList.$get('receipts');
+                    } else {
+                        return $q.reject("NO receipts!");
+                    }
+                })
+                .then( function(receipts) {
+                    receipts.forEach( function(receipt) {
+                        resultReceipts.push(receipt);
+                        getImageBase64Data(receipt.images[0]._links.base64.href)
+                        .then( function(imageData) {
+                            receipt.path = imageData;
+                        });
+                    });
+                })
+                .catch ( function(err){
+                    console.error('ERROR code', err); // TODO handle error
+                })
+                .finally( function() {
+                    callback(resultReceipts, receiptListPage);
+                });
+        };
+
+         // get image base64 data according to the download url
+        function getImageBase64Data(downloadUrl) {
+            var deferred = $q.defer();
+            var imageData = imageCache[downloadUrl];
+            if (imageData) {
+                //console.log("Get image data from cache for "+downloadUrl);
+                deferred.resolve(imageData);
+            } else {
+                $http
+                .get(downloadUrl)
+                .then( function(base64) {
+                    imageData = "data:image/jpeg;base64,"+ base64.data;
+                    imageCache[downloadUrl] = imageData;
+                    //console.log("Download image data from server for "+downloadUrl);
+                    deferred.resolve(imageData);
+                }, function(err) {
+                    console.log("ERROR",err); // TODO handle error
+                });
+            }
+
+            return deferred.promise;
+        };
+
+        function getStoresResource(){
+            var stores = [];
+            var deferred = $q.defer();
+            if(storesCache.length > 0){
+                console.log("read store from storesCache");
+                deferred.resolve(storesCache);
+            }else{
+                apiService
+                    .getUserResource()
+                    .then(function (userResource) {
+                        userResource.$get('stores')
+                        .then(function(storeResource){
+                            console.log("getStoresResource", storeResource);
+                            if (storeResource.$has('shoppingStores')) {
+                                console.log("shoppingStores", storeResource);
+                                return storeResource.$get('shoppingStores');
+                            }else {
+                                return $q.reject("NO Stores yet!");
+                            }
+                        })
+                        .then(function(storeList){
+                            stores.push(storeList);
+                            storesCache = storeList;
+                            deferred.resolve(storesCache);
+                        });
+                    });
+            }
+
+            return deferred.promise;
+        };
+
 
         function loadFirstPageOfUserStores(callback){
             var storeList = [];
@@ -84,8 +172,8 @@
                 .then( function(storeList) {
                     storePage = storeList;
                     console.log("storeList",storeList);
-                    if(storeList.$has('stores')){
-                        return receiptList.$get('stores');
+                    if(storeList.$has('shoppingStores')){
+                        return receiptList.$get('shoppingStores');
                     } else {
                         return $q.reject("NO stores!");
                     }
@@ -102,39 +190,7 @@
                     callback(storeList, storePage);
                 });
 
-
         };
-        function getStoresResource(){
-            var stores = [];
-            var deferred = $q.defer();
-            if(storesCache.length > 0){
-                console.log("read store from storesCache");
-                deferred.resolve(storesCache);
-            }else{
-                apiService
-                    .getUserResource()
-                    .then(function (userResource) {
-                        userResource.$get('stores')
-                        .then(function(storeResource){
-                            console.log("storeresource", storeResource);
-                            if (storeResource.$has('stores')) {
-                                console.log("stores", storeResource);
-                                return storeResource.$get('stores');
-                            }else {
-                                return $q.reject("NO Stores yet!");
-                            }
-                        })
-                        .then(function(storeList){
-                            stores.push(storeList);
-                            storesCache = storeList;
-                            deferred.resolve(storesCache);
-                        });
-                    });
-            }
-
-            return deferred.promise;
-        };
-
 
         function loadFirstPageOfUserStoreItems(storeId, callback) {
             var storeItems = [];
@@ -214,62 +270,6 @@
                       });
                   });
             }
-            return deferred.promise;
-        };
-
-        function loadFirstPageOfUserReceipts(callback) {
-            var resultReceipts = [];
-            var receiptListPage;
-            return apiService
-                .getUserResource()
-                .then( function(resource) {
-                    return resource.$get('receipts');
-                })
-                .then( function(receiptList) {
-                    receiptListPage = receiptList;
-                    if(receiptList.$has('receipts')){
-                        return receiptList.$get('receipts');
-                    } else {
-                        return $q.reject("NO receipts!");
-                    }
-                })
-                .then( function(receipts) {
-                    receipts.forEach( function(receipt) {
-                        resultReceipts.push(receipt);
-                        getImageBase64Data(receipt.images[0]._links.base64.href)
-                        .then( function(imageData) {
-                            receipt.path = imageData;
-                        });
-                    });
-                })
-                .catch ( function(err){
-                    console.error('ERROR code', err); // TODO handle error
-                })
-                .finally( function() {
-                    callback(resultReceipts, receiptListPage);
-                });
-        };
-
-         // get image base64 data according to the download url
-        function getImageBase64Data(downloadUrl) {
-            var deferred = $q.defer();
-            var imageData = imageCache[downloadUrl];
-            if (imageData) {
-                //console.log("Get image data from cache for "+downloadUrl);
-                deferred.resolve(imageData);
-            } else {
-                $http
-                .get(downloadUrl)
-                .then( function(base64) {
-                    imageData = "data:image/jpeg;base64,"+ base64.data;
-                    imageCache[downloadUrl] = imageData;
-                    //console.log("Download image data from server for "+downloadUrl);
-                    deferred.resolve(imageData);
-                }, function(err) {
-                    console.log("ERROR",err); // TODO handle error
-                });
-            }
-
             return deferred.promise;
         };
 
