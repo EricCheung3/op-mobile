@@ -9,28 +9,11 @@
       pulling-text="Pull to refresh..."
       on-refresh="vm.pullToRefresh()">
     </ion-refresher>
-    <!-- <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe"> -->
-    <ion-list show-delete="false" can-swipe="true" swipe-direction="left">
-
-      <ion-item class="mystores" ng-click="vm.showStoreItems(2)">
-        <img class="inline category-icon" src="img/store_icons/superstore-blue.png">
-        <div class="inline store-name">Superstore</div>
-        <div class="inline float-right">
-            <i class="icon icon-medium positive ion-edit"></i>
-        </div>
-        <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteStore(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
-      </ion-item>
-
-      <ion-item class="mystores">
-        <img class="inline category-icon" src="img/store_icons/safeway-blue.png">
-        <div class="inline store-name">Safeway</div>
-        <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteStore(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
-      </ion-item>
-
-      <!-- NOTE: Following is real data don't touch it -->
+    <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="left">
 
       <ion-item class="mystores" ng-repeat="(index, store) in vm.stores" ng-click="vm.showStoreItems(store.id)" >
-        <div class="inline"> {{store.displayName}}</div>
+        <img class="inline category-icon" src="img/store_icons/{{store.chainCode}}-blue.png">
+        <div class="inline store-name"> {{store.chainCode}}</div>
         <div class="inline float-right"> <i class="icon icon-medium positive ion-edit"></i> </div>
         <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteStore(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
       </ion-item>
