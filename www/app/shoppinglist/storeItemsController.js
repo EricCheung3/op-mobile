@@ -43,7 +43,7 @@
         vm.scrollToLoadMore = scrollToLoadMore;
 
 
-        $scope.categroy = {};
+        $scope.category = {};
 
 
         var storeId = $stateParams.storeId;
@@ -66,27 +66,26 @@
             console.log("Load first page items", storeItems);
             // click to display detail
             vm.items.forEach(function (item) {
-                vm.show[item] = false;
-                vm.number[item] = 1;
+                vm.show[item.catalogCode] = false;
+                vm.number[item.name] = 1;
                 vm.price[item] = item.id; // need to make sure
-
+                vm.show[item.name] = false;
                 //====do category===========
-                $scope.categroy[item.catalogCode] = []; //NOTE: catalogCode should be labelCodes
+                $scope.category[item.catalogCode] = []; //NOTE: catalogCode should be labelCodes
             });
 
-            // vm.categroy
+            // vm.category
             vm.items.forEach(function (item) {
-
+                vm.show[item.name] = false;
                 //NOTE: catalogCode should be labelCodes
-                $scope.categroy[item.catalogCode].push(item.name);
-                console.log("===================",item.name);
-                // vm.categroy[item.labelCodes].push({
+                $scope.category[item.catalogCode].push(item);
+                // vm.category[item.labelCodes].push({
                 //     "name": item.displayName,
                 //     "price": item.displayPrice
                 // }); //NOTE: need price in shoping list
             });
             console.log("category", $scope.category);
-
+            console.log("vm.show", vm.show);
         });
 
 
@@ -137,19 +136,20 @@
             // vm.items[index].$put(...)
         };
 
-        function deleteItem(index){
+        function deleteItem(index,item){
             console.log("DELETE-ITEM", vm.items[index].id);
             vm.items[index].$del('self');
-            vm.items.splice(index, 1);
-
+            console.log("$scope.category[item.catalogCode]",$scope.category[item.catalogCode]);
+            $scope.category[item.catalogCode].splice(index,1);
         };
 
         function itemDetail(item) {
-            vm.show[item] = !vm.show[item];
+            vm.show[item.name] = !vm.show[item.name];
         };
 
-        function categoryDetail(item){
-            vm.show[item] = !vm.show[item];
+        function categoryDetail(categoryLabel){
+            console.log("category--item detail",categoryLabel);
+            vm.show[categoryLabel] = !vm.show[categoryLabel];
         };
 
 
@@ -183,14 +183,14 @@
         };
 
         function addItemNumber(item){ // NOTE: parameter should be index
-            vm.number[item] = vm.number[item] + 1;
+            vm.number[item.name] = vm.number[item.name] + 1;
             vm.price[item] = vm.price[item] + 2.43;
             // vm.price[item] = vm.price[item] + item.itemPrice;
         };
 
         function minusItemNumber(item){
-            if(vm.number[item] > 1){
-                vm.number[item] = vm.number[item] - 1;
+            if(vm.number[item.name] > 1){
+                vm.number[item.name] = vm.number[item.name] - 1;
                 vm.price[item] = vm.price[item] - 2.43;
             }
         };

@@ -28,17 +28,17 @@
       </ion-item>
 
       <!-- STYLING for CATEGORY -->
-
-      <div  ng-repeat="(index1, item1) in [6,7]">
+<!--
+      <div  ng-repeat="(categoryLabel, items) in category">
         <ion-item class="category item-dark" ng-click="vm.categoryDetail(item1)">
           <img class="inline category-icon" src="img/custom_icons/fruit.svg">
-          <div class="center" style="width: 50%;"><p class="center inline text-center">Fruit {{item1}}</p></div>
+          <div class="center" style="width: 50%;"><p class="center inline text-center">{{categoryLabel}}</p></div>
           <p class="inline category-price">$7.53 +</p>
 
         </ion-item>
-        <div ng-show="vm.show[item1]">
+        <div ng-show="vm.show[items]">
 
-          <ion-item class="store-items list-border" ng-repeat="(index, item) in vm.items" ng-click="vm.itemDetail(item)">
+          <ion-item class="store-items list-border" ng-repeat="(index, item) in items" ng-click="vm.itemDetail(item)">
             <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.name}}</p>
             <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
             <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item]}}</p>
@@ -55,7 +55,7 @@
             </div>
           </ion-item>
         </div>
-      </div>
+      </div> -->
 
       <!-- CATEGORY ICONS EXAMPLES -->
       <!-- <ion-item class="category item-dark">
@@ -246,18 +246,18 @@
     <!-- NOTE: following is real data, don't touch it -->
     <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="both">
       <!-- clicking on category names hides the items on the category and vice versa-->
-      <div  ng-repeat="(index1, category) in [0]">
-        <ion-item class="category item-dark" ng-click="vm.categoryDetail(category)">
+      <div  ng-repeat="(categoryLabel, items) in category">
+        <ion-item class="category item-dark" ng-click="vm.categoryDetail(categoryLabel)">
           <img class="inline category-icon" src="img/custom_icons/fruit.svg">
-          <div class="center" style="width: 50%;"><p class="center inline text-center">Fruit {{category}}</p></div>
+          <div class="center" style="width: 50%;"><p class="center inline text-center">Category: {{categoryLabel}}</p></div>
           <p class="inline category-price">$sub-total</p>
         </ion-item>
 
-        <div ng-show="vm.show[category]">
-          <ion-item class="store-items list-border" ng-repeat="(index, item) in vm.items | filter:searchItems" ng-click="vm.itemDetail(item)">
-            <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.itemName}} </p>
+        <div ng-show="vm.show[categoryLabel]">
+          <ion-item class="store-items list-border" ng-repeat="(index, item) in items | filter:searchItems" ng-click="vm.itemDetail(item)">
+            <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.name }} </p>
             <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
-            <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item]}}</p>
+            <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item.name]}}</p>
             <!-- <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">${{item.itemPrice}}*{{vm.number[item]}}</p> -->
             <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{vm.price[item] | number:2}}</p>
 
@@ -265,14 +265,14 @@
             <ion-option-buttons side="left" class="button-positive swipe-button quantity-minus" ng-click="vm.minusItemNumber(item)"> <i class="icon icon-medium center ion-ios-minus-outline"></i> </ion-option-buttons>
 
             <ion-option-buttons side="right" class="button-positive swipe-button" ng-click="vm.editItem(index)"> <i class="icon icon-medium center ion-ios-compose-outline"></i> </ion-option-buttons>
-            <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
+            <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(index,item)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
 
-            <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[item]">
-              <p>{{item.itemName}}  </p>
-              <p>${{item.itemPrice}} </p>
-              <p>{{item.labelCodes}} </p>
+            <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[item.name]">
+              <p>{{item.name}}  </p>
+              <p>${{item.id}} </p>
+              <p>{{item.catalogCode}} </p>
               <!-- price should only be displayed for items that have a price/kg price such as vegetables, fruits, etc. -->
-              <p> ... ... </p>
+              <p>{{item.labelCodes}} </p>
             </div>
           </ion-item>
         </div>
@@ -298,8 +298,8 @@
         <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i><p class="inline padding-vertical-large vertical-align-bottom grey-text">2</p>
         <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$5.10</p>
 
-        <!-- This should be swipe right! and I don't know how to make the item info text more grey (by changing opacity) when the item is swiped -->
-        <ion-option-buttons side="left" class="swipe-button button-light" ng-click="vm.editItem(index)"> <i class="icon positive icon-medium center ion-ios-checkmark"></i> </ion-option-buttons>
+        <ion-option-buttons side="left" class="button-positive swipe-button" ng-click="vm.addItemNumber(item)"> <i class="icon icon-medium center ion-ios-plus-outline"></i> </ion-option-buttons>
+        <ion-option-buttons side="left" class="button-positive swipe-button quantity-minus" ng-click="vm.minusItemNumber(item)"> <i class="icon icon-medium center ion-ios-minus-outline"></i> </ion-option-buttons>
         <ion-option-buttons side="right" class="button-positive swipe-button" ng-click="vm.editItem(index)"> <i class="icon icon-medium center ion-ios-compose-outline"></i> </ion-option-buttons>
         <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
 

@@ -195,8 +195,8 @@
         function loadFirstPageOfUserStoreItems(storeId, callback) {
             var storeItems = [];
             var itemsPage;
-            var categroy=new Object();
-            var deferred = $q.defer();
+            var category=new Object();
+
             return apiService
                 .getUserResource()
                 .then(function (userResource) {
@@ -217,28 +217,30 @@
                         storeItems = items;
                         storeItemsCache[storeId] = items;
                         storeItemsCache.page = itemsPage;
-
+                        /* NOTE: Good, it works
                         items.forEach(function (item) {
-                          console.log("1...item",item);
-                            categroy[item.catalogCode] = []; //NOTE: catalogCode should be labelCodes
+                            category[item.catalogCode] = []; //NOTE: catalogCode should be labelCodes
                         });
-                        return items,categroy;
-                    }).then(function(categroy,items){
-                      // vm.categroy
+                        return items,category;
+                        */
+                    })
+                    /* NOTE: Good, it works
+                    .then(function(category,items){
+                      // vm.category
                       console.log("2...item",storeItems);
-                      console.log("3...categroy",categroy);
+                      console.log("3...category",category);
                       storeItems.forEach(function (item) {
                           //NOTE: catalogCode should be labelCodes
-                          categroy[item.catalogCode].push({"name":item.name});
-                          // vm.categroy[item.labelCodes].push({
+                          category[item.catalogCode].push({"name":item.name});
+                          // vm.category[item.labelCodes].push({
                           //     "name": item.displayName,
                           //     "price": item.displayPrice
                           // }); //NOTE: need price in shoping list
                           // console.log("category", category);
                       });
-
-
                     })
+                    */
+                    
                     .catch ( function(err){
                         console.error('ERROR code', err); // TODO handle error
                     })
