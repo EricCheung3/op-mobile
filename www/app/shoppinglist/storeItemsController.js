@@ -42,6 +42,10 @@
         vm.moreItemsCanBeLoaded = moreItemsCanBeLoaded;
         vm.scrollToLoadMore = scrollToLoadMore;
 
+
+        $scope.categroy = {};
+
+
         var storeId = $stateParams.storeId;
         console.log("storeId", storeId);
 
@@ -65,7 +69,24 @@
                 vm.show[item] = false;
                 vm.number[item] = 1;
                 vm.price[item] = item.id; // need to make sure
+
+                //====do category===========
+                $scope.categroy[item.catalogCode] = []; //NOTE: catalogCode should be labelCodes
             });
+
+            // vm.categroy
+            vm.items.forEach(function (item) {
+
+                //NOTE: catalogCode should be labelCodes
+                $scope.categroy[item.catalogCode].push(item.name);
+                console.log("===================",item.name);
+                // vm.categroy[item.labelCodes].push({
+                //     "name": item.displayName,
+                //     "price": item.displayPrice
+                // }); //NOTE: need price in shoping list
+            });
+            console.log("category", $scope.category);
+
         });
 
 

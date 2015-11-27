@@ -109,6 +109,7 @@
                     console.log("vm.receiptItems[i].name", vm.receiptItems[i].displayName);
                     item["name"] = vm.receiptItems[i].displayName;
                     item["catalogCode"] = vm.receiptItems[i].catalogCode;
+                    item["labelCodes"] = vm.receiptItems[i].labelCodes;
                     items.push(item);
                 }
             }

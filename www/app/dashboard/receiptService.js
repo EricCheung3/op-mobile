@@ -173,7 +173,7 @@
                     storePage = storeList;
                     console.log("storeList",storeList);
                     if(storeList.$has('shoppingStores')){
-                        return receiptList.$get('shoppingStores');
+                        return storeList.$get('shoppingStores');
                     } else {
                         return $q.reject("NO stores!");
                     }
@@ -195,7 +195,8 @@
         function loadFirstPageOfUserStoreItems(storeId, callback) {
             var storeItems = [];
             var itemsPage;
-
+            var categroy=new Object();
+            var deferred = $q.defer();
             return apiService
                 .getUserResource()
                 .then(function (userResource) {
@@ -216,6 +217,27 @@
                         storeItems = items;
                         storeItemsCache[storeId] = items;
                         storeItemsCache.page = itemsPage;
+
+                        items.forEach(function (item) {
+                          console.log("1...item",item);
+                            categroy[item.catalogCode] = []; //NOTE: catalogCode should be labelCodes
+                        });
+                        return items,categroy;
+                    }).then(function(categroy,items){
+                      // vm.categroy
+                      console.log("2...item",storeItems);
+                      console.log("3...categroy",categroy);
+                      storeItems.forEach(function (item) {
+                          //NOTE: catalogCode should be labelCodes
+                          categroy[item.catalogCode].push({"name":item.name});
+                          // vm.categroy[item.labelCodes].push({
+                          //     "name": item.displayName,
+                          //     "price": item.displayPrice
+                          // }); //NOTE: need price in shoping list
+                          // console.log("category", category);
+                      });
+
+
                     })
                     .catch ( function(err){
                         console.error('ERROR code', err); // TODO handle error
