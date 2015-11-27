@@ -249,7 +249,7 @@
       <div  ng-repeat="(categoryLabel, items) in category">
         <ion-item class="category item-dark" ng-click="vm.categoryDetail(categoryLabel)">
           <img class="inline category-icon" src="img/custom_icons/fruit.svg">
-          <div class="center" style="width: 50%;"><p class="center inline text-center">Category: {{categoryLabel}}</p></div>
+          <div class="center" style="width: 50%;"><p class="center inline text-center">{{categoryLabel}}</p></div>
           <p class="inline category-price">$sub-total</p>
         </ion-item>
 

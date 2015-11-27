@@ -28,13 +28,7 @@
         vm.show = [];
         vm.number = [];
         vm.price = [];
-        vm.price[1] = 2.43;// test data
-        vm.price[2] = 4.57;// test data
 
-        vm.number[1] = 1; // test data
-        vm.number[2] = 1; // test data
-        vm.show[1] = false; // test data
-        vm.show[2] = false; // test data
         vm.goShoppingMode =goShoppingMode;
         vm.doneShoppingMode = doneShoppingMode;
         vm.shoppingMode = false;
@@ -66,19 +60,29 @@
             console.log("Load first page items", storeItems);
             // click to display detail
             vm.items.forEach(function (item) {
-                vm.show[item.catalogCode] = false;
+                vm.show[item.labelCodes] = false;
                 vm.number[item.name] = 1;
                 vm.price[item] = item.id; // need to make sure
                 vm.show[item.name] = false;
                 //====do category===========
-                $scope.category[item.catalogCode] = []; //NOTE: catalogCode should be labelCodes
+                if (item.labelCodes === null){
+                    $scope.category["unCategory"] = [];
+                }else {
+                  $scope.category[item.labelCodes] = []; //NOTE: labelCodes should be labelCodes
+
+                }
             });
 
             // vm.category
             vm.items.forEach(function (item) {
                 vm.show[item.name] = false;
                 //NOTE: catalogCode should be labelCodes
-                $scope.category[item.catalogCode].push(item);
+                if (item.labelCodes === null){
+                    $scope.category["unCategory"].push(item);
+                }else {
+                  $scope.category[item.labelCodes].push(item);
+                }
+                // $scope.category[item.labelCodes].push(item);
                 // vm.category[item.labelCodes].push({
                 //     "name": item.displayName,
                 //     "price": item.displayPrice
@@ -139,8 +143,8 @@
         function deleteItem(index,item){
             console.log("DELETE-ITEM", vm.items[index].id);
             vm.items[index].$del('self');
-            console.log("$scope.category[item.catalogCode]",$scope.category[item.catalogCode]);
-            $scope.category[item.catalogCode].splice(index,1);
+            console.log("$scope.category[item.labelCodes]",$scope.category[item.labelCodes]);
+            $scope.category[item.labelCodes].splice(index,1);
         };
 
         function itemDetail(item) {
