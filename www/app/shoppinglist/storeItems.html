@@ -28,34 +28,6 @@
       </ion-item>
 
       <!-- STYLING for CATEGORY -->
-<!--
-      <div  ng-repeat="(categoryLabel, items) in category">
-        <ion-item class="category item-dark" ng-click="vm.categoryDetail(item1)">
-          <img class="inline category-icon" src="img/custom_icons/fruit.svg">
-          <div class="center" style="width: 50%;"><p class="center inline text-center">{{categoryLabel}}</p></div>
-          <p class="inline category-price">$7.53 +</p>
-
-        </ion-item>
-        <div ng-show="vm.show[items]">
-
-          <ion-item class="store-items list-border" ng-repeat="(index, item) in items" ng-click="vm.itemDetail(item)">
-            <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.name}}</p>
-            <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
-            <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item]}}</p>
-            <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{vm.price[item]|number:2}}</p>
-
-            <ion-option-buttons side="left" class="button-positive swipe-button" ng-click="vm.addItemNumber(item)"> <i class="icon icon-medium center ion-ios-plus-outline"></i> </ion-option-buttons>
-            <ion-option-buttons side="left" class="button-positive swipe-button quantity-minus" ng-click="vm.minusItemNumber(item)"> <i class="icon icon-medium center ion-ios-minus-outline"></i> </ion-option-buttons>
-            <ion-option-buttons side="right" class="button-positive swipe-button" ng-click="vm.editItem(index)"> <i class="icon icon-medium center ion-ios-compose-outline"></i> </ion-option-buttons>
-            <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
-
-            <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[item]">
-              <p>Royal Gala Apples</p>
-              <p>$2.43/kg</p>
-            </div>
-          </ion-item>
-        </div>
-      </div> -->
 
       <!-- CATEGORY ICONS EXAMPLES -->
       <!-- <ion-item class="category item-dark">
@@ -292,16 +264,16 @@
   <!-- NOTE: Hi, Reka:  Here is the Shopping Mode NOT shopping-mode folder-->
   <!-- Please do some changes in the following content -->
   <ion-content ng-show="vm.shoppingMode">
-    <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="both">
-      <ion-item class="store-items" ng-repeat="(index, item) in vm.items" ng-click="vm.itemDetail(2)">
-        <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item}}</p>
+    <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="right">
+      <ion-item class="store-items" ng-repeat="(index, item) in vm.items" ng-click="vm.itemDetail(item)">
+        <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.name}}</p>
         <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
-        <p class="inline padding-vertical-large vertical-align-bottom grey-text">2</p>
-        <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$5.10</p>
+        <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item.name]}}</p>
+        <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$xx.x</p>
 
         <ion-option-buttons side="left" class="button-positive swipe-button" ng-click="vm.addItemNumber(item)"> <i class="icon icon-medium center ion-ios-plus-outline"></i> </ion-option-buttons>
 
-        <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[2]">
+        <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[item]">
           <p>Navel Oranges</p>
           <p>$2.55/kg</p>
         </div>
