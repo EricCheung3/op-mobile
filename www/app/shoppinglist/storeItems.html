@@ -293,15 +293,13 @@
   <!-- Please do some changes in the following content -->
   <ion-content ng-show="vm.shoppingMode">
     <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="both">
-      <ion-item class="store-items" ng-click="vm.itemDetail(2)">
-        <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">Orange</p>
-        <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i><p class="inline padding-vertical-large vertical-align-bottom grey-text">2</p>
+      <ion-item class="store-items" ng-repeat="(index, item) in vm.items" ng-click="vm.itemDetail(2)">
+        <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item}}</p>
+        <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
+        <p class="inline padding-vertical-large vertical-align-bottom grey-text">2</p>
         <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$5.10</p>
 
         <ion-option-buttons side="left" class="button-positive swipe-button" ng-click="vm.addItemNumber(item)"> <i class="icon icon-medium center ion-ios-plus-outline"></i> </ion-option-buttons>
-        <ion-option-buttons side="left" class="button-positive swipe-button quantity-minus" ng-click="vm.minusItemNumber(item)"> <i class="icon icon-medium center ion-ios-minus-outline"></i> </ion-option-buttons>
-        <ion-option-buttons side="right" class="button-positive swipe-button" ng-click="vm.editItem(index)"> <i class="icon icon-medium center ion-ios-compose-outline"></i> </ion-option-buttons>
-        <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
 
         <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[2]">
           <p>Navel Oranges</p>

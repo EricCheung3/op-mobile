@@ -80,7 +80,7 @@
                 if (item.labelCodes === null){
                     $scope.category["unCategory"].push(item);
                 }else {
-                  $scope.category[item.labelCodes].push(item);
+                    $scope.category[item.labelCodes].push(item);
                 }
                 // $scope.category[item.labelCodes].push(item);
                 // vm.category[item.labelCodes].push({
@@ -142,13 +142,21 @@
 
         function deleteItem(index,item){
             console.log("DELETE-ITEM", vm.items[index].id);
-            vm.items[index].$del('self');
             console.log("$scope.category[item.labelCodes]",$scope.category[item.labelCodes]);
-            $scope.category[item.labelCodes].splice(index,1);
+            // vm.items[index].$del('self');
+            if(item.labelCodes === null){
+                $scope.category["unCategory"][index].$del('self');
+                $scope.category["unCategory"].splice(index,1);
+            }else {
+                $scope.category[item.labelCodes][index].$del('self');
+                $scope.category[item.labelCodes].splice(index,1);
+            }
         };
 
         function itemDetail(item) {
             vm.show[item.name] = !vm.show[item.name];
+            // console.log("$scope.category[item.labelCodes]",$scope.category[item.labelCodes][0]);
+
         };
 
         function categoryDetail(categoryLabel){
@@ -225,6 +233,11 @@
                   onTap: function(e) {
                       console.log("clear the ShoppingList");
                       // delete function at here
+                      vm.items.forEach(function (item){
+                          console.log("item-self",item);
+                          item.$del('self');
+                      });
+                      $scope.category = {};
                       popup.close();
                   }
                 }
