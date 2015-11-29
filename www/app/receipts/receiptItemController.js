@@ -108,6 +108,7 @@
                     var item = new Object();
                     console.log("vm.receiptItems[i].name", vm.receiptItems[i].displayName);
                     item["name"] = vm.receiptItems[i].displayName;
+                    item["displayPrice"] = vm.receiptItems[i].displayPrice;
                     item["catalogCode"] = vm.receiptItems[i].catalogCode;
                     item["labelCodes"] = vm.receiptItems[i].labelCodes;
                     items.push(item);
