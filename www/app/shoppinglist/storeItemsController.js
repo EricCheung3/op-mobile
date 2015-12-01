@@ -57,37 +57,38 @@
         receiptService.loadFirstPageOfUserStoreItems(storeId, function(storeItems, itemsPage) {
             vm.items = storeItems;
             vm.lastItemsPage = itemsPage;
-            console.log("Load first page items", storeItems.length);
+            console.log("Load first page items", storeItems);
 
             // click to display detail
             vm.items.forEach(function (item) {
-                vm.show[item.labelCodes] = false;
-                vm.number[item.name] = 1;
-                vm.price[item] = item.id; // need to make sure
-                vm.show[item.name] = false;
-                //====do category===========
-                if (item.labelCodes === null){
-                    $scope.category["noCategory"] = [];
+                if(item.catalog !== null){
+                  vm.show[item.catalog.labelCodes] = false;
+                  vm.number[item.name] = 1;
+                  vm.price[item.name] = item.catalog.price; // need to make sure
+                  vm.show[item.name] = false;
+                  $scope.category[item.catalog.labelCodes] = [];
                 }else {
-                  $scope.category[item.labelCodes] = []; //NOTE: labelCodes should be labelCodes
+                  vm.show["noCategory"] = false;
+                  vm.number[item.name] = 1;
+                  vm.price[item.name] = 0; // need to make sure
+                  vm.show[item.name] = false;
+                  $scope.category["noCategory"] = [];
 
                 }
+                //console.log("item----------",item);
+
             });
 
             // vm.category
             vm.items.forEach(function (item) {
                 vm.show[item.name] = false;
                 //NOTE: catalogCode should be labelCodes
-                if (item.labelCodes === null){
+                if (item.catalog === null){
                     $scope.category["noCategory"].push(item);
                 }else {
-                    $scope.category[item.labelCodes].push(item);
+                    $scope.category[item.catalog.labelCodes].push(item);
                 }
-                // $scope.category[item.labelCodes].push(item);
-                // vm.category[item.labelCodes].push({
-                //     "name": item.displayName,
-                //     "price": item.displayPrice
-                // }); //NOTE: need price in shoping list
+
             });
             console.log("category", $scope.category);
             console.log("vm.show", vm.show);
@@ -143,20 +144,28 @@
 
         function deleteItem(index,item){
             console.log("DELETE-ITEM", vm.items[index].id);
-            console.log("$scope.category[item.labelCodes]",$scope.category[item.labelCodes]);
+            // console.log("$scope.category length",$scope.category[item.catalog.labelCodes].length);
             // vm.items[index].$del('self');
-            if(item.labelCodes === null){
+            if(item.catalog === null){
                 $scope.category["noCategory"][index].$del('self');
                 $scope.category["noCategory"].splice(index,1);
+                if($scope.category["noCategory"].length == 0){
+                    delete $scope.category["noCategory"];
+                }
             }else {
-                $scope.category[item.labelCodes][index].$del('self');
-                $scope.category[item.labelCodes].splice(index,1);
+                $scope.category[item.catalog.labelCodes][index].$del('self');
+                $scope.category[item.catalog.labelCodes].splice(index,1);
+                if($scope.category[item.catalog.labelCodes].length == 0){
+                    delete $scope.category[item.catalog.labelCodes];
+                }
             }
+            // console.log("$scope.category length 2",$scope.category[item.catalog.labelCodes].length);
+
         };
 
         function itemDetail(item) {
             vm.show[item.name] = !vm.show[item.name];
-            // console.log("$scope.category[item.labelCodes]",$scope.category[item.labelCodes][0]);
+            // console.log("$scope.category[item.catalog.labelCodes]",$scope.category[item.catalog.labelCodes][0]);
 
         };
 
@@ -196,15 +205,23 @@
         };
 
         function addItemNumber(item){ // NOTE: parameter should be index
-            vm.number[item.name] = vm.number[item.name] + 1;
-            vm.price[item] = vm.price[item] + 2.43;
-            // vm.price[item] = vm.price[item] + item.itemPrice;
+          vm.number[item.name] = vm.number[item.name] + 1;
+          if (item.catalog === null) {
+            vm.price[item.name] = 0;
+          }else {
+            vm.price[item.name] = Number(vm.price[item.name]) + Number(item.catalog.price);
+          }
+
         };
 
         function minusItemNumber(item){
             if(vm.number[item.name] > 1){
-                vm.number[item.name] = vm.number[item.name] - 1;
-                vm.price[item] = vm.price[item] - 2.43;
+              vm.number[item.name] = vm.number[item.name] - 1;
+              if(item.catalog !== null){
+                vm.price[item.name] = Number(vm.price[item.name]) - Number(item.catalog.price);;
+              }else {
+                vm.price[item.name] = 0;
+              }
             }
         };
 
