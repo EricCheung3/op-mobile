@@ -13,7 +13,7 @@
 
       <ion-item class="mystores" ng-repeat="(index, store) in vm.stores" ng-click="vm.showStoreItems(store.id)" >
         <img class="inline category-icon" src="img/store_icons/{{store.chainCode}}-blue.png">
-        <div class="inline store-name"> {{store.chainCode}}</div>
+        <div class="inline store-name"> {{store.displayName}}</div>
         <div class="inline float-right"> <i class="icon icon-medium positive ion-edit"></i> </div>
         <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteStore(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
       </ion-item>

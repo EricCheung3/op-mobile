@@ -57,7 +57,8 @@
         receiptService.loadFirstPageOfUserStoreItems(storeId, function(storeItems, itemsPage) {
             vm.items = storeItems;
             vm.lastItemsPage = itemsPage;
-            console.log("Load first page items", storeItems);
+            console.log("Load first page items", storeItems.length);
+
             // click to display detail
             vm.items.forEach(function (item) {
                 vm.show[item.labelCodes] = false;
@@ -66,7 +67,7 @@
                 vm.show[item.name] = false;
                 //====do category===========
                 if (item.labelCodes === null){
-                    $scope.category["unCategory"] = [];
+                    $scope.category["noCategory"] = [];
                 }else {
                   $scope.category[item.labelCodes] = []; //NOTE: labelCodes should be labelCodes
 
@@ -78,7 +79,7 @@
                 vm.show[item.name] = false;
                 //NOTE: catalogCode should be labelCodes
                 if (item.labelCodes === null){
-                    $scope.category["unCategory"].push(item);
+                    $scope.category["noCategory"].push(item);
                 }else {
                     $scope.category[item.labelCodes].push(item);
                 }
@@ -145,8 +146,8 @@
             console.log("$scope.category[item.labelCodes]",$scope.category[item.labelCodes]);
             // vm.items[index].$del('self');
             if(item.labelCodes === null){
-                $scope.category["unCategory"][index].$del('self');
-                $scope.category["unCategory"].splice(index,1);
+                $scope.category["noCategory"][index].$del('self');
+                $scope.category["noCategory"].splice(index,1);
             }else {
                 $scope.category[item.labelCodes][index].$del('self');
                 $scope.category[item.labelCodes].splice(index,1);
