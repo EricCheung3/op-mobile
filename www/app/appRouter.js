@@ -108,6 +108,15 @@
                     }
                 }
             })
+            .state('app.dashboard.upload', {
+                url: '/upload',
+                views: {
+                    'upload-tab': {
+                        templateUrl: 'app/upload/upload.html',
+                        controller: 'uploadController as vm'
+                    }
+                }
+            })
             ;
 
         $urlRouterProvider.otherwise('/');

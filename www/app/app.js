@@ -10,6 +10,7 @@
         'base64',
         'ngCordova',
         'ionic.service.core',
+        'angularFileUpload',
         'openpriceCommon',
     ])
     .config(function($httpProvider, $ionicConfigProvider, $mdThemingProvider, $mdGestureProvider) {
