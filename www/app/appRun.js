@@ -12,7 +12,7 @@
         $rootScope.$stateParams = $stateParams;
 
         apiService.init('http://104.154.88.206:7800'); // openprice-dev server
-
+        //apiService.init('http://192.168.99.100:7800'); // web api server in local docker container
 
         $ionicPlatform.ready(function() {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

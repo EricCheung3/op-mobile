@@ -1,0 +1,23 @@
+<ion-view view-title="Upload">
+    <ion-content class="padding">
+    Please select receipt image file and OCR result file before click Upload button!
+        <div>
+            <h3>Choose Image</h3>
+            <input type="file" nv-file-select uploader="vm.uploader"/><br/>
+        </div>
+        <div>
+            <h3>Choose OCR Result</h3>
+            <input type="file" nv-file-select options="{alias:'ocr'}" uploader="vm.uploader"/><br/>
+        </div>
+            <h5>Upload queue</h5>
+            <ul>
+                <li ng-repeat="item in vm.uploader.queue">
+                    Name: <span ng-bind="item.alias"></span><br/>
+                    File Name: <span ng-bind="item.file.name"></span><br/>
+
+                </li>
+            </ul>
+            <button ng-click="vm.uploadAll()">Upload</button>
+    </ion-content>
+
+</ion-view>
