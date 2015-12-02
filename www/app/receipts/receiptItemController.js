@@ -129,7 +129,7 @@
                 userResource.$post('shoppingList', {}, object)
                   .then(function(r){
                       console.log("result", "success");
-                      alert("add items to shoppingList success!");
+                      confirm("add items to shoppingList success!");
                   });
             });
         };

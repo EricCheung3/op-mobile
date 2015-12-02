@@ -77,16 +77,18 @@
   <ion-content ng-show="vm.shoppingMode">
     <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="right">
       <ion-item class="store-items" ng-repeat="(index, item) in vm.items" ng-click="vm.itemDetail(item)">
-        <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.name}}</p>
+        <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.catalog.naturalName}}</p>
         <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
         <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item.name]}}</p>
-        <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$xx.x</p>
+        <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">${{vm.price[item.name] | number:2}}</p>
 
         <ion-option-buttons side="left" class="button-positive swipe-button" ng-click="vm.addItemNumber(item)"> <i class="icon icon-medium center ion-ios-plus-outline"></i> </ion-option-buttons>
 
-        <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[item]">
-          <p>Navel Oranges</p>
-          <p>$2.55/kg</p>
+        <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[item.name]">
+          <p>{{item.catalog.naturalName}}  </p>
+          <p>${{item.id}} </p>
+          <p>{{item.catalog.price}} </p>
+          <p>{{item.catalog.labelCodes}} </p>
         </div>
       </ion-item>
     </ion-list>
