@@ -54,9 +54,10 @@
                 halClient
                     .$get(serverHost + '/api')
                     .then( function( resource ) {
-                        $rootScope.authenticated = resource.authenticated;
-                        $rootScope.currentUser = resource.currentUser;
                         return resource;
+                    })
+                    .catch( function(response) {
+                        return {authenticated : false};
                     });
         };
 
