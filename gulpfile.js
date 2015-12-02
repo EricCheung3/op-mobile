@@ -6,12 +6,15 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var gulpNgConfig = require('gulp-ng-config');
+var args = require('yargs').argv;
 
 var paths = {
-  sass: ['./scss/**/*.scss']
+  sass: ['./scss/**/*.scss'],
+  src: 'www',
 };
 
-gulp.task('default', ['sass']);
+gulp.task('default', ['sass', 'config']);
 
 gulp.task('sass', function(done) {
   gulp.src('./scss/app.scss')
@@ -49,4 +52,12 @@ gulp.task('git-check', function(done) {
     process.exit(1);
   }
   done();
+});
+
+gulp.task('config', function () {
+  var env = args.env || process.env.env || 'development';
+  console.log("Use environment of "+env);
+  gulp.src(paths.src + '/app/config.json')
+  .pipe(gulpNgConfig('openprice.config', {environment: env}))
+  .pipe(gulp.dest(paths.src+'/app'))
 });

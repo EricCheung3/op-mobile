@@ -6,3 +6,4 @@ www/lib/
 /npm-debug.log
 .DS_Store
 Thumbs.db
+/www/app/config.js

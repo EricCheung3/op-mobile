@@ -1,0 +1,17 @@
+{
+  "localhost": {
+    "EnvironmentConfig": {
+      "api": "http://localhost:7801"
+    }
+  },
+  "localdocker": {
+    "EnvironmentConfig": {
+      "api": "http://192.168.99.100:7801"
+    }
+  },
+  "development": {
+    "EnvironmentConfig": {
+      "api": "http://104.154.88.206:7801"
+    }
+  }
+}
