@@ -21,8 +21,8 @@
     <!-- <ion-refresher pulling-text="Pull to refresh..." on-refresh="vm.pullToRefresh()">  </ion-refresher> -->
     <!-- STYLING for TOP TOTAL  -->
     <ion-item class="store-items list-border item-dark">
-      <p class="inline vertical-align-bottom white-text"> Items: {{vm.items.length}} </p>
-      <p class="inline float-right vertical-align-bottom white-text"> Total: $7.53 +</p>
+      <p class="inline vertical-align-bottom white-text"> Items: {{totalNumber}} </p>
+      <p class="inline float-right vertical-align-bottom white-text"> Total: ${{totalPrice|number:2}}</p>
     </ion-item>
 
 
@@ -31,9 +31,9 @@
       <!-- clicking on category names hides the items on the category and vice versa-->
       <div  ng-repeat="(categoryLabel, items) in category">
         <ion-item class="category item-dark" ng-click="vm.categoryDetail(categoryLabel)">
-          <img class="inline category-icon" src="img/custom_icons/fruit.svg">
+          <img class="inline category-icon" src="img/custom_icons/{{categoryLabel|lowercase}}.svg">
           <div class="center" style="width: 50%;"><p class="center inline text-center">{{categoryLabel}}</p></div>
-          <p class="inline category-price">$sub-total</p>
+          <p class="inline category-price">sub-total:${{subtotal[categoryLabel]|number:2}}</p>
         </ion-item>
 
         <div ng-show="vm.show[categoryLabel]">

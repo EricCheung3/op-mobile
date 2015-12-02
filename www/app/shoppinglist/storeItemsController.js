@@ -38,7 +38,9 @@
 
 
         $scope.category = {};
-
+        $scope.totalNumber = 0;
+        $scope.totalPrice = 0;
+        $scope.subtotal = {};
 
         var storeId = $stateParams.storeId;
         console.log("storeId", storeId);
@@ -58,7 +60,7 @@
             vm.items = storeItems;
             vm.lastItemsPage = itemsPage;
             console.log("Load first page items", storeItems);
-
+            $scope.totalNumber = storeItems.length
             // click to display detail
             vm.items.forEach(function (item) {
                 if(item.catalog !== null){
@@ -67,16 +69,17 @@
                   vm.price[item.name] = item.catalog.price; // need to make sure
                   vm.show[item.name] = false;
                   $scope.category[item.catalog.labelCodes] = [];
+                  $scope.subtotal[item.catalog.labelCodes] = 0;
                 }else {
                   vm.show["noCategory"] = false;
                   vm.number[item.name] = 1;
                   vm.price[item.name] = 0; // need to make sure
                   vm.show[item.name] = false;
                   $scope.category["noCategory"] = [];
-
+                  $scope.subtotal["noCategory"] = 0;
                 }
                 //console.log("item----------",item);
-
+                $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.name]);
             });
 
             // vm.category
@@ -85,8 +88,10 @@
                 //NOTE: catalogCode should be labelCodes
                 if (item.catalog === null){
                     $scope.category["noCategory"].push(item);
+                    $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
                 }else {
                     $scope.category[item.catalog.labelCodes].push(item);
+                    $scope.subtotal[item.catalog.labelCodes] = Number($scope.subtotal[item.catalog.labelCodes]) + Number(vm.price[item.name]);
                 }
 
             });
@@ -144,8 +149,8 @@
 
         function deleteItem(index,item){
             console.log("DELETE-ITEM", vm.items[index].id);
-            // console.log("$scope.category length",$scope.category[item.catalog.labelCodes].length);
-            // vm.items[index].$del('self');
+            $scope.totalNumber = $scope.totalNumber - 1;
+            $scope.totalPrice = Number($scope.totalPrice) - Number(vm.price[item.name]);
             if(item.catalog === null){
                 $scope.category["noCategory"][index].$del('self');
                 $scope.category["noCategory"].splice(index,1);
@@ -210,6 +215,8 @@
             vm.price[item.name] = 0;
           }else {
             vm.price[item.name] = Number(vm.price[item.name]) + Number(item.catalog.price);
+            $scope.totalPrice = Number($scope.totalPrice) + Number(item.catalog.price);
+            $scope.subtotal[item.catalog.labelCodes] = Number($scope.subtotal[item.catalog.labelCodes]) + Number(item.catalog.price);
           }
 
         };
@@ -218,7 +225,9 @@
             if(vm.number[item.name] > 1){
               vm.number[item.name] = vm.number[item.name] - 1;
               if(item.catalog !== null){
-                vm.price[item.name] = Number(vm.price[item.name]) - Number(item.catalog.price);;
+                vm.price[item.name] = Number(vm.price[item.name]) - Number(item.catalog.price);
+                $scope.totalPrice = $scope.totalPrice - Number(item.catalog.price);
+                $scope.subtotal[item.catalog.labelCodes] = Number($scope.subtotal[item.catalog.labelCodes]) - Number(item.catalog.price);
               }else {
                 vm.price[item.name] = 0;
               }
@@ -256,6 +265,8 @@
                           item.$del('self');
                       });
                       $scope.category = {};
+                      $scope.totalNumber = 0;
+                      $scope.totalPrice = 0;
                       popup.close();
                   }
                 }
