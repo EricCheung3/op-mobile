@@ -12,7 +12,8 @@
         'ionic.service.core',
         'angularFileUpload',
         'openpriceCommon',
-        'openprice.config'
+        'openprice.config',
+        'ion-autocomplete'
     ])
     .config(function($httpProvider, $ionicConfigProvider, $mdThemingProvider, $mdGestureProvider) {
         $httpProvider.interceptors.push('tokenAuthInterceptor');

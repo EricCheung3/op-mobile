@@ -16,7 +16,7 @@
     "angular-file-upload": "~2.2.0"
   },
   "dependencies": {
-
+    "ion-autocomplete": "~0.3.1"
   },
   "resolutions": {
     "angular": "1.4.5",

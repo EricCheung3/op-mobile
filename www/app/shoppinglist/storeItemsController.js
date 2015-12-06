@@ -5,9 +5,9 @@
         .module('openpriceMobile')
         .controller('storeItemsController', storeItemsController);
 
-    storeItemsController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', '$stateParams', 'receiptService', '$ionicPopup', '$state'];
+    storeItemsController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', '$stateParams', 'receiptService', '$ionicPopup', '$state', 'searchService'];
 
-    function storeItemsController(   $log,   $rootScope,   $scope,   $location,   apiService ,  $stateParams ,  receiptService ,  $ionicPopup ,  $state) {
+    function storeItemsController(   $log,   $rootScope,   $scope,   $location,   apiService ,  $stateParams ,  receiptService ,  $ionicPopup ,  $state,   searchService) {
         $log.debug('==> storeController');
 
         var vm = this;
@@ -36,11 +36,18 @@
         vm.moreItemsCanBeLoaded = moreItemsCanBeLoaded;
         vm.scrollToLoadMore = scrollToLoadMore;
 
-
+        // for global display data
         $scope.category = {};
         $scope.totalNumber = 0;
         $scope.totalPrice = 0;
         $scope.subtotal = {};
+
+        // for search items
+        vm.searchItemsFromServer = searchItemsFromServer;
+        vm.itemsClicked = itemsClicked;
+        vm.itemsRemoved = itemsRemoved;
+        vm.doneSearch = doneSearch;
+
 
         var storeId = $stateParams.storeId;
         console.log("storeId", storeId);
@@ -51,9 +58,10 @@
             .then(function (userResource) {
                 userResource.$get('store', {storeId:storeId})
                 .then(function(store){
-                    vm.store = store.displayName;
+                    vm.store = store;
                 });
             });
+
 
 
         receiptService.loadFirstPageOfUserStoreItems(storeId, function(storeItems, itemsPage) {
@@ -87,6 +95,7 @@
                 vm.show[item.name] = false;
                 //NOTE: catalogCode should be labelCodes
                 if (item.catalog === null){
+
                     $scope.category["noCategory"].push(item);
                     $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
                 }else {
@@ -273,6 +282,55 @@
               ]
             });
         };
+
+        // search test from remote server
+        $scope.model = "";
+
+        // parameter must be named "query", see ion-autocomplete for detail
+        function searchItemsFromServer(query) {
+            // items should come from remote server
+            if (query) {
+                return searchService.searchItems(storeId, query);
+            }
+            // add selected items to shoppinglist
+            return {items: []};
+        };
+
+        // parameter must be named "callback"
+        function itemsClicked(callback) {
+            console.log('callback',callback);
+        };
+        function itemsRemoved(callback) {
+            console.log('callback',callback);
+        };
+        function doneSearch(callback) {
+            console.log("Done",callback);
+            // add selected items to shopping list
+            // addToShoppingList(vm.store.chainCode, callback.selectedItems);
+        }
+
+
+        function addToShoppingList(chainCode,items){
+            console.log("=======>addToShoppingList");
+
+            var object = {
+                          "chainCode" : chainCode, //receipt.chainCode
+                          "items" : items
+                         };
+            console.log("added items obect", object);
+
+            // post to database
+            apiService.getUserResource()
+            .then(function (userResource) {
+                userResource.$post('shoppingList', {}, object)
+                  .then(function(){
+                      console.log("result", "success");
+                  });
+            });
+        };
+
+
+
 
     }; // end of storeController
 

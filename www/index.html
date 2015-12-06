@@ -10,7 +10,8 @@
     <link href="css/app.css" rel="stylesheet">
     <!-- for Angular Material -->
     <link rel="stylesheet" type="text/css" href="lib/angular-material/angular-material.css">
-
+    <!-- for ion-autocomplete search -->
+    <link rel="stylesheet" href="lib/ion-autocomplete/dist/ion-autocomplete.css">
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.js"></script>
     <script src="lib/angular/angular.js"></script>
@@ -36,6 +37,9 @@
     <script src="cordova.js"></script>
     <!-- for angular file uplader -->
     <script src="lib/angular-file-upload/dist/angular-file-upload.js"></script>
+    <!-- search items from remote server:ion-autocomplete -->
+    <script src="lib/ion-autocomplete/dist/ion-autocomplete.js"></script>
+
     <!-- your app's js -->
     <script src="app/app.js"></script>
     <script src="app/appRouter.js"></script>
@@ -64,7 +68,7 @@
     <script src="app/authentication/reset/resetRouter.js"></script>
     <script src="app/authentication/reset/resetController.js"></script>
 
-
+    <script src="app/dashboard/searchService.js"></script>
     <script src="app/dashboard/receiptService.js"></script>
     <script src="app/dashboard/dashboardController.js"></script>
     <script src="app/home/homeController.js"></script>
@@ -79,6 +83,8 @@
     <script src="app/receiptscrop/cropController.js"></script>
 
     <script src="app/upload/uploadController.js"></script>
+
+
     <!-- Don't have these module now
     <script src="app/folders/foldersController.js"></script>
     <script src="app/friends/friendsController.js"></script>
