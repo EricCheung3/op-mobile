@@ -304,29 +304,40 @@
             console.log('callback',callback);
         };
         function doneSearch(callback) {
-            console.log("Done",callback);
+            console.log("Done",callback); // this will return an array
+
             // add selected items to shopping list
-            // addToShoppingList(vm.store.chainCode, callback.selectedItems);
+
+            addToShoppingList(vm.store.chainCode, callback.selectedItems);
         }
 
 
         function addToShoppingList(chainCode,items){
             console.log("=======>addToShoppingList");
 
-            var object = {
-                          "chainCode" : chainCode, //receipt.chainCode
-                          "items" : items
-                         };
-            console.log("added items obect", object);
+            items.forEach(function(item){
+                var object = {
+                              "catalogCode" : item.code, //item.catalogCode
+                              "name" : item.naturalName
+                             };
+                console.log("added items obect", object);
 
-            // post to database
-            apiService.getUserResource()
-            .then(function (userResource) {
-                userResource.$post('shoppingList', {}, object)
-                  .then(function(){
-                      console.log("result", "success");
-                  });
+                // post to database
+                apiService.getUserResource()
+                .then(function (userResource) {
+                    // userResource.$post('shoppingList', {}, object)
+                      // .then(function(userResource){
+                          userResource.$get('store', {storeId:storeId})
+                          .then(function(userStore){
+                              userStore.$post('items', {}, object)
+                              console.log("result", userStore);
+                          })
+
+                      // });
+                });
+
             });
+
         };
 
 

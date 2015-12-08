@@ -21,7 +21,7 @@
         vm.showItems = showItems;
         vm.editItem = editItem;
         vm.deleteItem = deleteItem;
-        vm.AddToShoppingList = AddToShoppingList;
+        vm.addToShoppingList = addToShoppingList;
         vm.receiptParseResult;
         vm.receiptImages = [];
         vm.receiptItems = [];
@@ -99,8 +99,9 @@
             vm.receiptItems.splice(item, 1);
         };
 
-        function AddToShoppingList(){
-            console.log("=======>AddToShoppingList");
+        // need to extract it out into a service
+        function addToShoppingList(){
+            console.log("=======>addToShoppingList");
             var items = [];
 
             for(var i=0;i<vm.receiptItems.length; i++){
@@ -129,7 +130,7 @@
                 userResource.$post('shoppingList', {}, object)
                   .then(function(r){
                       console.log("result", "success");
-                      confirm("add items to shoppingList success!");
+                      // confirm("add items to shoppingList success!");
                   });
             });
         };

@@ -23,7 +23,7 @@
                     .then(function(store){
                         return store.$get("catalogs", {query:query});
                     }).then(function(items) {
-                        //console.log("service items",items);
+                        console.log("search-service items return",items);
                         deferred.resolve({items: items});
                     });
                 });
