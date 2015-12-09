@@ -5,9 +5,9 @@
         .module('openpriceMobile')
         .controller('shoppingListController', shoppingListController);
 
-    shoppingListController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService' , '$state', 'receiptService'];
+    shoppingListController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService' , '$state', 'storeService'];
 
-    function shoppingListController(   $log,   $rootScope,   $scope,   $location,   apiService ,   $state ,  receiptService) {
+    function shoppingListController(   $log,   $rootScope,   $scope,   $location,   apiService ,   $state ,  storeService) {
         $log.debug('==> shoppingListController');
 
         var vm = this;
@@ -21,7 +21,7 @@
         vm.listCanSwipe = true;
 
 
-        receiptService.getStoresResource()
+        storeService.getStoresResource()
         .then(function(stores){
             console.log("stores", stores);
             vm.stores = stores;
@@ -32,7 +32,7 @@
 
         function pullToRefresh(){
             $log.debug('==> stores pullToRefresh');
-            receiptService
+            storeService
             .loadFirstPageOfUserStores( function(storeList, storeListPage) {
                 vm.stores = storeList;
                 vm.lastStoreListPage = storeListPage;

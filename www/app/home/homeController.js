@@ -35,6 +35,9 @@
 
         // receiptImages to control multi-upload
         vm.receiptImages = null;
+
+        vm.receipts;
+        vm.lastReceiptListPage;
         vm.date = null;
         // when enter the receipts screen, load first page of receipts (default are three receipts)
         // receiptService.loadFirstPageOfUserReceipts( function(receipts, receiptListsPage) {
@@ -66,7 +69,26 @@
             .finally( function() {
                 // Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');
+                receiptService
+                    .getReceiptResource2(vm.receipts[0].id, function(receipt, receiptParseResult){
+                        vm.receipt = receipt;
+                        vm.receiptParseResult = receiptParseResult;
+                        // console.log("receipt", receipt);
+                        // console.log("receiptParseResult", receiptParseResult);
+                    });
             });
+
+            /**[ASYN]
+             * asynchronization to get uploaded receipt information.
+             * just for the latest one. []
+             */
+            //  receiptService
+            //      .getReceiptResource2(vm.receipts[0].id, function(receipt, receiptParseResult){
+            //          vm.receipt = receipt;
+            //          vm.receiptParseResult = receiptParseResult;
+             //
+            //          console.log("receiptParseResult", receiptParseResult);
+            //      });
 
         };
 

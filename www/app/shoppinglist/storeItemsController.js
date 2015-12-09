@@ -5,9 +5,9 @@
         .module('openpriceMobile')
         .controller('storeItemsController', storeItemsController);
 
-    storeItemsController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', '$stateParams', 'receiptService', '$ionicPopup', '$state', 'searchService'];
+    storeItemsController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', '$stateParams', 'storeService', '$ionicPopup', '$state', 'searchService'];
 
-    function storeItemsController(   $log,   $rootScope,   $scope,   $location,   apiService ,  $stateParams ,  receiptService ,  $ionicPopup ,  $state,   searchService) {
+    function storeItemsController(   $log,   $rootScope,   $scope,   $location,   apiService ,  $stateParams ,  storeService ,  $ionicPopup ,  $state,   searchService) {
         $log.debug('==> storeController');
 
         var vm = this;
@@ -64,20 +64,22 @@
 
 
 
-        receiptService.loadFirstPageOfUserStoreItems(storeId, function(storeItems, itemsPage) {
+        storeService.loadFirstPageOfUserStoreItems(storeId, function(storeItems, itemsPage) {
             vm.items = storeItems;
             vm.lastItemsPage = itemsPage;
             console.log("Load first page items", storeItems);
             $scope.totalNumber = storeItems.length
             // click to display detail
             vm.items.forEach(function (item) {
+
+                // item.catalog.labelCodes="Fruit, Food", extract the first category
                 if(item.catalog !== null){
-                  vm.show[item.catalog.labelCodes] = false;
+                  vm.show[item.catalog.labelCodes.split(",")[0]] = false;
                   vm.number[item.name] = 1;
                   vm.price[item.name] = item.catalog.price; // need to make sure
                   vm.show[item.name] = false;
-                  $scope.category[item.catalog.labelCodes] = [];
-                  $scope.subtotal[item.catalog.labelCodes] = 0;
+                  $scope.category[item.catalog.labelCodes.split(",")[0]] = [];
+                  $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = 0;
                 }else {
                   vm.show["noCategory"] = false;
                   vm.number[item.name] = 1;
@@ -99,8 +101,8 @@
                     $scope.category["noCategory"].push(item);
                     $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
                 }else {
-                    $scope.category[item.catalog.labelCodes].push(item);
-                    $scope.subtotal[item.catalog.labelCodes] = Number($scope.subtotal[item.catalog.labelCodes]) + Number(vm.price[item.name]);
+                    $scope.category[item.catalog.labelCodes.split(",")[0]].push(item);
+                    $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) + Number(vm.price[item.name]);
                 }
 
             });
@@ -112,9 +114,10 @@
         function pullToRefresh() {
             console.log("=========> pull to refresh");
             // load first page of items
-            receiptService.loadFirstPageOfUserStoreItems(storeId, function(items, itemsPage) {
-                vm.items = items;
+            storeService.loadFirstPageOfUserStoreItems(storeId, function(storeItems, itemsPage) {
+                vm.items = storeItems;
                 vm.lastItemsPage = itemsPage;
+                $scope.totalNumber = storeItems.length;
             })
             .finally( function() {
                 // Stop the ion-refresher from spinning
@@ -167,19 +170,19 @@
                     delete $scope.category["noCategory"];
                 }
             }else {
-                $scope.category[item.catalog.labelCodes][index].$del('self');
-                $scope.category[item.catalog.labelCodes].splice(index,1);
-                if($scope.category[item.catalog.labelCodes].length == 0){
-                    delete $scope.category[item.catalog.labelCodes];
+                $scope.category[item.catalog.labelCodes.split(",")[0]][index].$del('self');
+                $scope.category[item.catalog.labelCodes.split(",")[0]].splice(index,1);
+                if($scope.category[item.catalog.labelCodes.split(",")[0]].length == 0){
+                    delete $scope.category[item.catalog.labelCodes.split(",")[0]];
                 }
             }
-            // console.log("$scope.category length 2",$scope.category[item.catalog.labelCodes].length);
+            // console.log("$scope.category length 2",$scope.category[item.catalog.labelCodes.split(",")[0]].length);
 
         };
 
         function itemDetail(item) {
             vm.show[item.name] = !vm.show[item.name];
-            // console.log("$scope.category[item.catalog.labelCodes]",$scope.category[item.catalog.labelCodes][0]);
+            // console.log("$scope.category[item.catalog.labelCodes.split(",")[0]]",$scope.category[item.catalog.labelCodes.split(",")[0]][0]);
 
         };
 
@@ -225,7 +228,7 @@
           }else {
             vm.price[item.name] = Number(vm.price[item.name]) + Number(item.catalog.price);
             $scope.totalPrice = Number($scope.totalPrice) + Number(item.catalog.price);
-            $scope.subtotal[item.catalog.labelCodes] = Number($scope.subtotal[item.catalog.labelCodes]) + Number(item.catalog.price);
+            $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) + Number(item.catalog.price);
           }
 
         };
@@ -236,7 +239,7 @@
               if(item.catalog !== null){
                 vm.price[item.name] = Number(vm.price[item.name]) - Number(item.catalog.price);
                 $scope.totalPrice = $scope.totalPrice - Number(item.catalog.price);
-                $scope.subtotal[item.catalog.labelCodes] = Number($scope.subtotal[item.catalog.labelCodes]) - Number(item.catalog.price);
+                $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) - Number(item.catalog.price);
               }else {
                 vm.price[item.name] = 0;
               }
@@ -299,47 +302,82 @@
         // parameter must be named "callback"
         function itemsClicked(callback) {
             console.log('callback',callback);
+            // addToShoppingList(callback.item);
         };
         function itemsRemoved(callback) {
             console.log('callback',callback);
         };
         function doneSearch(callback) {
             console.log("Done",callback); // this will return an array
-
             // add selected items to shopping list
-
-            addToShoppingList(vm.store.chainCode, callback.selectedItems);
+            addToShoppingList(callback.selectedItems);
+            // auto refresh shopping list
+            pullToRefresh();
         }
 
 
-        function addToShoppingList(chainCode,items){
+        function addToShoppingList(items){
             console.log("=======>addToShoppingList");
 
+            /* // add item to shoppinglist after click an item
+            var object = {
+                          "catalogCode" : items.code, //item.catalogCode
+                          "name" : items.naturalName
+                         };
+            console.log("added items obect", object);
+            // post to database
+            apiService.getUserResource()
+            .then(function (userResource) {
+                userResource.$get('store', {storeId:storeId})
+                .then(function(userStore){
+                    userStore.$post('items', {}, object)
+                    console.log("result", userStore);
+                })
+            });
+            */
+            // add array to shoppinglist after click Done button
             items.forEach(function(item){
+                $scope.totalNumber = $scope.totalNumber + 1;
+                // add items to category [used to display and refresh UI]
+
+                vm.show[item.labelCodes.split(",")[0]] = false;
+                vm.number[item.name] = 1;
+                vm.price[item.name] = item.price; // need to make sure
+                vm.show[item.name] = false;
+                //NOTE: catalogCode should be labelCodes
+                if (item.code === null){
+                    $scope.category["noCategory"].push(item);
+                    $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
+                }else {
+                    // add check for new category...
+                    if(!$scope.category[item.labelCodes.split(",")[0]]){
+                        $scope.category[item.labelCodes.split(",")[0]] = [];
+                        $scope.subtotal[item.labelCodes.split(",")[0]] = 0;
+
+                    }
+                    $scope.category[item.labelCodes.split(",")[0]].push(item);
+                    $scope.subtotal[item.labelCodes.split(",")[0]] = Number($scope.subtotal[item.labelCodes.split(",")[0]]) + Number(vm.price[item.name]);
+                }
+
+                // [add to use's shopping list [database]]
                 var object = {
                               "catalogCode" : item.code, //item.catalogCode
                               "name" : item.naturalName
                              };
                 console.log("added items obect", object);
-
                 // post to database
                 apiService.getUserResource()
                 .then(function (userResource) {
-                    // userResource.$post('shoppingList', {}, object)
-                      // .then(function(userResource){
-                          userResource.$get('store', {storeId:storeId})
-                          .then(function(userStore){
-                              userStore.$post('items', {}, object)
-                              console.log("result", userStore);
-                          })
-
-                      // });
+                    userResource.$get('store', {storeId:storeId})
+                    .then(function(userStore){
+                        userStore.$post('items', {}, object)
+                        console.log("result", userStore);
+                    })
                 });
-
             });
 
-        };
 
+        };
 
 
 

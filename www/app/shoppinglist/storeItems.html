@@ -42,7 +42,7 @@
     <!-- NOTE: following is real data, don't touch it -->
     <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="both">
       <!-- clicking on category names hides the items on the category and vice versa-->
-      <div  ng-repeat="(categoryLabel, items) in category">
+      <div  ng-repeat="(categoryLabel, items) in category | orderBy:categoryLabel">
         <ion-item class="category item-dark" ng-click="vm.categoryDetail(categoryLabel)">
           <img class="inline category-icon" src="img/custom_icons/{{categoryLabel|lowercase}}.svg">
           <div class="center" style="width: 50%;"><p class="center inline text-center">{{categoryLabel}}</p></div>

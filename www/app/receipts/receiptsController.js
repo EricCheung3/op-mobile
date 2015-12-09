@@ -11,6 +11,8 @@
               }
         });
 
+    // NOTE:NOTE:NOTE: this js file was deprecated
+
     receiptsController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', 'receiptService', '$q', '$http' ,'$base64', '$state', '$stateParams'];
     function receiptsController(   $log,   $rootScope,   $scope,   $location,   apiService ,  receiptService,   $q,   $http  , $base64 ,  $state ,  $stateParams) {
         $log.debug('==> receiptsController');
