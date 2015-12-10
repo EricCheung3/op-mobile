@@ -33,8 +33,6 @@
         vm.doneShoppingMode = doneShoppingMode;
         vm.shoppingMode = false;
         vm.pullToRefresh = pullToRefresh;
-        vm.moreItemsCanBeLoaded = moreItemsCanBeLoaded;
-        vm.scrollToLoadMore = scrollToLoadMore;
 
         // for global display data
         $scope.category = {};
@@ -54,24 +52,21 @@
 
         //  get store info according to storeId
         apiService
-            .getUserResource()
-            .then(function (userResource) {
-                userResource.$get('store', {storeId:storeId})
-                .then(function(store){
-                    vm.store = store;
-                });
-            });
+          .getUserResource()
+          .then(function (userResource) {
+              userResource.$get('store', {storeId:storeId})
+              .then(function(store){
+                  vm.store = store;
+                  vm.items = store.items;
+                  console.log("items",store.items);
+                  categorizeItems(store.items);
+              });
+          });
 
-
-
-        storeService.loadFirstPageOfUserStoreItems(storeId, function(storeItems, itemsPage) {
-            vm.items = storeItems;
-            vm.lastItemsPage = itemsPage;
-            console.log("Load first page items", storeItems);
-            $scope.totalNumber = storeItems.length
+        function categorizeItems(items){
+            $scope.totalNumber = items.length;
             // click to display detail
-            vm.items.forEach(function (item) {
-
+            items.forEach(function (item) {
                 // item.catalog.labelCodes="Fruit, Food", extract the first category
                 if(item.catalog !== null){
                   vm.show[item.catalog.labelCodes.split(",")[0]] = false;
@@ -93,7 +88,7 @@
             });
 
             // vm.category
-            vm.items.forEach(function (item) {
+            items.forEach(function (item) {
                 vm.show[item.name] = false;
                 //NOTE: catalogCode should be labelCodes
                 if (item.catalog === null){
@@ -107,50 +102,20 @@
 
             });
             console.log("category", $scope.category);
-            console.log("vm.show", vm.show);
-        });
+
+        };
 
 
         function pullToRefresh() {
             console.log("=========> pull to refresh");
             // load first page of items
-            storeService.loadFirstPageOfUserStoreItems(storeId, function(storeItems, itemsPage) {
+            storeService.getStoreAllItems(storeId, function(storeItems) {
                 vm.items = storeItems;
-                vm.lastItemsPage = itemsPage;
-                $scope.totalNumber = storeItems.length;
             })
             .finally( function() {
                 // Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');
             });
-        };
-
-        function moreItemsCanBeLoaded() {
-            return vm.lastItemsPage !== null && vm.lastItemsPage.$has("next");
-        };
-
-        function scrollToLoadMore() {
-            console.log("===========> scroll to load more");
-            if(vm.lastItemsPage !== null && vm.lastItemsPage.$has("next")){
-                vm.lastItemsPage
-                .$get('next')
-                .then(function(nextItemsList){
-                    vm.lastItemsPage = nextItemsList;
-                    return nextItemsList.$get('shoppingItems');
-                }).then(function(items) {
-                    items.forEach(function (item) {
-                        vm.items.push(item);
-                    });
-
-                    // console.log("load more", vm.items);
-                })
-                .finally(function() {
-                    $scope.$broadcast('scroll.infiniteScrollComplete');
-                });
-            }else {
-                console.log("No next page now...");
-                $scope.$broadcast('scroll.infiniteScrollComplete');
-            }
         };
 
         function editItem(index){
@@ -160,7 +125,7 @@
         };
 
         function deleteItem(index,item){
-            console.log("DELETE-ITEM", vm.items[index].id);
+
             $scope.totalNumber = $scope.totalNumber - 1;
             $scope.totalPrice = Number($scope.totalPrice) - Number(vm.price[item.name]);
             if(item.catalog === null){
@@ -187,7 +152,6 @@
         };
 
         function categoryDetail(categoryLabel){
-            console.log("category--item detail",categoryLabel);
             vm.show[categoryLabel] = !vm.show[categoryLabel];
         };
 
@@ -360,10 +324,11 @@
                 }
 
                 // [add to use's shopping list [database]]
-                var object = {
-                              "catalogCode" : item.code, //item.catalogCode
-                              "name" : item.naturalName
-                             };
+                var object =
+                    {
+                      "catalogCode" : item.code, //item.catalogCode
+                      "name" : item.naturalName
+                     };
                 console.log("added items obect", object);
                 // post to database
                 apiService.getUserResource()

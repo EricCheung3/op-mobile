@@ -21,22 +21,20 @@
         vm.listCanSwipe = true;
 
 
-        storeService.getStoresResource()
-        .then(function(stores){
-            console.log("stores", stores);
-            vm.stores = stores;
-        });
-
+        storeService
+            .getStoresResource()
+            .then(function(stores){
+                console.log("stores", stores);
+                vm.stores = stores;
+            });
 
         //vm.pullToRefresh();
-
         function pullToRefresh(){
             $log.debug('==> stores pullToRefresh');
             storeService
             .loadFirstPageOfUserStores( function(storeList, storeListPage) {
                 vm.stores = storeList;
                 vm.lastStoreListPage = storeListPage;
-                console.log("stores",storeList);
             })
             .finally( function() {
                 // Stop the ion-refresher from spinning
