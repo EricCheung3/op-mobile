@@ -13,7 +13,8 @@
         'angularFileUpload',
         'openpriceCommon',
         'openprice.config',
-        'ion-autocomplete'
+        'ion-autocomplete',
+        'ngOpenFB' // fb login
     ])
     .config(function($httpProvider, $ionicConfigProvider, $mdThemingProvider, $mdGestureProvider) {
         $httpProvider.interceptors.push('tokenAuthInterceptor');
@@ -33,8 +34,8 @@
 
         $ionicConfigProvider.backButton.text('').previousTitleText('').icon('ion-ios-arrow-thin-left');
 
-$mdThemingProvider.theme('default');
-$mdGestureProvider.skipClickHijack();
+        $mdThemingProvider.theme('default');
+        $mdGestureProvider.skipClickHijack();
     });
 
 }());

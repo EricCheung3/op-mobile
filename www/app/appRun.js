@@ -5,9 +5,13 @@
         .module('openpriceMobile')
         .run(run);
 
-    run.$inject = ['$log', '$rootScope', '$ionicPlatform', '$state', '$stateParams', 'apiService', 'EnvironmentConfig']
+    run.$inject = ['$log', '$rootScope', '$ionicPlatform', '$state', '$stateParams', 'apiService', 'EnvironmentConfig', 'ngFB']
 
-    function run(   $log,   $rootScope,   $ionicPlatform,   $state,   $stateParams,   apiService,   EnvironmentConfig) {
+    function run(   $log,   $rootScope,   $ionicPlatform,   $state,   $stateParams,   apiService,   EnvironmentConfig,   ngFB) {
+
+        //fb login
+        ngFB.init({appId: '710014625767261'});
+
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
 

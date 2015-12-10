@@ -5,9 +5,9 @@
         .module('openpriceMobile')
         .controller('loginController', loginController);
 
-    loginController.$inject = ['$log', '$rootScope', '$scope', '$state', 'apiService'];
+    loginController.$inject = ['$log', '$rootScope', '$scope', '$state', 'apiService', 'ngFB'];
 
-    function loginController(   $log,   $rootScope,   $scope,  $state,   apiService ) {
+    function loginController(   $log,   $rootScope,   $scope,   $state,   apiService,   ngFB ) {
         $log.debug('==> loginController');
 
         /* jshint validthis: true */
@@ -30,6 +30,21 @@
                 }
             });
         }
+
+        // login with Facebook
+        $scope.fbLogin = function () {
+            ngFB.login({scope: 'email'}).then(
+                function (response) {
+                    if (response.status === 'connected') {
+                        console.log('Facebook login succeeded');
+                        // $scope.logout();
+                        $scope.error = false;
+                        $state.go("app.dashboard.home");
+                    } else {
+                        alert('Facebook login failed');
+                    }
+                });
+        };
 
     };
 })();
