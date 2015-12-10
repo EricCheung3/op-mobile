@@ -50,18 +50,13 @@
         var storeId = $stateParams.storeId;
         console.log("storeId", storeId);
 
-        //  get store info according to storeId
-        apiService
-          .getUserResource()
-          .then(function (userResource) {
-              userResource.$get('store', {storeId:storeId})
-              .then(function(store){
-                  vm.store = store;
-                  vm.items = store.items;
-                  console.log("items",store.items);
-                  categorizeItems(store.items);
-              });
-          });
+        storeService.getStoreAllItems(storeId, function(store){
+            vm.store = store;
+            vm.items = store.items.$$state.value;
+            console.log("items",store.items.$$state.value);
+            categorizeItems(vm.items);
+        });
+
 
         function categorizeItems(items){
             $scope.totalNumber = items.length;

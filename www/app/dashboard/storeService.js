@@ -53,51 +53,53 @@
               var storeList = [];
               var storePage;
               return apiService
-                  .getUserResource()
-                  .then( function(resource) {
-                      return resource.$get('stores');
-                  }).then( function(storeList) {
-                      storePage = storeList;
-                      console.log("storeList",storeList);
-                      if(storeList.$has('shoppingStores')){
-                          return storeList.$get('shoppingStores');
-                      } else {
-                          return $q.reject("NO stores!");
-                      }
-                  }).then( function(stores) {
-                      stores.forEach( function(store) {
-                          storeList.push(store);
-                      });
-                  })
-                  .catch ( function(err){
-                      console.error('ERROR code', err); // TODO handle error
-                  })
-                  .finally( function() {
-                      callback(storeList, storePage);
-                  });
+                .getUserResource()
+                .then( function(resource) {
+                    return resource.$get('stores');
+                }).then( function(storeList) {
+                    storePage = storeList;
+                    console.log("storeList",storeList);
+                    if(storeList.$has('shoppingStores')){
+                        return storeList.$get('shoppingStores');
+                    } else {
+                        return $q.reject("NO stores!");
+                    }
+                }).then( function(stores) {
+                    stores.forEach( function(store) {
+                        storeList.push(store);
+                    });
+                })
+                .catch ( function(err){
+                    console.error('ERROR code', err); // TODO handle error
+                })
+                .finally( function() {
+                    callback(storeList, storePage);
+                });
 
           };
 
           function getStoreAllItems(storeId, callback) {
-              var storeItems = [];
+              var Store;
 
               return apiService
                 .getUserResource()
                 .then(function (userResource) {
                     userResource.$get('store',{'storeId': storeId})
                     .then(function(store) {
-                        return store.items;
-                    }).then(function(items){
-                        storeItems = items;
-                    })
+                        Store = store;
+                        Store.items = store.$get('items');
+                        console.log("store resource",Store);
+                        return Store;
+                    })// NOTE: Good, category can be created at here
                     .catch ( function(err){
                         console.error('ERROR code', err); // TODO handle error
                     })
                     .finally( function() {
-                        callback(storeItems);
+                        callback(Store);
                     });
                 });
-          }
+          };
+
 
       }
 })();

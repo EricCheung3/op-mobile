@@ -8,18 +8,12 @@
     receiptService.$inject = ['$log', '$rootScope', 'apiService', '$q', 'halClient', '$http'];
     function receiptService(   $log,   $rootScope,   apiService ,  $q,   halClient ,  $http) {
         var imageCache = new Object();
-        // var storesCache = new Object();
-        // var storeItemsCache = new Object();
         var receiptCache = new Object();
         var receiptParseResultCache = new Object();
 
         return {
             'getReceiptResource' : getReceiptResource,
             'getReceiptResource2' : getReceiptResource2,
-            // 'getStoresResource' : getStoresResource,
-            // 'loadFirstPageOfUserStores' : loadFirstPageOfUserStores,
-            // 'loadFirstPageOfUserStoreItems' : loadFirstPageOfUserStoreItems,
-            // 'loadUserStoreItemsMore' : loadUserStoreItemsMore,
             'loadFirstPageOfUserReceipts' : loadFirstPageOfUserReceipts,
             'getImageBase64Data' : getImageBase64Data
         };
