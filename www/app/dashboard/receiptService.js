@@ -27,14 +27,17 @@
                     return userResource.$get('receipt', {'receiptId': receiptId});
                 })
                 .then( function(receipt) {
-                    // add 'path' property to each image
-                    receipt.images.forEach( function(image) {
-                        getImageBase64Data(image._links.base64.href)
-                        .then( function(imageData) {
-                            image.path = imageData;
+                    receipt.$get('receiptImages')
+                    .then( function(images){
+                        receipt.images = images;
+                        images.forEach( function(image) {
+                            getImageBase64Data(image.base64Url)
+                            .then( function(imageData){
+                                image.path = imageData;
+                            });
                         });
                     });
-                    // use resolve to wait all the call-back done
+
                     deferred.resolve(receipt);
                 });
 
@@ -50,7 +53,7 @@
             }else {
               getReceiptResource(receiptId)
                 .then(function(receipt) {
-                    // console.log("receipt rating", receipt.rating);
+                    console.log("receipt rating", receipt.rating);
                     receiptCache = receipt;
                     receipt.$get('result').then(function(receiptResult){
                         receiptParseResult = receiptResult;
@@ -86,9 +89,13 @@
                 .then( function(receipts) {
                     receipts.forEach( function(receipt) {
                         resultReceipts.push(receipt);
-                        getImageBase64Data(receipt.images[0]._links.base64.href)
-                        .then( function(imageData) {
-                            receipt.path = imageData;
+
+                        receipt.$get('receiptImages')
+                        .then( function(images){
+                            getImageBase64Data(images[0].base64Url)
+                            .then( function(imageData){
+                                receipt.path = imageData;
+                            });
                         });
                     });
                 })
@@ -105,7 +112,7 @@
             var deferred = $q.defer();
             var imageData = imageCache[downloadUrl];
             if (imageData) {
-                //console.log("Get image data from cache for "+downloadUrl);
+                console.log("Get image data from cache for "+downloadUrl);
                 deferred.resolve(imageData);
             } else {
                 $http
@@ -113,7 +120,7 @@
                 .then( function(base64) {
                     imageData = "data:image/jpeg;base64,"+ base64.data;
                     imageCache[downloadUrl] = imageData;
-                    //console.log("Download image data from server for "+downloadUrl);
+                    console.log("Download image data from server for "+downloadUrl);
                     deferred.resolve(imageData);
                 }, function(err) {
                     console.log("ERROR",err); // TODO handle error
