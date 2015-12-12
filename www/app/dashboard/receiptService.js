@@ -139,7 +139,7 @@
             var deferred = $q.defer();
             var imageData = imageCache[downloadUrl];
             if (imageData) {
-                console.log("Get image data from cache for "+downloadUrl);
+                console.log("Get image data from cache");
                 deferred.resolve(imageData);
             } else {
                 $http
