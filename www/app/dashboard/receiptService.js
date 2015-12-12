@@ -82,20 +82,18 @@
                     } else {
                         return $q.reject("NO receipts!");
                     }
-                })
-                .then( function(receipts) {
+                }).then( function(receipts) {
                     receipts.forEach( function(receipt) {
+                        console.log("loadFirstPageOfUserReceipts", receipt);
                         resultReceipts.push(receipt);
                         getImageBase64Data(receipt.images[0]._links.base64.href)
                         .then( function(imageData) {
                             receipt.path = imageData;
                         });
                     });
-                })
-                .catch ( function(err){
+                }).catch ( function(err){
                     console.error('ERROR code', err); // TODO handle error
-                })
-                .finally( function() {
+                }).finally( function() {
                     callback(resultReceipts, receiptListPage);
                 });
         };

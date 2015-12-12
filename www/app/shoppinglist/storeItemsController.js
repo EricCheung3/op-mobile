@@ -104,8 +104,8 @@
         function pullToRefresh() {
             console.log("=========> pull to refresh");
             // load first page of items
-            storeService.getStoreAllItems(storeId, function(storeItems) {
-                vm.items = storeItems;
+            storeService.getStoreAllItems(storeId, function(store) {
+                vm.items = store.items.$$state.value;
             })
             .finally( function() {
                 // Stop the ion-refresher from spinning
@@ -122,28 +122,27 @@
         function deleteItem(index,item){
 
             $scope.totalNumber = $scope.totalNumber - 1;
+
             $scope.totalPrice = Number($scope.totalPrice) - Number(vm.price[item.name]);
             if(item.catalog === null){
                 $scope.category["noCategory"][index].$del('self');
                 $scope.category["noCategory"].splice(index,1);
+                // $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) - 0;
                 if($scope.category["noCategory"].length == 0){
                     delete $scope.category["noCategory"];
                 }
             }else {
                 $scope.category[item.catalog.labelCodes.split(",")[0]][index].$del('self');
                 $scope.category[item.catalog.labelCodes.split(",")[0]].splice(index,1);
+                $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) - Number(item.catalog.price)*Number(vm.number[item.name]);
                 if($scope.category[item.catalog.labelCodes.split(",")[0]].length == 0){
                     delete $scope.category[item.catalog.labelCodes.split(",")[0]];
                 }
             }
-            // console.log("$scope.category length 2",$scope.category[item.catalog.labelCodes.split(",")[0]].length);
-
         };
 
         function itemDetail(item) {
             vm.show[item.name] = !vm.show[item.name];
-            // console.log("$scope.category[item.catalog.labelCodes.split(",")[0]]",$scope.category[item.catalog.labelCodes.split(",")[0]][0]);
-
         };
 
         function categoryDetail(categoryLabel){
