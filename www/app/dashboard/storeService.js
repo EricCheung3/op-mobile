@@ -87,8 +87,10 @@
                     userResource.$get('store',{'storeId': storeId})
                     .then(function(store) {
                         Store = store;
-                        Store.items = store.$get('items');
-                        console.log("store resource",Store);
+                        store.$get('shoppingItems')
+                        .then( function(items){
+                            Store.items = items;
+                        });
                         return Store;
                     })// NOTE: Good, category can be created at here
                     .catch ( function(err){
