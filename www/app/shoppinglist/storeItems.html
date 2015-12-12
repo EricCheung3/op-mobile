@@ -41,8 +41,6 @@
         <ion-item class="category item-dark" ng-click="vm.categoryDetail(categoryLabel)">
           <img class="inline category-icon" ng-src="img/custom_icons/{{categoryLabel|lowercase}}.svg">
           <div class="center" style="width: 50%;">
-            <!-- need to design the category display  -->
-            <p class="left inline text-center">NO.:{{items.length}}</p>
             <p class="center inline text-center">{{categoryLabel}}</p></div>
           <p class="inline category-price">sub-total:${{subtotal[categoryLabel]|number:2}}</p>
         </ion-item>

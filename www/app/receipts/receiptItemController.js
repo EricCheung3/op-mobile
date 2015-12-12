@@ -58,13 +58,13 @@
         vm.items;
         vm.itemPage;
         function editItem (item){
-            $scope.item1 = {};
-            console.log("edit item", item.id);
+            $scope.item1 = {"name":item.displayName,"price":Number(item.displayPrice)};
+
             var popup = $ionicPopup.show({
               // title: 'Edit Item',
               // subTitle: 'Please input item name and price',
               scope: $scope,
-              template: '<input type="text" placeholder="Input Item name" ng-model="item1.name"><input type="number" placeholder="Input item price" ng-model="item1.price" >',
+              template: '<input type="text" placeholder={{$scope.item1.name}} ng-model="item1.name"><input type="number" placeholder={{$scope.item1.price}} ng-model="item1.price" >',
               buttons: [
                 { text: 'Cancel' ,
                   type: 'button-positive',
@@ -82,13 +82,15 @@
             });
 
             popup.then(function(res) {
-                if (res.name!==null&&res.price!==null&& res.name!== undefined&&res.price!== undefined) {
-                  item.displayName = res.name;
-                  item.displayPrice = res.price;
-                  // update data to server
-                  vm.receipt.$put("item",{itemId:item.id},res);
+                if(res==undefined ){
+                    console.log('cancel');
+                }else if (res.name!==null&&res.price!==null&& res.name!== undefined&&res.price!== undefined) {
+                    item.displayName = res.name;
+                    item.displayPrice = res.price;
+                    // update data to server
+                    vm.receipt.$put("item",{itemId:item.id},res);
                 }else {
-                   console.log('input is illegal');
+                    console.log('Input is illegal');
                 }
              });
 
