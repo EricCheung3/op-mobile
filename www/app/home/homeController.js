@@ -101,28 +101,15 @@
         };
 
         function scrollToLoadMore(){
-            console.log('==>scrollToLoadMore()');
+
             if(vm.lastReceiptListPage !== null && vm.lastReceiptListPage.$has("next")){
-                vm.lastReceiptListPage
-                .$get('next')
-                .then( function(nextReceiptsList) {
-                    vm.lastReceiptListPage = nextReceiptsList;
-                    return nextReceiptsList.$get('receipts');
-                })
-                .then( function(receipts) {
-                    //console.log("receipts=="+receipts+"length"+receipts.length);
-                    receipts.forEach( function(receipt) {
-                        vm.receipts.push(receipt);
-                        receiptService
-                        .getImageBase64Data(receipt.images[0]._links.base64.href)
-                        .then( function(imageData){
-                            receipt.path = imageData;
-                        });
-                    });
-                })
-                .finally(function() {
-                    $scope.$broadcast('scroll.infiniteScrollComplete');
-                });
+              receiptService
+              .loadMoreReceipts(vm.receipts, vm.lastReceiptListPage,
+                 function(receipts, lastReceiptListPage) {
+                  vm.receipts = receipts;
+                  vm.lastReceiptListPage = lastReceiptListPage;
+              });
+
             }else {
                 console.log("No next page now...");
                 $scope.$broadcast('scroll.infiniteScrollComplete');

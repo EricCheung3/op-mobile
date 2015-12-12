@@ -15,6 +15,7 @@
             'getReceiptResource' : getReceiptResource,
             'getReceiptResource2' : getReceiptResource2,
             'loadFirstPageOfUserReceipts' : loadFirstPageOfUserReceipts,
+            'loadMoreReceipts' : loadMoreReceipts,
             'getImageBase64Data' : getImageBase64Data
         };
 
@@ -87,9 +88,7 @@
                     }
                 }).then( function(receipts) {
                     receipts.forEach( function(receipt) {
-                        console.log("loadFirstPageOfUserReceipts", receipt);
                         resultReceipts.push(receipt);
-
                         receipt.$get('receiptImages')
                         .then( function(images){
                             getImageBase64Data(images[0].base64Url)
@@ -105,6 +104,36 @@
                 });
         };
 
+
+        function loadMoreReceipts(receipts, lastReceiptListPage, callback){
+            console.log('==>scrollToLoadMore');
+            var vmreceipts = receipts;
+            var vmlastReceiptListPage = lastReceiptListPage;
+
+            vmlastReceiptListPage.$get('next')
+            .then( function(nextReceiptsList) {
+                vmlastReceiptListPage = nextReceiptsList;
+                return nextReceiptsList.$get('receipts');
+            })
+            .then( function(receipts) {
+                receipts.forEach( function(receipt) {
+                    vmreceipts.push(receipt);
+                    receipt.$get('receiptImages')
+                    .then( function(images){
+                        getImageBase64Data(images[0].base64Url)
+                        .then( function(imageData){
+                            receipt.path = imageData;
+                        });
+                    });
+
+                });
+            }).finally(function() {
+                callback(vmreceipts, vmlastReceiptListPage);
+            });
+
+        };
+
+
          // get image base64 data according to the download url
         function getImageBase64Data(downloadUrl) {
             var deferred = $q.defer();
@@ -118,7 +147,6 @@
                 .then( function(base64) {
                     imageData = "data:image/jpeg;base64,"+ base64.data;
                     imageCache[downloadUrl] = imageData;
-                    console.log("Download image data from server for "+downloadUrl);
                     deferred.resolve(imageData);
                 }, function(err) {
                     console.log("ERROR",err); // TODO handle error
