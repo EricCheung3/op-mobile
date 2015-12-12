@@ -52,9 +52,11 @@
 
         storeService.getStoreAllItems(storeId, function(store){
             vm.store = store;
-            vm.items = store.items.$$state.value;
-            console.log("items",store.items.$$state.value);
-            categorizeItems(vm.items);
+            // vm.items = store.$get('items');
+            vm.items = store.items;
+            console.log("store",store);
+            console.log("items",store.items);
+            categorizeItems(store.items);
         });
 
 

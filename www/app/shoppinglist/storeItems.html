@@ -10,48 +10,45 @@
     <button ng-show="vm.shoppingMode" class="button button-icon icon ion-ios-plus-empty" ng-click="vm.addNewItem()"></button>
   </ion-nav-buttons>
 
-  <!-- Search items from remote server -->
-  <ion-header-bar class="bar-subheader item-input-inset">
-    <label class="item-input-wrapper">
-        <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off"
-               ng-model="model"
-               select-items-label="Select items to your shopping list ..."
-               item-value-key="id"
-               item-view-value-key="naturalName"
-               items-method="vm.searchItemsFromServer(query)"
-               items-method-value-key="items"
-               placeholder="Search items to add..."
-               items-clicked-method="vm.itemsClicked(callback)"
-               cancel-label="Done"
-               cancel-button-clicked-method="vm.doneSearch(callback)"
-               max-selected-items="5"/>
-    </label>
-  </ion-header-bar>
-
   <ion-content has-bouncing="false" ng-show="!vm.shoppingMode">
+      <!-- Search items from remote server -->
+      <!-- Hi Reka, could you design a search box at here? Thanks! -->
+      <div class="ion-autocomplete">
+          <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off"
+                 ng-model="model"
+                 select-items-label="Select items to your shopping list ..."
+                 item-value-key="id"
+                 item-view-value-key="naturalName"
+                 items-method="vm.searchItemsFromServer(query)"
+                 items-method-value-key="items"
+                 placeholder="Search items to add..."
+                 items-clicked-method="vm.itemsClicked(callback)"
+                 cancel-label="Done"
+                 cancel-button-clicked-method="vm.doneSearch(callback)"
+                 max-selected-items="5"/>
+    </div>
 
     <!-- we NEED it temporarily (because these items coe from receipts, when uses add items to shopping list, user needs to update
     , but we will change it to automatically later)-->
     <ion-refresher pulling-text="Pull to refresh..." on-refresh="vm.pullToRefresh()">  </ion-refresher>
-    <!-- STYLING for TOP TOTAL  -->
     <ion-item class="store-items list-border item-dark">
       <p class="inline vertical-align-bottom white-text"> Items: {{totalNumber}} </p>
       <p class="inline float-right vertical-align-bottom white-text"> Total: ${{totalPrice|number:2}}</p>
     </ion-item>
 
-
-    <!-- NOTE: following is real data, don't touch it -->
     <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="both">
-      <!-- clicking on category names hides the items on the category and vice versa-->
       <div  ng-repeat="(categoryLabel, items) in category | orderBy:categoryLabel">
         <ion-item class="category item-dark" ng-click="vm.categoryDetail(categoryLabel)">
           <img class="inline category-icon" ng-src="img/custom_icons/{{categoryLabel|lowercase}}.svg">
-          <div class="center" style="width: 50%;"><p class="center inline text-center">{{categoryLabel}}</p></div>
+          <div class="center" style="width: 50%;">
+            <!-- need to design the category display  -->
+            <p class="left inline text-center">NO.:{{items.length}}</p>
+            <p class="center inline text-center">{{categoryLabel}}</p></div>
           <p class="inline category-price">sub-total:${{subtotal[categoryLabel]|number:2}}</p>
         </ion-item>
 
         <div ng-show="vm.show[categoryLabel]">
-          <ion-item class="store-items list-border" ng-repeat="(index, item) in items | filter:searchItems" ng-click="vm.itemDetail(item)">
+          <ion-item class="store-items list-border" ng-repeat="(index, item) in items" ng-click="vm.itemDetail(item)">
             <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.name}} </p> <!--{{item.catalog.naturalName}}-->
             <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
             <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item.name]}}</p>

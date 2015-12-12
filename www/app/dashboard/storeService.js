@@ -87,12 +87,12 @@
                     userResource.$get('store',{'storeId': storeId})
                     .then(function(store) {
                         Store = store;
-                        store.$get('shoppingItems')
-                        .then( function(items){
-                            Store.items = items;
-                        });
-                        return Store;
-                    })// NOTE: Good, category can be created at here
+                        return store.$get('shoppingItems');
+                    }).then(function (items) {
+                        Store.items = items;
+                    })
+
+                    // NOTE: Good, category can be created at here
                     .catch ( function(err){
                         console.error('ERROR code', err); // TODO handle error
                     })
