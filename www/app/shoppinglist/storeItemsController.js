@@ -52,7 +52,6 @@
 
         storeService.getStoreAllItems(storeId, function(store){
             vm.store = store;
-            // vm.items = store.$get('items');
             vm.items = store.items;
             console.log("store",store);
             console.log("items",store.items);
@@ -317,6 +316,7 @@
                     }
                     $scope.category[item.labelCodes.split(",")[0]].push(item);
                     $scope.subtotal[item.labelCodes.split(",")[0]] = Number($scope.subtotal[item.labelCodes.split(",")[0]]) + Number(vm.price[item.name]);
+                    $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.name]);
                 }
 
                 // [add to use's shopping list [database]]

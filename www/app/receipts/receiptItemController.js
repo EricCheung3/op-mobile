@@ -28,11 +28,11 @@
         $scope.delay = false;
         $scope.rating = [];
         $scope.ratingResultY = function() {
-            vm.receipt.$put('feedback', {}, {"rating":1});
+            vm.receipt.$post('feedback', {}, {"rating":1,"comment":""});
             $scope.rating[$scope.receiptId] = 1;
         }
         $scope.ratingResultN = function() {
-            vm.receipt.$put('feedback', {}, {"rating":0});
+            vm.receipt.$post('feedback', {}, {"rating":0, "comment":""});
             $scope.rating[$scope.receiptId] = 0;
         }
 
