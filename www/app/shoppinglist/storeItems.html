@@ -42,7 +42,7 @@
           <img class="inline category-icon" ng-src="img/custom_icons/{{categoryLabel|lowercase}}.svg">
           <div class="center" style="width: 50%;">
             <p class="center inline text-center">{{categoryLabel}}</p></div>
-          <p class="inline category-price">sub-total:${{subtotal[categoryLabel]|number:2}}</p>
+          <p class="inline category-price">${{subtotal[categoryLabel]|number:2}}</p>
         </ion-item>
 
         <div ng-show="vm.show[categoryLabel]">

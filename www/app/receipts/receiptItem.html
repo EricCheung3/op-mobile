@@ -29,7 +29,7 @@
                   <p class="inline float-right"> ${{item.displayPrice }} </p>
               </div>
               <ion-option-buttons side="right" class="button-positive swipe-button" ng-click="vm.editItem(item)"> <i class="icon icon-medium center ion-ios-compose-outline"></i> </ion-option-buttons>
-              <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(item)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
+              <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(index,item)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
 
           </ion-item>
         </ion-list>

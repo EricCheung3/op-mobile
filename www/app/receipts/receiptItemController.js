@@ -96,9 +96,10 @@
 
         };
 
-        function deleteItem (item){
+        function deleteItem (index,item){
             vm.receipt.$del("item",{itemId:item.id});
-            vm.receiptItems.splice(item, 1);
+            console.log("Delete",item.id);
+            vm.receiptItems.splice(index, 1);
         };
 
         // need to extract it out into a service
