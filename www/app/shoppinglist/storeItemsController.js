@@ -53,8 +53,6 @@
         storeService.getStoreAllItems(storeId, function(store){
             vm.store = store;
             vm.items = store.items;
-            console.log("store",store);
-            console.log("items",store.items);
             categorizeItems(store.items);
         });
 
@@ -101,18 +99,6 @@
 
         };
 
-
-        function pullToRefresh() {
-            console.log("=========> pull to refresh");
-            // load first page of items
-            storeService.getStoreAllItems(storeId, function(store) {
-                vm.items = store.items.$$state.value;
-            })
-            .finally( function() {
-                // Stop the ion-refresher from spinning
-                $scope.$broadcast('scroll.refreshComplete');
-            });
-        };
 
         function editItem(index){
             console.log("edit item test");
@@ -270,30 +256,10 @@
             console.log("Done",callback); // this will return an array
             // add selected items to shopping list
             addToShoppingList(callback.selectedItems);
-            // auto refresh shopping list
-            pullToRefresh();
-        }
-
+        };
 
         function addToShoppingList(items){
             console.log("=======>addToShoppingList");
-
-            /* // add item to shoppinglist after click an item
-            var object = {
-                          "catalogCode" : items.code, //item.catalogCode
-                          "name" : items.naturalName
-                         };
-            console.log("added items obect", object);
-            // post to database
-            apiService.getUserResource()
-            .then(function (userResource) {
-                userResource.$get('store', {storeId:storeId})
-                .then(function(userStore){
-                    userStore.$post('items', {}, object)
-                    console.log("result", userStore);
-                })
-            });
-            */
             // add array to shoppinglist after click Done button
             items.forEach(function(item){
                 $scope.totalNumber = $scope.totalNumber + 1;
@@ -303,6 +269,7 @@
                 vm.number[item.name] = 1;
                 vm.price[item.name] = item.price; // need to make sure
                 vm.show[item.name] = false;
+
                 //NOTE: catalogCode should be labelCodes
                 if (item.code === null){
                     $scope.category["noCategory"].push(item);
@@ -312,7 +279,6 @@
                     if(!$scope.category[item.labelCodes.split(",")[0]]){
                         $scope.category[item.labelCodes.split(",")[0]] = [];
                         $scope.subtotal[item.labelCodes.split(",")[0]] = 0;
-
                     }
                     $scope.category[item.labelCodes.split(",")[0]].push(item);
                     $scope.subtotal[item.labelCodes.split(",")[0]] = Number($scope.subtotal[item.labelCodes.split(",")[0]]) + Number(vm.price[item.name]);
@@ -332,15 +298,27 @@
                     userResource.$get('store', {storeId:storeId})
                     .then(function(userStore){
                         userStore.$post('items', {}, object)
+                        .then(function () {
+                            pullToRefresh();
+                        })
                         console.log("result", userStore);
                     })
                 });
             });
-
-
         };
 
-
+        function pullToRefresh() {
+            console.log("=========> pull to refresh");
+            storeService.getStoreAllItems(storeId, function(store) {
+                vm.items = store.items;
+                console.log("=====>refresh vm.items", vm.items);
+                categorizeItems(store.items);
+            })
+            .finally( function() {
+                // Stop the ion-refresher from spinning
+                $scope.$broadcast('scroll.refreshComplete');
+            });
+        };
 
     }; // end of storeController
 
