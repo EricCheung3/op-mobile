@@ -13,11 +13,11 @@
   <ion-content has-bouncing="false" ng-show="!vm.shoppingMode">
       <!-- Search items from remote server -->
       <!-- Hi Reka, could you design a search box at here? Thanks! -->
-      <div class="ion-autocomplete">
-          <i class="icon ion-search placeholder-icon"></i>
+      <div class="ion-autocomplete shopping-item-search">
+
           <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off"
                  ng-model="model"
-                 select-items-label="Select items to your shopping list ..."
+                 select-items-label="Search results"
                  item-value-key="id"
                  item-view-value-key="naturalName"
                  items-method="vm.searchItemsFromServer(query)"
@@ -32,7 +32,7 @@
     <!-- we NEED it temporarily (because these items coe from receipts, when uses add items to shopping list, user needs to update
     , but we will change it to automatically later)-->
     <ion-refresher pulling-text="Pull to refresh..." on-refresh="vm.pullToRefresh()">  </ion-refresher>
-    <ion-item class="store-items list-border item-dark">
+    <ion-item class="store-items list-border item-divider">
       <p class="inline vertical-align-bottom white-text"> Items: {{totalNumber}} </p>
       <p class="inline float-right vertical-align-bottom white-text"> Total: ${{totalPrice|number:2}}</p>
     </ion-item>
@@ -62,10 +62,15 @@
 
             <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[item.name]">
               <p>{{item.catalog.naturalName}}  </p>
+              <!--
               <p>${{item.id}} </p>
+              we don't need to display id... -->
+              <!--
               <p>{{item.catalog.price}} </p>
-              <!-- price should only be displayed for items that have a price/kg price such as vegetables, fruits, etc. -->
+              price should only be displayed for items that have a price/kg price such as vegetables, fruits, etc. -->
+              <!--
               <p>{{item.catalog.labelCodes}} </p>
+              we don't need to display category names .. -->
             </div>
           </ion-item>
         </div>
@@ -96,9 +101,15 @@
 
         <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[item.name]">
           <p>{{item.catalog.naturalName}}  </p>
+          <!--
           <p>${{item.id}} </p>
+          we don't need to display id... -->
+          <!--
           <p>{{item.catalog.price}} </p>
+          price should only be displayed for items that have a price/kg price such as vegetables, fruits, etc. -->
+          <!--
           <p>{{item.catalog.labelCodes}} </p>
+          we don't need to display category names .. -->
         </div>
       </ion-item>
     </ion-list>
