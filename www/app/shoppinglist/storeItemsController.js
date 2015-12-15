@@ -65,24 +65,30 @@
                 if(item.catalog !== null){
                   if (flag==0){
                       vm.show[item.catalog.labelCodes.split(",")[0]] = true;
-                  }
-                  vm.number[item.catalog.name] = 1;
-                  vm.price[item.name] = item.catalog.price; // need to make sure
-                  vm.show[item.name] = false;
-                  $scope.category[item.catalog.labelCodes.split(",")[0]] = [];
-                  $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = 0;
+
+                      vm.number[item.catalog.name] = 1;
+                      vm.price[item.catalog.name] = item.catalog.price; // need to make sure
+                      vm.show[item.name] = false;
+                      $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.catalog.name]);
+                    }
+                      $scope.category[item.catalog.labelCodes.split(",")[0]] = [];
+                      $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = 0;
+
+
                 }else {
                   if (flag==0){
                       vm.show["noCategory"] = true;
-                  }
-                  vm.number[item.name] = 1;
-                  vm.price[item.name] = 0; // need to make sure
-                  vm.show[item.name] = false;
-                  $scope.category["noCategory"] = [];
-                  $scope.subtotal["noCategory"] = 0;
+
+                      vm.number[item.name] = 1;
+                      vm.price[item.name] = 0; // need to make sure
+                      vm.show[item.name] = false;
+                      $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.name]);
+                    }
+                      $scope.category["noCategory"] = [];
+                      $scope.subtotal["noCategory"] = 0;
+
                 }
-                //console.log("item----------",item);
-                $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.name]);
+
             });
 
             // vm.category
@@ -95,10 +101,11 @@
                     $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
                 }else {
                     $scope.category[item.catalog.labelCodes.split(",")[0]].push(item);
-                    $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) + Number(vm.price[item.name]);
+                    $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) + Number(vm.price[item.catalog.name]);
                 }
 
             });
+
             console.log("category", $scope.category);
 
         };
@@ -114,8 +121,9 @@
 
             $scope.totalNumber = $scope.totalNumber - 1;
 
-            $scope.totalPrice = Number($scope.totalPrice) - Number(vm.price[item.name]);
+
             if(item.catalog === null){
+                $scope.totalPrice = Number($scope.totalPrice) - Number(vm.price[item.name]);
                 $scope.category["noCategory"][index].$del('self');
                 $scope.category["noCategory"].splice(index,1);
                 // $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) - 0;
@@ -123,9 +131,10 @@
                     delete $scope.category["noCategory"];
                 }
             }else {
+              $scope.totalPrice = Number($scope.totalPrice) - Number(vm.price[item.catalog.name]);
                 $scope.category[item.catalog.labelCodes.split(",")[0]][index].$del('self');
                 $scope.category[item.catalog.labelCodes.split(",")[0]].splice(index,1);
-                $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) - Number(item.catalog.price)*Number(vm.number[item.name]);
+                $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) - Number(item.catalog.price)*Number(vm.number[item.catalog.name]);
                 if($scope.category[item.catalog.labelCodes.split(",")[0]].length == 0){
                     delete $scope.category[item.catalog.labelCodes.split(",")[0]];
                 }
@@ -177,7 +186,7 @@
             vm.price[item.name] = 0;
           }else {
             vm.number[item.catalog.name] = vm.number[item.catalog.name] + 1;
-            vm.price[item.name] = Number(vm.price[item.name]) + Number(item.catalog.price);
+            vm.price[item.catalog.name] = Number(vm.price[item.catalog.name]) + Number(item.catalog.price);
             $scope.totalPrice = Number($scope.totalPrice) + Number(item.catalog.price);
             $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) + Number(item.catalog.price);
           }
@@ -189,7 +198,7 @@
               if(item.catalog !== null){
                 if(vm.number[item.catalog.name] > 1){
                   vm.number[item.catalog.name] = vm.number[item.catalog.name] - 1;
-                  vm.price[item.name] = Number(vm.price[item.name]) - Number(item.catalog.price);
+                  vm.price[item.catalog.name] = Number(vm.price[item.catalog.name]) - Number(item.catalog.price);
                   $scope.totalPrice = $scope.totalPrice - Number(item.catalog.price);
                   $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) - Number(item.catalog.price);
                 }
@@ -280,7 +289,7 @@
                     $scope.subtotal[item.labelCodes.split(",")[0]] = 0;
                 }
 
-                $scope.totalNumber = $scope.totalNumber + 1;
+
                 vm.show[item.labelCodes.split(",")[0]] = true;
 
                 /** add items to category [used to display and refresh UI]*/
@@ -288,8 +297,13 @@
                 if(arrayContainsObj($scope.category[item.labelCodes.split(",")[0]], item)){
 
                   vm.number[item.name] = vm.number[item.name] + 1;
+                  vm.price[item.name] = Number(vm.price[item.name]) + Number(item.price);
                   console.log("new item number",vm.number[item.name]);
+                  $scope.subtotal[item.labelCodes.split(",")[0]] = Number($scope.subtotal[item.labelCodes.split(",")[0]]) + Number(item.price);
+                  $scope.totalPrice = Number($scope.totalPrice) + Number(item.price);
                 }else {
+
+                  $scope.totalNumber = $scope.totalNumber + 1;
 
                   vm.show[item.labelCodes.split(",")[0]] = true;
                   vm.number[item.name] = 1;
