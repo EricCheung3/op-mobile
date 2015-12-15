@@ -61,10 +61,15 @@
 
             <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[item.name]">
               <p>{{item.catalog.naturalName}}  </p>
+              <!-- 
               <p>${{item.id}} </p>
+              we don't need to display id... -->
+              <!-- 
               <p>{{item.catalog.price}} </p>
-              <!-- price should only be displayed for items that have a price/kg price such as vegetables, fruits, etc. -->
+              price should only be displayed for items that have a price/kg price such as vegetables, fruits, etc. -->
+              <!--
               <p>{{item.catalog.labelCodes}} </p>
+              we don't need to display category names .. -->
             </div>
           </ion-item>
         </div>
@@ -95,9 +100,15 @@
 
         <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[item.name]">
           <p>{{item.catalog.naturalName}}  </p>
+          <!-- 
           <p>${{item.id}} </p>
+          we don't need to display id... -->
+          <!-- 
           <p>{{item.catalog.price}} </p>
+          price should only be displayed for items that have a price/kg price such as vegetables, fruits, etc. -->
+          <!--
           <p>{{item.catalog.labelCodes}} </p>
+          we don't need to display category names .. -->
         </div>
       </ion-item>
     </ion-list>
