@@ -53,24 +53,28 @@
         storeService.getStoreAllItems(storeId, function(store){
             vm.store = store;
             vm.items = store.items;
-            categorizeItems(store.items);
+            categorizeItems(store.items, 0);
         });
 
 
-        function categorizeItems(items){
+        function categorizeItems(items, flag){
             $scope.totalNumber = items.length;
             // click to display detail
             items.forEach(function (item) {
                 // item.catalog.labelCodes="Fruit, Food", extract the first category
                 if(item.catalog !== null){
-                  vm.show[item.catalog.labelCodes.split(",")[0]] = false;
+                  if (flag==0){
+                      vm.show[item.catalog.labelCodes.split(",")[0]] = true;
+                  }
                   vm.number[item.name] = 1;
                   vm.price[item.name] = item.catalog.price; // need to make sure
                   vm.show[item.name] = false;
                   $scope.category[item.catalog.labelCodes.split(",")[0]] = [];
                   $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = 0;
                 }else {
-                  vm.show["noCategory"] = false;
+                  if (flag==0){
+                      vm.show["noCategory"] = true;
+                  }
                   vm.number[item.name] = 1;
                   vm.price[item.name] = 0; // need to make sure
                   vm.show[item.name] = false;
@@ -265,7 +269,7 @@
                 $scope.totalNumber = $scope.totalNumber + 1;
                 // add items to category [used to display and refresh UI]
 
-                vm.show[item.labelCodes.split(",")[0]] = false;
+                vm.show[item.labelCodes.split(",")[0]] = true;
                 vm.number[item.name] = 1;
                 vm.price[item.name] = item.price; // need to make sure
                 vm.show[item.name] = false;
@@ -312,7 +316,7 @@
             storeService.getStoreAllItems(storeId, function(store) {
                 vm.items = store.items;
                 console.log("=====>refresh vm.items", vm.items);
-                categorizeItems(store.items);
+                categorizeItems(store.items, 1);
             })
             .finally( function() {
                 // Stop the ion-refresher from spinning

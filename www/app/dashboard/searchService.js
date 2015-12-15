@@ -23,8 +23,11 @@
                     .then(function(store){
                         return store.$get("catalogs", {query:query});
                     }).then(function(items) {
-                        // console.log("search-service items return",items);
-                        deferred.resolve({items: items});
+                        console.log("search-service items return",query);
+                        if(items.length==0)// for new item not in catalog
+                          deferred.resolve({items: [query]});
+                        else
+                          deferred.resolve({items: items});
                     });
                 });
 
