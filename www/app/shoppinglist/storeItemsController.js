@@ -66,7 +66,7 @@
                   if (flag==0){
                       vm.show[item.catalog.labelCodes.split(",")[0]] = true;
                   }
-                  vm.number[item.name] = 1;
+                  vm.number[item.catalog.name] = 1;
                   vm.price[item.name] = item.catalog.price; // need to make sure
                   vm.show[item.name] = false;
                   $scope.category[item.catalog.labelCodes.split(",")[0]] = [];
@@ -171,10 +171,12 @@
         };
 
         function addItemNumber(item){ // NOTE: parameter should be index
-          vm.number[item.name] = vm.number[item.name] + 1;
+
           if (item.catalog === null) {
+            vm.number[item.name] = vm.number[item.name] + 1;
             vm.price[item.name] = 0;
           }else {
+            vm.number[item.catalog.name] = vm.number[item.catalog.name] + 1;
             vm.price[item.name] = Number(vm.price[item.name]) + Number(item.catalog.price);
             $scope.totalPrice = Number($scope.totalPrice) + Number(item.catalog.price);
             $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) + Number(item.catalog.price);
@@ -183,16 +185,21 @@
         };
 
         function minusItemNumber(item){
-            if(vm.number[item.name] > 1){
-              vm.number[item.name] = vm.number[item.name] - 1;
+
               if(item.catalog !== null){
-                vm.price[item.name] = Number(vm.price[item.name]) - Number(item.catalog.price);
-                $scope.totalPrice = $scope.totalPrice - Number(item.catalog.price);
-                $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) - Number(item.catalog.price);
+                if(vm.number[item.catalog.name] > 1){
+                  vm.number[item.catalog.name] = vm.number[item.catalog.name] - 1;
+                  vm.price[item.name] = Number(vm.price[item.name]) - Number(item.catalog.price);
+                  $scope.totalPrice = $scope.totalPrice - Number(item.catalog.price);
+                  $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) - Number(item.catalog.price);
+                }
               }else {
-                vm.price[item.name] = 0;
+                if(vm.number[item.name] > 1){
+                  vm.number[item.name] = vm.number[item.name] - 1;
+                  vm.price[item.name] = 0;
+                }
               }
-            }
+
         };
 
 
@@ -266,28 +273,39 @@
             console.log("=======>addToShoppingList");
             // add array to shoppinglist after click Done button
             items.forEach(function(item){
-                $scope.totalNumber = $scope.totalNumber + 1;
-                // add items to category [used to display and refresh UI]
 
-                vm.show[item.labelCodes.split(",")[0]] = true;
-                vm.number[item.name] = 1;
-                vm.price[item.name] = item.price; // need to make sure
-                vm.show[item.name] = false;
-
-                //NOTE: catalogCode should be labelCodes
-                if (item.code === null){
-                    $scope.category["noCategory"].push(item);
-                    $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
-                }else {
-                    // add check for new category...
-                    if(!$scope.category[item.labelCodes.split(",")[0]]){
-                        $scope.category[item.labelCodes.split(",")[0]] = [];
-                        $scope.subtotal[item.labelCodes.split(",")[0]] = 0;
-                    }
-                    $scope.category[item.labelCodes.split(",")[0]].push(item);
-                    $scope.subtotal[item.labelCodes.split(",")[0]] = Number($scope.subtotal[item.labelCodes.split(",")[0]]) + Number(vm.price[item.name]);
-                    $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.name]);
+                // add check for new category...
+                if(!$scope.category[item.labelCodes.split(",")[0]]){
+                    $scope.category[item.labelCodes.split(",")[0]] = [];
+                    $scope.subtotal[item.labelCodes.split(",")[0]] = 0;
                 }
+
+                $scope.totalNumber = $scope.totalNumber + 1;
+                vm.show[item.labelCodes.split(",")[0]] = true;
+
+                /** add items to category [used to display and refresh UI]*/
+                // if item in shoppinglist already
+                if(arrayContainsObj($scope.category[item.labelCodes.split(",")[0]], item)){
+
+                  vm.number[item.name] = vm.number[item.name] + 1;
+                  console.log("new item number",vm.number[item.name]);
+                }else {
+
+                  vm.show[item.labelCodes.split(",")[0]] = true;
+                  vm.number[item.name] = 1;
+                  vm.price[item.name] = item.price; // need to make sure
+                  vm.show[item.name] = false;
+
+                  //NOTE: catalogCode should be labelCodes
+                  if (item.code === null){
+                      $scope.category["noCategory"].push(item);
+                      $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
+                  }else {
+
+                      $scope.category[item.labelCodes.split(",")[0]].push(item);
+                      $scope.subtotal[item.labelCodes.split(",")[0]] = Number($scope.subtotal[item.labelCodes.split(",")[0]]) + Number(vm.price[item.name]);
+                      $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.name]);
+                  }
 
                 // [add to use's shopping list [database]]
                 var object =
@@ -308,6 +326,7 @@
                         console.log("result", userStore);
                     })
                 });
+                }
             });
         };
 
@@ -324,6 +343,14 @@
             });
         };
 
+        //  most concise and efficient way to find out if a JavaScript array contains an obj use underscore.js
+        function arrayContainsObj(arr, obj){
+          for(var i=0; i<arr.length; i++) {
+              if (arr[i].catalog.id == obj.id){
+                return true;
+              }
+          }
+        }
     }; // end of storeController
 
 })();

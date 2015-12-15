@@ -23,7 +23,7 @@
                     .then(function(store){
                         return store.$get("catalogs", {query:query});
                     }).then(function(items) {
-                        console.log("search-service items return",query);
+                        // console.log("search-service items return",items);
                         if(items.length==0)// for new item not in catalog
                           deferred.resolve({items: [query]});
                         else

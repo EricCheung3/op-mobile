@@ -48,11 +48,18 @@
 
         <div ng-show="vm.show[categoryLabel]">
           <ion-item class="store-items list-border" ng-repeat="(index, item) in items" ng-click="vm.itemDetail(item)">
-            <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.name}} </p> <!--{{item.catalog.naturalName}}-->
-            <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
-            <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item.name]}}</p>
-            <!-- <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">${{item.itemPrice}}*{{vm.number[item]}}</p> -->
+            <div ng-if="vm.number[item.catalog.name]==1">
+              <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.catalog.naturalName}} </p>
+              <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{vm.price[item.name] | number:2}}</p>
+            </div>
+            <div ng-if="vm.number[item.catalog.name]!==1">
+              <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.catalog.naturalName}} </p>
+              <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
+              <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item.catalog.name]}}</p>
             <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{vm.price[item.name] | number:2}}</p>
+
+            </div>
+            <!-- <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">${{item.itemPrice}}*{{vm.number[item]}}</p> -->
 
             <ion-option-buttons side="left" class="button-positive swipe-button" ng-click="vm.addItemNumber(item)"> <i class="icon icon-medium center ion-ios-plus-outline"></i> </ion-option-buttons>
             <ion-option-buttons side="left" class="button-positive swipe-button quantity-minus" ng-click="vm.minusItemNumber(item)"> <i class="icon icon-medium center ion-ios-minus-outline"></i> </ion-option-buttons>
@@ -94,7 +101,7 @@
       <ion-item class="store-items" ng-repeat="(index, item) in vm.items" ng-click="vm.itemDetail(item)">
         <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.catalog.naturalName}}</p>
         <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
-        <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item.name]}}</p>
+        <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item.catalog.name]}}</p>
         <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">${{vm.price[item.name] | number:2}}</p>
 
         <ion-option-buttons side="left" class="button-positive swipe-button" ng-click="vm.addItemNumber(item)"> <i class="icon icon-medium center ion-ios-plus-outline"></i> </ion-option-buttons>
