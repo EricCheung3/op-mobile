@@ -55,9 +55,13 @@
   right: 16px;
 }
 
-.search-bar {
+.shopping-item-search {
+  padding-bottom: 10px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
   background-color: $positive;
   input {
+    background-color: white !important;
     width: 100%;
     padding-left: 10px !important;
     border-radius: 2px;
@@ -71,4 +75,16 @@
 .mode-switch {
   border-bottom: 1px solid rgba(255,255,255,1) !important;
   height: 54px;
+}
+
+
+/* overriding the ionic item-divider default settings for the search result dividers */
+.item-divider {
+    background-color: $dark !important;
+    color: white !important;
+}
+
+/* overriding the ionic search bar background color settings for the search-bar when searching */
+.item-input-inset {
+  background-color: $positive !important;
 }

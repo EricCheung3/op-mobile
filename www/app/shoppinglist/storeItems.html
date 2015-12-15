@@ -13,10 +13,10 @@
   <ion-content has-bouncing="false" ng-show="!vm.shoppingMode">
       <!-- Search items from remote server -->
       <!-- Hi Reka, could you design a search box at here? Thanks! -->
-      <div class="ion-autocomplete">
+      <div class="ion-autocomplete shopping-item-search">
           <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off"
                  ng-model="model"
-                 select-items-label="Select items to your shopping list ..."
+                 select-items-label="Search results"
                  item-value-key="id"
                  item-view-value-key="naturalName"
                  items-method="vm.searchItemsFromServer(query)"
@@ -31,7 +31,7 @@
     <!-- we NEED it temporarily (because these items coe from receipts, when uses add items to shopping list, user needs to update
     , but we will change it to automatically later)-->
     <ion-refresher pulling-text="Pull to refresh..." on-refresh="vm.pullToRefresh()">  </ion-refresher>
-    <ion-item class="store-items list-border item-dark">
+    <ion-item class="store-items list-border item-divider">
       <p class="inline vertical-align-bottom white-text"> Items: {{totalNumber}} </p>
       <p class="inline float-right vertical-align-bottom white-text"> Total: ${{totalPrice|number:2}}</p>
     </ion-item>
@@ -42,7 +42,7 @@
           <img class="inline category-icon" ng-src="img/custom_icons/{{categoryLabel|lowercase}}.svg">
           <div class="center" style="width: 50%;">
             <p class="center inline text-center">{{categoryLabel}}</p></div>
-          <p class="inline category-price">sub-total:${{subtotal[categoryLabel]|number:2}}</p>
+          <p class="inline category-price">${{subtotal[categoryLabel]|number:2}}</p>
         </ion-item>
 
         <div ng-show="vm.show[categoryLabel]">
