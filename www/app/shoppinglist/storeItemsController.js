@@ -320,19 +320,8 @@
                           "name" : item.naturalName
                          };
                     console.log("added items obect", object);
-
-                    // post to database
-                    apiService.getUserResource()
-                    .then(function (userResource) {
-                        userResource.$get('store', {storeId:storeId})
-                        .then(function(userStore){
-                            userStore.$post('items', {}, object)
-                            .then(function () {
-                                pullToRefresh();
-                            })
-                            console.log("result", userStore);
-                        })
-                    });
+                    postToDatabase(storeId, object);
+                    
                 }
               }else { // item is not in catalog
                 console.log("item is not in catalog!!!");
@@ -360,22 +349,9 @@
                         "name" : item.naturalName
                        };
                   console.log("added items obect", object);
+                  postToDatabase(storeId, object);
 
-                  // post to database
-                  apiService.getUserResource()
-                  .then(function (userResource) {
-                      userResource.$get('store', {storeId:storeId})
-                      .then(function(userStore){
-                          userStore.$post('items', {}, object)
-                          .then(function () {
-                              pullToRefresh();
-                          })
-                          console.log("result", userStore);
-                      })
-                  });
                 }
-
-
 
               }
             });
@@ -396,16 +372,31 @@
 
         //  most concise and efficient way to find out if a JavaScript array contains an obj use underscore.js
         function arrayContainsObj(arr, obj){
-          for(var i=0; i<arr.length; i++) {
-
-            if(arr[i].catalog !== null && (arr[i].catalog.id == obj.id)){
-                return true;
-            }else {
-              if (arr[i].naturalName == obj.naturalName)
-                return true;  
+            for(var i=0; i<arr.length; i++) {
+                if(arr[i].catalog !== null && (arr[i].catalog.id == obj.id)){
+                    return true;
+                }else {
+                  if (arr[i].naturalName == obj.naturalName)
+                    return true;
+                }
             }
-          }
-        }
+        };
+
+
+        function postToDatabase(storeId, object){
+            // post to database
+            apiService.getUserResource()
+            .then(function (userResource) {
+                userResource.$get('store', {storeId:storeId})
+                .then(function(userStore){
+                    userStore.$post('items', {}, object)
+                    .then(function () {
+                        pullToRefresh();
+                    })
+                })
+            });
+        };
+
     }; // end of storeController
 
 })();
