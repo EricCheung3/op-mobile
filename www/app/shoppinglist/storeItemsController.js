@@ -283,64 +283,101 @@
             // add array to shoppinglist after click Done button
             items.forEach(function(item){
 
+              if(item.labelCodes!==undefined ){
                 // add check for new category...
                 if(!$scope.category[item.labelCodes.split(",")[0]]){
                     $scope.category[item.labelCodes.split(",")[0]] = [];
                     $scope.subtotal[item.labelCodes.split(",")[0]] = 0;
                 }
-
-
                 vm.show[item.labelCodes.split(",")[0]] = true;
-
                 /** add items to category [used to display and refresh UI]*/
                 // if item in shoppinglist already
                 if(arrayContainsObj($scope.category[item.labelCodes.split(",")[0]], item)){
-
-                  vm.number[item.name] = vm.number[item.name] + 1;
-                  vm.price[item.name] = Number(vm.price[item.name]) + Number(item.price);
-                  console.log("new item number",vm.number[item.name]);
-                  $scope.subtotal[item.labelCodes.split(",")[0]] = Number($scope.subtotal[item.labelCodes.split(",")[0]]) + Number(item.price);
-                  $scope.totalPrice = Number($scope.totalPrice) + Number(item.price);
+                    vm.number[item.name] = vm.number[item.name] + 1;
+                    vm.price[item.name] = Number(vm.price[item.name]) + Number(item.price);
+                    $scope.subtotal[item.labelCodes.split(",")[0]] = Number($scope.subtotal[item.labelCodes.split(",")[0]]) + Number(item.price);
+                    $scope.totalPrice = Number($scope.totalPrice) + Number(item.price);
                 }else {
+                    $scope.totalNumber = $scope.totalNumber + 1;
 
-                  $scope.totalNumber = $scope.totalNumber + 1;
+                    vm.show[item.labelCodes.split(",")[0]] = true;
+                    vm.number[item.name] = 1;
+                    vm.price[item.name] = item.price; // need to make sure
+                    vm.show[item.name] = false;
+                    //NOTE: catalogCode should be labelCodes
+                    if (item.code === null){
+                        $scope.category["noCategory"].push(item);
+                        $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
+                    }else {
+                        $scope.category[item.labelCodes.split(",")[0]].push(item);
+                        $scope.subtotal[item.labelCodes.split(",")[0]] = Number($scope.subtotal[item.labelCodes.split(",")[0]]) + Number(vm.price[item.name]);
+                        $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.name]);
+                    }
+                    // [add to use's shopping list [database]]
+                    var object =
+                        {
+                          "catalogCode" : item.code, //item.catalogCode
+                          "name" : item.naturalName
+                         };
+                    console.log("added items obect", object);
 
-                  vm.show[item.labelCodes.split(",")[0]] = true;
-                  vm.number[item.name] = 1;
-                  vm.price[item.name] = item.price; // need to make sure
-                  vm.show[item.name] = false;
-
-                  //NOTE: catalogCode should be labelCodes
-                  if (item.code === null){
-                      $scope.category["noCategory"].push(item);
-                      $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
-                  }else {
-
-                      $scope.category[item.labelCodes.split(",")[0]].push(item);
-                      $scope.subtotal[item.labelCodes.split(",")[0]] = Number($scope.subtotal[item.labelCodes.split(",")[0]]) + Number(vm.price[item.name]);
-                      $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.name]);
-                  }
-
-                // [add to use's shopping list [database]]
-                var object =
-                    {
-                      "catalogCode" : item.code, //item.catalogCode
-                      "name" : item.naturalName
-                     };
-                console.log("added items obect", object);
-                // post to database
-                apiService.getUserResource()
-                .then(function (userResource) {
-                    userResource.$get('store', {storeId:storeId})
-                    .then(function(userStore){
-                        userStore.$post('items', {}, object)
-                        .then(function () {
-                            pullToRefresh();
+                    // post to database
+                    apiService.getUserResource()
+                    .then(function (userResource) {
+                        userResource.$get('store', {storeId:storeId})
+                        .then(function(userStore){
+                            userStore.$post('items', {}, object)
+                            .then(function () {
+                                pullToRefresh();
+                            })
+                            console.log("result", userStore);
                         })
-                        console.log("result", userStore);
-                    })
-                });
+                    });
                 }
+              }else { // item is not in catalog
+                console.log("item is not in catalog!!!");
+
+                // check noCategory existed or not
+                if ($scope.category["noCategory"] == undefined){
+                    vm.show["noCategory"] = true;
+
+                    vm.number[item.naturalName] = 1;
+                    vm.price[item.naturalName] = 0; // need to make sure
+                    vm.show[item.naturalName] = false;
+                    // $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.name]);
+                    $scope.category["noCategory"] = [];
+                    $scope.subtotal["noCategory"] = 0;
+                    $scope.category["noCategory"].push(item);
+                    $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
+                // check item existed or not
+                }else if (!arrayContainsObj($scope.category["noCategory"], item)){
+                    console.log("item exist");
+                    vm.number[item.naturalName] = vm.number[item.naturalName] + 1;
+                }else {
+                  var object =
+                      {
+                        "catalogCode" : null, //item.catalogCode
+                        "name" : item.naturalName
+                       };
+                  console.log("added items obect", object);
+
+                  // post to database
+                  apiService.getUserResource()
+                  .then(function (userResource) {
+                      userResource.$get('store', {storeId:storeId})
+                      .then(function(userStore){
+                          userStore.$post('items', {}, object)
+                          .then(function () {
+                              pullToRefresh();
+                          })
+                          console.log("result", userStore);
+                      })
+                  });
+                }
+
+
+
+              }
             });
         };
 
@@ -360,9 +397,13 @@
         //  most concise and efficient way to find out if a JavaScript array contains an obj use underscore.js
         function arrayContainsObj(arr, obj){
           for(var i=0; i<arr.length; i++) {
-              if (arr[i].catalog.id == obj.id){
+
+            if(arr[i].catalog !== null && (arr[i].catalog.id == obj.id)){
                 return true;
-              }
+            }else {
+              if (arr[i].naturalName == obj.naturalName)
+                return true;  
+            }
           }
         }
     }; // end of storeController
