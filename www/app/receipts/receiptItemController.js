@@ -61,7 +61,7 @@
             $scope.item1 = {"name":item.displayName,"price":Number(item.displayPrice)};
 
             var popup = $ionicPopup.show({
-              // title: 'Edit Item',
+                title: 'Edit Item',
               // subTitle: 'Please input item name and price',
               scope: $scope,
               template: '<input type="text" placeholder={{$scope.item1.name}} ng-model="item1.name"><input type="number" placeholder={{$scope.item1.price}} ng-model="item1.price" >',
@@ -72,7 +72,7 @@
                       popup.close();
                   }
                 },
-                { text: 'Finish',
+                { text: 'Done',
                   type: 'button-positive',
                   onTap: function(e) {
                     return $scope.item1;

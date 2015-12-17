@@ -45,7 +45,7 @@
         </ion-item>
 
         <div ng-show="vm.show[categoryLabel]">
-          <ion-item class="store-items list-border" ng-repeat="(index, item) in items" ng-click="vm.itemDetail(item)">
+          <ion-item class="store-items" ng-repeat="(index, item) in items" ng-click="vm.itemDetail(item)">
             <div ng-if="item.catalog !==null">
               <div ng-if="vm.number[item.catalog.name]==1">
                 <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.catalog.naturalName}} </p>
