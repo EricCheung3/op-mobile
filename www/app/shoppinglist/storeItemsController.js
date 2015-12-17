@@ -122,7 +122,7 @@
             $scope.totalNumber = $scope.totalNumber - 1;
 
 
-            if(item.catalog === null){
+            if(item.catalog == null){
                 $scope.totalPrice = Number($scope.totalPrice) - Number(vm.price[item.name]);
                 $scope.category["noCategory"][index].$del('self');
                 $scope.category["noCategory"].splice(index,1);
@@ -252,7 +252,7 @@
         };
 
         // search test from remote server
-        $scope.model = "";
+        $scope.model = ""; //value is then saved in the defined ng-model
 
         // parameter must be named "query", see ion-autocomplete for detail
         function searchItemsFromServer(query) {
@@ -261,7 +261,8 @@
                 return searchService.searchItems(storeId, query);
             }
             // add selected items to shoppinglist
-            return {items: []};
+            // return {items: []};
+            $scope.externalModel = []; // use to clear the selected items
         };
 
         // parameter must be named "callback"
@@ -275,6 +276,7 @@
         function doneSearch(callback) {
             console.log("Done",callback); // this will return an array
             // add selected items to shopping list
+            console.log("return model",$scope.model);
             addToShoppingList(callback.selectedItems);
         };
 
@@ -321,7 +323,7 @@
                          };
                     console.log("added items obect", object);
                     postToDatabase(storeId, object);
-                    
+
                 }
               }else { // item is not in catalog
                 console.log("item is not in catalog!!!");
@@ -338,6 +340,15 @@
                     $scope.subtotal["noCategory"] = 0;
                     $scope.category["noCategory"].push(item);
                     $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
+
+                    var object =
+                        {
+                          "catalogCode" : null, //item.catalogCode
+                          "name" : item.naturalName
+                         };
+                    console.log("added items obect", object);
+                    postToDatabase(storeId, object);
+
                 // check item existed or not
                 }else if (!arrayContainsObj($scope.category["noCategory"], item)){
                     console.log("item exist");
