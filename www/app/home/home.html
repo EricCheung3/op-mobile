@@ -29,8 +29,8 @@
 
         <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="left">
             <ion-item ng-repeat="(index, receipt) in vm.receipts" >
-                <div class="margin-horizontal-small">
-                    <p class="inline">Store Name: {{vm.receiptParseResult.chainCode}}</p><p class="inline float-right">Total: {{vm.receiptParseResult.parsedTotal}}</p>
+                <div class="timeline-item">
+                    <p class="inline padding-top-large vertical-align-bottom padding-left-small">Store Name: {{vm.receiptParseResult.chainCode}}</p><p class="inline float-right padding-top-large vertical-align-bottom padding-right-small">Total: {{vm.receiptParseResult.parsedTotal}}</p>
                 </div>
                 <div class="receipt-img" >
                     <img ng-src="{{receipt.path}}" ng-click="vm.showReceipt(receipt.id)">

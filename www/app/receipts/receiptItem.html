@@ -1,15 +1,15 @@
 <ion-view view-title="{{vm.receiptParseResult.parsedDate | date:'hh:mm:ss  yyyy-MM-dd'}}">
     <!-- for date of receipt please put script to plug-in the date for each receipt-->
-    <ion-content class="home-page grey-background">
+    <ion-content class="parsed-page grey-background">
 
       <ion-toggle ng-model="EditModel" class="grey-background">Select items</ion-toggle>
 
       <div ng-show="EditModel">
         <ion-list >
-          <ion-item ng-repeat="item in vm.receiptItems">
+          <ion-item class="store-items list-border" ng-repeat="item in vm.receiptItems">
             <ion-checkbox ng-model="item.checked" >
-              <p class="inline">{{item.displayName}} </p>
-              <p class="inline float-right">${{item.displayPrice}}</p>
+              <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.displayName}} </p>
+              <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">${{item.displayPrice}}</p>
             </ion-checkbox>
           </ion-item>
         </ion-list>
@@ -24,9 +24,9 @@
       <div ng-hide="EditModel">
         <ion-list show-delete="false" can-swipe="true" swipe-direction="left">
           <ion-item ng-repeat="(index,item) in vm.receiptItems">
-              <div class="margin-vertical-large margin-horizontal-small standard-list-height">
-                  <p class="inline">{{item.displayName}}</p>
-                  <p class="inline float-right"> ${{item.displayPrice }} </p>
+              <div class="store-items list-border">
+                  <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.displayName}}</p>
+                  <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large"> ${{item.displayPrice }} </p>
               </div>
               <ion-option-buttons side="right" class="button-positive swipe-button" ng-click="vm.editItem(item)"> <i class="icon icon-medium center ion-ios-compose-outline"></i> </ion-option-buttons>
               <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(index,item)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
