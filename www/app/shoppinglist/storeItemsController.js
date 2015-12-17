@@ -219,13 +219,14 @@
 
         function doneShoppingMode(category){
             vm.shoppingMode = !vm.shoppingMode;
+            /*
+            // clear checked items
             for(var i=0;i<category["Uncategorized"].length;i++){
                 if(category["Uncategorized"][i].checked)
                   category["Uncategorized"][i].checked = !category["Uncategorized"][i].checked;
                 console.log("item-checked", category["Uncategorized"][i].checked);
             }
-
-
+            */
             $state.go('app.dashboard.home');
         };
 
@@ -284,9 +285,8 @@
         function doneSearch(callback) {
             console.log("Done",callback); // this will return an array
             // add selected items to shopping list
-            console.log("return model",$scope.model);
-            vm.search = !vm.search; // hide search box
             addToShoppingList(callback.selectedItems);
+            vm.search = !vm.search; // hide search box
         };
 
         function addToShoppingList(items){
@@ -364,7 +364,7 @@
                     vm.number[item.naturalName] = vm.number[item.naturalName] + 1;
                 }else {
                   vm.number[item.naturalName] = 1;
-                  vm.price[item.naturalName] = 0; 
+                  vm.price[item.naturalName] = 0;
                   vm.show[item.naturalName] = false;
                   $scope.category["noCategory"].push(item);
                   $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
@@ -386,7 +386,6 @@
             console.log("=========> pull to refresh");
             storeService.getStoreAllItems(storeId, function(store) {
                 vm.items = store.items;
-                console.log("=====>refresh vm.items", vm.items);
                 categorizeItems(store.items, 1);
             })
             .finally( function() {
@@ -399,7 +398,8 @@
         function pullToSearch(){
             vm.search = !vm.search;
             $scope.$broadcast('scroll.refreshComplete');
-        }
+        };
+
         //  most concise and efficient way to find out if a JavaScript array contains an obj use underscore.js
         function arrayContainsObj(arr, obj){
             for(var i=0; i<arr.length; i++) {
