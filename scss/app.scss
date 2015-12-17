@@ -318,7 +318,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 @import 'shoppinglist';
 
-
+.bar {
+  border: none !important;
+}
 
 
 

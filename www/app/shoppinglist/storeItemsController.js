@@ -33,6 +33,7 @@
         vm.doneShoppingMode = doneShoppingMode;
         vm.shoppingMode = false;
         vm.pullToRefresh = pullToRefresh;
+        vm.pullToSearch = pullToSearch;
 
         // for global display data
         $scope.category = {};
@@ -216,8 +217,15 @@
             vm.shoppingMode = !vm.shoppingMode;
         };
 
-        function doneShoppingMode(){
+        function doneShoppingMode(category){
             vm.shoppingMode = !vm.shoppingMode;
+            for(var i=0;i<category["Uncategorized"].length;i++){
+                if(category["Uncategorized"][i].checked)
+                  category["Uncategorized"][i].checked = !category["Uncategorized"][i].checked;
+                console.log("item-checked", category["Uncategorized"][i].checked);
+            }
+
+
             $state.go('app.dashboard.home');
         };
 
@@ -277,6 +285,7 @@
             console.log("Done",callback); // this will return an array
             // add selected items to shopping list
             console.log("return model",$scope.model);
+            vm.search = !vm.search; // hide search box
             addToShoppingList(callback.selectedItems);
         };
 
@@ -350,10 +359,15 @@
                     postToDatabase(storeId, object);
 
                 // check item existed or not
-                }else if (!arrayContainsObj($scope.category["noCategory"], item)){
+                }else if (arrayContainsObj($scope.category["noCategory"], item)){
                     console.log("item exist");
                     vm.number[item.naturalName] = vm.number[item.naturalName] + 1;
                 }else {
+                  vm.number[item.naturalName] = 1;
+                  vm.price[item.naturalName] = 0; 
+                  vm.show[item.naturalName] = false;
+                  $scope.category["noCategory"].push(item);
+                  $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
                   var object =
                       {
                         "catalogCode" : null, //item.catalogCode
@@ -381,13 +395,18 @@
             });
         };
 
+        vm.search = true;
+        function pullToSearch(){
+            vm.search = !vm.search;
+            $scope.$broadcast('scroll.refreshComplete');
+        }
         //  most concise and efficient way to find out if a JavaScript array contains an obj use underscore.js
         function arrayContainsObj(arr, obj){
             for(var i=0; i<arr.length; i++) {
                 if(arr[i].catalog !== null && (arr[i].catalog.id == obj.id)){
                     return true;
                 }else {
-                  if (arr[i].naturalName == obj.naturalName)
+                  if (arr[i].name == obj.naturalName)
                     return true;
                 }
             }
