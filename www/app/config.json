@@ -6,7 +6,7 @@
   },
   "localdocker": {
     "EnvironmentConfig": {
-      "api": "http://192.168.99.100:7800"
+      "api": "http://192.168.99.101:7800"
     }
   },
   "development": {
