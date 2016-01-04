@@ -20,7 +20,6 @@
             'reload' : reload,
             'getResource' : getResource,
             'getWebsiteResource' : getWebsiteResource,
-            'getAdminResource' : getAdminResource,
             'getUserResource' : getUserResource
         };
 
@@ -75,13 +74,6 @@
                 reload();
             }
             return websiteResource;
-        };
-
-        function getAdminResource() {
-            if (adminResource == null) {
-                adminResource = halClient.$get(serverHost + '/api/admin');
-            }
-            return adminResource;
         };
 
         function getUserResource() {
