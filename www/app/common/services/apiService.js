@@ -57,7 +57,11 @@
                         return resource;
                     })
                     .catch( function(response) {
-                        return {authenticated : false};
+                        console.log('API Server error!', response);
+                        return {
+                            authenticated : false,
+                            serverError : true
+                        };
                     });
         };
 

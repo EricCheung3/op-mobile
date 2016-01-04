@@ -22,13 +22,17 @@
                         $rootScope.authenticated = true;
                         $rootScope.currentUser = websiteResource.currentUser;
                         $state.go("app.dashboard.home");
+                    } else if (websiteResource.serverError) {
+                        $log.debug("error with api service, redirect to login");
+                        //TODO add error messages
+                        $state.go("login");
                     } else {
                         $rootScope.authenticated = false;
                         $rootScope.currentUser = null;
+                        $log.debug("not authenticated, redirect to login");
                         $state.go("login");
-                        $log.debug("redirect to login");
                     }
-                });
+                })
         };
 
     };
