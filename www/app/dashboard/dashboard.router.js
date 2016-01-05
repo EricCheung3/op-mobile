@@ -43,8 +43,8 @@
                 cache: false,
                 views: {
                     'snap-tab': {
-                        // templateUrl: 'app/receiptsnap/snap.tmpl.html',
-                        controller: 'snapController as vm'
+                        // templateUrl: 'app/receipt-snap/snap.tmpl.html',
+                        controller: 'SnapController as vm'
                     }
                 }
             })
@@ -53,8 +53,8 @@
                 cache: false,
                 views: {
                     'crop-tab': {
-                        // templateUrl: 'app/receiptscrop/snap.tmpl.html',
-                        controller: 'cropController as vm'
+                        // templateUrl: 'app/receipt-crop/crop.tmpl.html',
+                        controller: 'CropController as vm'
                     }
                 }
             })
