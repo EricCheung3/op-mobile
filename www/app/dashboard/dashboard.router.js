@@ -20,19 +20,37 @@
                     }
                 }
             })
-            .state('app.dashboard.home', {
-                url: '/home',
+            .state('app.dashboard.shoppinglist', {
+                url: '/shoppinglist',
                 views: {
-                    'home-tab': {
-                        templateUrl: 'app/home/home.tmpl.html',
-                        controller: 'HomeController as vm'
+                    'shoppinglist-tab': {
+                        templateUrl: 'app/shoppinglist/list-stores.tmpl.html',
+                        controller: 'StoreListController as vm'
                     }
                 }
             })
-            .state('app.dashboard.receiptItem', {
-                url: '/home/:receiptId',
+            .state('app.dashboard.store', {
+                url: '/shoppinglist/:storeId',
                 views: {
-                    'home-tab': {
+                    'shoppinglist-tab': {
+                        templateUrl: 'app/shoppinglist/store-shoppinglist.tmpl.html',
+                        controller: 'StoreShoppingListController as vm'
+                    }
+                }
+            })
+            .state('app.dashboard.receipts', {
+                url: '/receipts',
+                views: {
+                    'receipt-tab': {
+                        templateUrl: 'app/receipts/list-receipts.tmpl.html',
+                        controller: 'ReceiptListController as vm'
+                    }
+                }
+            })
+            .state('app.dashboard.receipt', {
+                url: '/receipts/:receiptId',
+                views: {
+                    'receipt-tab': {
                         templateUrl: 'app/receipts/display-receipt.tmpl.html',
                         controller: 'ReceiptDisplayController as vm'
                     }
@@ -55,24 +73,6 @@
                     'crop-tab': {
                         // templateUrl: 'app/receipt-crop/crop.tmpl.html',
                         controller: 'CropController as vm'
-                    }
-                }
-            })
-            .state('app.dashboard.shoppinglist', {
-                url: '/shoppinglist',
-                views: {
-                    'shoppinglist-tab': {
-                        templateUrl: 'app/shoppinglist/list-stores.tmpl.html',
-                        controller: 'StoreListController as vm'
-                    }
-                }
-            })
-            .state('app.dashboard.store', {
-                url: '/shoppinglist/:storeId',
-                views: {
-                    'shoppinglist-tab': {
-                        templateUrl: 'app/shoppinglist/store-shoppinglist.tmpl.html',
-                        controller: 'StoreShoppingListController as vm'
                     }
                 }
             })

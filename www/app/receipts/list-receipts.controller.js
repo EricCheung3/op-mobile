@@ -3,11 +3,11 @@
 
     angular
         .module('openprice.mobile')
-        .controller('HomeController', HomeController);
+        .controller('ReceiptListController', ReceiptListController);
 
-    HomeController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', 'receiptService', '$q', '$http' ,'$base64', '$state', '$stateParams', '$cordovaCamera', '$ionicPopup', '$ionicLoading', '$timeout'];
-    function HomeController(   $log,   $rootScope,   $scope,   $location,   apiService ,  receiptService,   $q,   $http  , $base64 ,  $state ,  $stateParams,   $cordovaCamera,   $ionicPopup,   $ionicLoading,   $timeout) {
-        $log.debug('==> HomeController');
+    ReceiptListController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', 'receiptService', '$q', '$http' ,'$base64', '$state', '$stateParams', '$cordovaCamera', '$ionicPopup', '$ionicLoading', '$timeout'];
+    function ReceiptListController(   $log,   $rootScope,   $scope,   $location,   apiService ,  receiptService,   $q,   $http  , $base64 ,  $state ,  $stateParams,   $cordovaCamera,   $ionicPopup,   $ionicLoading,   $timeout) {
+        $log.debug('==> ReceiptListController');
         // get all the receipts of user
         var vm = this;
         vm.receipts = [];
@@ -36,28 +36,22 @@
         // receiptImages to control multi-upload
         vm.receiptImages = null;
 
-        vm.receipts;
-        vm.lastReceiptListPage;
-
         // when enter the receipts screen, load first page of receipts (default are three receipts)
         receiptService.loadFirstPageOfUserReceipts( function(receipts, receiptListsPage) {
             vm.receipts = receipts;
-            console.log("receipt",receipts);
             vm.lastReceiptListPage = receiptListsPage;
         });
-
-        // vm.pullToRefresh();
-        function switchFabMenu() {
-          //console.log('==>switchFabMenu()');
-          vm.openFab = !vm.openFab;
-        };
 
         $scope.$watch('vm.openFab', function() {
             $timeout(function() {
                 vm.tooltipVisible = vm.openFab;
-                //console.log('turn vm.tooltipVisible to '+vm.tooltipVisible);
             }, 300);
         });
+
+        function switchFabMenu() {
+          //console.log('==>switchFabMenu()');
+          vm.openFab = !vm.openFab;
+        };
 
         function pullToRefresh() {
             console.log('==>pullToRefresh()');
@@ -70,13 +64,13 @@
             .finally( function() {
                 // Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');
-                receiptService
-                    .getReceiptResource2(vm.receipts[0].id, function(receipt, receiptParseResult){
-                        vm.receipt = receipt;
-                        vm.receiptParseResult = receiptParseResult;
-                        // console.log("receipt", receipt);
-                        // console.log("receiptParseResult", receiptParseResult);
-                    });
+                // receiptService
+                //     .getReceiptResource2(vm.receipts[0].id, function(receipt, receiptParseResult){
+                //         vm.receipt = receipt;
+                //         vm.receiptParseResult = receiptParseResult;
+                //         // console.log("receipt", receipt);
+                //         // console.log("receiptParseResult", receiptParseResult);
+                //     });
             });
 
             /**[ASYN]
