@@ -2,7 +2,7 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
+        .module('openprice.mobile')
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
@@ -10,11 +10,11 @@
     function config(   $stateProvider,   $urlRouterProvider) {
 
 		$stateProvider
-            .state('forgot', {
+            .state('reset', {
                 cache: false,
-                url: '/forgot',
-                templateUrl: 'app/authentication/forgot/forgot.tmpl.html',
-                controller : 'forgotController as vm'
+                url: '/resetPassword/:id',
+                templateUrl: 'app/authentication/reset-password/reset-password.tmpl.html',
+                controller : 'ResetPasswordController as vm'
             })
             ;
 

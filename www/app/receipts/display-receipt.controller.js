@@ -2,8 +2,8 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
-        .controller('receiptItemController', receiptItemController)
+        .module('openprice.mobile')
+        .controller('ReceiptDisplayController', ReceiptDisplayController)
         // REVERSE RECEIPTS' ORDER
         .filter('reverse', function () {
             return function(receiptImages) {
@@ -11,10 +11,10 @@
               }
         });
 
-    receiptItemController.$inject = ['$log', '$location','$rootScope', '$scope', '$state', '$stateParams', '$ionicPopup', 'receiptService', 'apiService'];
+    ReceiptDisplayController.$inject = ['$log', '$location','$rootScope', '$scope', '$state', '$stateParams', '$ionicPopup', 'receiptService', 'apiService'];
 
-    function receiptItemController(   $log,   $location , $rootScope ,  $scope ,  $state ,  $stateParams ,  $ionicPopup ,  receiptService ,  apiService) {
-        $log.debug('==> receiptsItemController');
+    function ReceiptDisplayController(   $log,   $location , $rootScope ,  $scope ,  $state ,  $stateParams ,  $ionicPopup ,  receiptService ,  apiService) {
+        $log.debug('==> ReceiptDisplayController');
 
         var vm = this;
         vm.receipt;

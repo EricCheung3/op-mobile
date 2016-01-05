@@ -2,7 +2,7 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
+        .module('openprice.mobile')
         .run(run);
 
     run.$inject = ['$log', '$rootScope', '$ionicPlatform', '$state', '$stateParams', 'apiService', 'EnvironmentConfig', 'ngFB']

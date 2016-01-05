@@ -2,7 +2,7 @@
 'use strict';
 
     angular
-        .module('openpriceCommon')
+        .module('openprice.common')
         .directive("compareTo", compareTo);;
 
     function compareTo() {

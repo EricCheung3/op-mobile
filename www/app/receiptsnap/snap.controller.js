@@ -2,7 +2,7 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
+        .module('openprice.mobile')
         .controller('snapController', snapController);
 
     snapController.$inject = ['$log', '$state', '$rootScope', '$scope', '$location', 'apiService', 'tokenStorage', '$cordovaCamera','$cordovaFileTransfer','$ionicLoading', '$cordovaFile', '$http', '$ionicPopup'];

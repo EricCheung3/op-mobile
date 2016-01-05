@@ -2,7 +2,7 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
+        .module('openprice.mobile')
         .factory('receiptService', receiptService);
 
     receiptService.$inject = ['$log', '$rootScope', 'apiService', '$q', 'halClient', '$http'];

@@ -2,7 +2,7 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
+        .module('openprice.mobile')
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
@@ -12,8 +12,8 @@
         $stateProvider
             .state('register', {
                 url: '/register',
-                templateUrl: "app/authentication/register/registration.html",
-                controller: 'registrationController as vm'
+                templateUrl: "app/authentication/register/registration.tmpl.html",
+                controller: 'RegistrationController as vm'
             })
             ;
 

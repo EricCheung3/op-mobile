@@ -2,7 +2,7 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
+        .module('openprice.mobile')
         .controller('receiptsController', receiptsController)
         // REVERSE RECEIPTS' ORDER
         .filter('reverse', function () {

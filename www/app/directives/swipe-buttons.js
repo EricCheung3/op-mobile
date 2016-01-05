@@ -8,7 +8,7 @@
         '</div>';
 
     angular
-      .module('openpriceMobile')
+      .module('openprice.mobile')
       .directive('ionOptionButtons', [function() {
         function stopPropagation(e) {
           e.stopPropagation();

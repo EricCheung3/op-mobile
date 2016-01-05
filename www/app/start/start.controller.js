@@ -2,7 +2,7 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
+        .module('openprice.mobile')
         .controller('startController', startController);
 
     startController.$inject = ['$log', '$rootScope', '$state', '$cordovaSplashscreen', 'apiService'];

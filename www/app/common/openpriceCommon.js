@@ -1,7 +1,7 @@
 (function () {
 'use strict';
     angular
-        .module('openpriceCommon', [
+        .module('openprice.common', [
             'angular-hal'
         ]);
 })();

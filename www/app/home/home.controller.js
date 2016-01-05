@@ -2,12 +2,12 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
-        .controller('homeController', homeController);
+        .module('openprice.mobile')
+        .controller('HomeController', HomeController);
 
-    homeController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', 'receiptService', '$q', '$http' ,'$base64', '$state', '$stateParams', '$cordovaCamera', '$ionicPopup', '$ionicLoading', '$timeout'];
-    function homeController(   $log,   $rootScope,   $scope,   $location,   apiService ,  receiptService,   $q,   $http  , $base64 ,  $state ,  $stateParams,   $cordovaCamera,   $ionicPopup,   $ionicLoading,   $timeout) {
-        $log.debug('==> homeController');
+    HomeController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', 'receiptService', '$q', '$http' ,'$base64', '$state', '$stateParams', '$cordovaCamera', '$ionicPopup', '$ionicLoading', '$timeout'];
+    function HomeController(   $log,   $rootScope,   $scope,   $location,   apiService ,  receiptService,   $q,   $http  , $base64 ,  $state ,  $stateParams,   $cordovaCamera,   $ionicPopup,   $ionicLoading,   $timeout) {
+        $log.debug('==> HomeController');
         // get all the receipts of user
         var vm = this;
         vm.receipts = [];

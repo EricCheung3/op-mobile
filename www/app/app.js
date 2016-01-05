@@ -2,7 +2,7 @@
 (function() {
     'use strict';
 
-    angular.module('openpriceMobile', [
+    angular.module('openprice.mobile', [
         'ionic',
         'ngMessages',
         'ngMaterial',
@@ -11,7 +11,7 @@
         'ngCordova',
         'ionic.service.core',
         'angularFileUpload',
-        'openpriceCommon',
+        'openprice.common',
         'openprice.config',
         'ion-autocomplete',
         'ngOpenFB' // fb login

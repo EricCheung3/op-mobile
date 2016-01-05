@@ -2,26 +2,21 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
+        .module('openprice.mobile')
         .config(config);
 
-    config.$inject = ['$stateProvider', '$urlRouterProvider']
+    config.$inject = ['$stateProvider', '$urlRouterProvider'];
 
     function config(   $stateProvider,   $urlRouterProvider) {
 
-        $stateProvider
-            .state('app', {
-                url: '/app',
-                abstract: true,
-                templateUrl: 'app/dashboard/app-template.html'
-            })
+		$stateProvider
             .state('app.dashboard', {
                 url: '/dashboard',
                 abstract: true,
                 views: {
                     'menuContent': {
-                        templateUrl: 'app/dashboard/dashboard-template.html',
-                        controller: 'dashboardController as vm'
+                        templateUrl: 'app/dashboard/dashboard.tmpl.html',
+                        controller: 'DashboardController as vm'
                     }
                 }
             })
@@ -29,8 +24,8 @@
                 url: '/home',
                 views: {
                     'home-tab': {
-                        templateUrl: 'app/home/home.html',
-                        controller: 'homeController as vm'
+                        templateUrl: 'app/home/home.tmpl.html',
+                        controller: 'HomeController as vm'
                     }
                 }
             })
@@ -38,8 +33,8 @@
                 url: '/home/:receiptId',
                 views: {
                     'home-tab': {
-                        templateUrl: 'app/receipts/receiptItem.html',
-                        controller: 'receiptItemController as vm'
+                        templateUrl: 'app/receipts/display-receipt.tmpl.html',
+                        controller: 'ReceiptDisplayController as vm'
                     }
                 }
             })
@@ -48,7 +43,7 @@
                 cache: false,
                 views: {
                     'snap-tab': {
-                        // templateUrl: 'app/receiptsnap/snap.html',
+                        // templateUrl: 'app/receiptsnap/snap.tmpl.html',
                         controller: 'snapController as vm'
                     }
                 }
@@ -58,7 +53,7 @@
                 cache: false,
                 views: {
                     'crop-tab': {
-                        // templateUrl: 'app/receiptscrop/snap.html',
+                        // templateUrl: 'app/receiptscrop/snap.tmpl.html',
                         controller: 'cropController as vm'
                     }
                 }
@@ -67,8 +62,8 @@
                 url: '/shoppinglist',
                 views: {
                     'shoppinglist-tab': {
-                        templateUrl: 'app/shoppinglist/shoppingList.html',
-                        controller: 'shoppingListController as vm'
+                        templateUrl: 'app/shoppinglist/list-stores.tmpl.html',
+                        controller: 'StoreListController as vm'
                     }
                 }
             })
@@ -76,26 +71,26 @@
                 url: '/shoppinglist/:storeId',
                 views: {
                     'shoppinglist-tab': {
-                        templateUrl: 'app/shoppinglist/storeItems.html',
-                        controller: 'storeItemsController as vm'
+                        templateUrl: 'app/shoppinglist/store-shoppinglist.tmpl.html',
+                        controller: 'StoreShoppingListController as vm'
                     }
                 }
             })
-            .state('app.dashboard.shoppingMode', {
-                url: '/shoppingMode',
-                views: {
-                    'shoppinglist-tab': {
-                        templateUrl: 'app/shopping-mode/shoppingMode.html',
-                        controller: 'shoppingModeController as vm'
-                    }
-                }
-            })
+            // .state('app.dashboard.shoppingMode', {
+            //     url: '/shoppingMode',
+            //     views: {
+            //         'shoppinglist-tab': {
+            //             templateUrl: 'app/shopping-mode/shoppingMode.html',
+            //             controller: 'shoppingModeController as vm'
+            //         }
+            //     }
+            // })
             .state('app.dashboard.friends', {
                 url: '/friends',
                 views: {
                     'friends-tab': {
-                        templateUrl: 'app/friends/friends.html',
-                        controller: 'friendsController as vm'
+                        templateUrl: 'app/friends/friends.tmpl.html',
+                        controller: 'FriendsController as vm'
                     }
                 }
             })
@@ -103,8 +98,8 @@
                 url: '/folders',
                 views: {
                     'folders-tab': {
-                        templateUrl: 'app/folders/folders.html',
-                        controller: 'foldersController as vm'
+                        templateUrl: 'app/folders/folders.tmpl.html',
+                        controller: 'FoldersController as vm'
                     }
                 }
             })
@@ -112,14 +107,13 @@
                 url: '/upload',
                 views: {
                     'upload-tab': {
-                        templateUrl: 'app/upload/upload.html',
-                        controller: 'uploadController as vm'
+                        templateUrl: 'app/upload/upload.tmpl.html',
+                        controller: 'UploadController as vm'
                     }
                 }
             })
             ;
 
-        $urlRouterProvider.otherwise('/');
-    };
+	};
 
 })();

@@ -2,13 +2,13 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
-        .controller('registrationController', registrationController);
+        .module('openprice.mobile')
+        .controller('RegistrationController', RegistrationController);
 
-    registrationController.$inject = ['$log', '$rootScope', '$state', '$ionicPopup', 'apiService'];
+    RegistrationController.$inject = ['$log', '$rootScope', '$state', '$ionicPopup', 'apiService'];
 
-    function registrationController(   $log,   $rootScope,   $state,   $ionicPopup,   apiService ) {
-        $log.debug('==> registrationController');
+    function RegistrationController(   $log,   $rootScope,   $state,   $ionicPopup,   apiService ) {
+        $log.debug('==> RegistrationController');
 
         /* jshint validthis: true */
         var vm = this;
@@ -33,7 +33,7 @@
                         $log.debug('successfully registered, go to login page.');
                         $state.go('login');
                     });
-                    
+
                 })
                 .catch( function(error) {
                     $log.debug('registration error: '+error.data);

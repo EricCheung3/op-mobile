@@ -2,7 +2,7 @@
 'use strict';
 
     angular
-        .module('openpriceCommon')
+        .module('openprice.common')
         .factory('tokenStorage', tokenStorage);
 
     function tokenStorage() {

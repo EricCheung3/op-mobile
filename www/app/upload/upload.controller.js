@@ -2,13 +2,13 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
-        .controller('uploadController', uploadController);
+        .module('openprice.mobile')
+        .controller('UploadController', UploadController);
 
-    uploadController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', 'FileUploader', 'tokenStorage'];
+    UploadController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', 'FileUploader', 'tokenStorage'];
 
-    function uploadController(   $log,   $rootScope,   $scope,   $location,   apiService,   FileUploader,   tokenStorage ) {
-        $log.debug('==> uploadController');
+    function UploadController(   $log,   $rootScope,   $scope,   $location,   apiService,   FileUploader,   tokenStorage ) {
+        $log.debug('==> UploadController');
         var vm = this;
         vm.uploader = new FileUploader({
             headers : {'X-AUTH-TOKEN' : tokenStorage.retrieve()}

@@ -2,13 +2,13 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
-        .controller('shoppingListController', shoppingListController);
+        .module('openprice.mobile')
+        .controller('StoreListController', StoreListController);
 
-    shoppingListController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService' , '$state', 'storeService'];
+    StoreListController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService' , '$state', 'storeService'];
 
-    function shoppingListController(   $log,   $rootScope,   $scope,   $location,   apiService ,   $state ,  storeService) {
-        $log.debug('==> shoppingListController');
+    function StoreListController(   $log,   $rootScope,   $scope,   $location,   apiService ,   $state ,  storeService) {
+        $log.debug('==> StoreListController');
 
         var vm = this;
         vm.stores = [];

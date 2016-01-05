@@ -2,13 +2,13 @@
 'use strict';
 
     angular
-        .module('openpriceMobile')
-        .controller('loginController', loginController);
+        .module('openprice.mobile')
+        .controller('LoginController', LoginController);
 
-    loginController.$inject = ['$log', '$rootScope', '$scope', '$state', 'apiService', 'ngFB'];
+    LoginController.$inject = ['$log', '$rootScope', '$scope', '$state', 'apiService', 'ngFB'];
 
-    function loginController(   $log,   $rootScope,   $scope,   $state,   apiService,   ngFB ) {
-        $log.debug('==> loginController');
+    function LoginController(   $log,   $rootScope,   $scope,   $state,   apiService,   ngFB ) {
+        $log.debug('==> LoginController');
 
         /* jshint validthis: true */
         var vm = this;

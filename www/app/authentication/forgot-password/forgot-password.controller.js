@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-        .module('openpriceMobile')
-        .controller('forgotController', forgotController);
+        .module('openprice.mobile')
+        .controller('ForgotPasswordController', ForgotPasswordController);
 
     /* @ngInject */
-    function forgotController($scope, $state, $mdToast, $filter, $http, $location, apiService) {
+    function ForgotPasswordController($scope, $state, $mdToast, $filter, $http, $location, apiService) {
         var vm = this;
         vm.user = {
             email: ''

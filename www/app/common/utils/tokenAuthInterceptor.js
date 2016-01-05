@@ -2,7 +2,7 @@
 'use strict';
 
     angular
-        .module('openpriceCommon')
+        .module('openprice.common')
         .factory('tokenAuthInterceptor', tokenAuthInterceptor);
 
     tokenAuthInterceptor.$inject = ['$q', 'tokenStorage'];

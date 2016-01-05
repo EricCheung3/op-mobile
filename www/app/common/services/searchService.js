@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('openpriceMobile')
+    .module('openprice.mobile')
     .factory('searchService', searchService);
 
     searchService.$inject = ['$log', '$rootScope', '$q', '$timeout', 'apiService'];

@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-        .module('openpriceMobile')
-        .controller('resetController', resetController);
+        .module('openprice.mobile')
+        .controller('ResetPasswordController', ResetPasswordController);
 
     /* @ngInject */
-    function resetController($scope, $state, $stateParams, $mdToast, $filter, $http, apiService) {
+    function ResetPasswordController($scope, $state, $stateParams, $mdToast, $filter, $http, apiService) {
         var vm = this;
 
         vm.user = {

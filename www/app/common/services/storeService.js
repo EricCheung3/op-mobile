@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-      .module('openpriceMobile')
+      .module('openprice.mobile')
       .factory('storeService', storeService);
 
       storeService.$inject = ['$rootScope', '$q', 'apiService'];
