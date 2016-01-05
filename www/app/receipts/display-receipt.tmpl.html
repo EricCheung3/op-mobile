@@ -1,4 +1,4 @@
-<ion-view view-title="{{vm.receiptParseResult.parsedDate | date:'hh:mm:ss  yyyy-MM-dd'}}">
+<ion-view view-title="{{vm.receipt.result.parsedDate | date:'hh:mm:ss  yyyy-MM-dd'}}">
 
     <!-- fix the select mode selection -->
     <ion-header-bar class="bar bar-subheader">
@@ -9,7 +9,7 @@
 
       <div ng-show="EditModel">
         <ion-list >
-          <ion-item class="store-items list-border" ng-repeat="item in vm.receiptItems">
+          <ion-item class="store-items list-border" ng-repeat="item in vm.receipt.result.items">
             <ion-checkbox ng-model="item.checked" >
               <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.displayName}} </p>
               <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">${{item.displayPrice}}</p>
@@ -26,7 +26,7 @@
 
       <div ng-hide="EditModel">
         <ion-list show-delete="false" can-swipe="true" swipe-direction="left">
-          <ion-item ng-repeat="(index,item) in vm.receiptItems">
+          <ion-item ng-repeat="(index,item) in vm.receipt.result.items">
               <div class="store-items list-border">
                   <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.displayName}}</p>
                   <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large"> ${{item.displayPrice }} </p>
@@ -38,7 +38,7 @@
         </ion-list>
       </div>
 
-      <div ng-hide="EditModel" ng-if="rating[receiptId] == null && delay=='true'">
+      <div ng-hide="EditModel" ng-if="vm.receipt.needFeedback">
         <h3 class="padding-top-large text-center">How did we do?</h3>
           <div class="row margin-bottom-large">
             <div class="col button button-balanced text-center" ng-click="ratingResultY()">GOOD RESULTS</div>
@@ -47,7 +47,7 @@
       </div>
 
       <!-- receipt dislay part-->
-      <ion-item ng-hide="EditModel" ng-repeat="image in vm.receiptImages" >
+      <ion-item ng-hide="EditModel" ng-repeat="image in vm.receipt.images" >
         <p class="padding-left-small padding-top-medium padding-bottom-medium">Original photo</p>
         <img class="vertical-align-bottom" ng-src="{{image.path}}">
         <!-- This creates separate "cards" for each image,

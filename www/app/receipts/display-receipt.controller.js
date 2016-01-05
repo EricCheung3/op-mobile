@@ -27,6 +27,7 @@
         vm.receiptItems = [];
         $scope.delay = false;
         $scope.rating = [];
+
         $scope.ratingResultY = function() {
             vm.receipt.$post('feedback', {}, {"rating":1,"comment":""});
             $scope.rating[$scope.receiptId] = 1;
@@ -36,27 +37,17 @@
             $scope.rating[$scope.receiptId] = 0;
         }
 
-        $scope.receiptId = $stateParams.receiptId;
-
-
+        // load receipt data from database
         receiptService
-            .getReceiptResource2($scope.receiptId, function(receipt, receiptParseResult){
-                vm.receipt = receipt;
-                vm.receiptImages = receipt.images;
-                vm.receiptItems = receiptParseResult.items;
-                vm.receiptParseResult = receiptParseResult;
-                $scope.rating[$scope.receiptId] = receipt.rating;
-                $scope.delay = "true";
-                // console.log("receipt rating", $scope.rating[$scope.receiptId]);
-                // console.log("chainCode", receiptParseResult);
-            });
-
+        .loadReceipt($stateParams.receiptId)
+        .then( function(receipt) {
+            vm.receipt = receipt;
+        })
 
         function showItems () {
             $state.go('app.dashboard.receiptItems',{receiptId:$scope.receiptId});
         };
-        vm.items;
-        vm.itemPage;
+
         function editItem (item){
             $scope.item1 = {"name":item.displayName,"price":Number(item.displayPrice)};
 
