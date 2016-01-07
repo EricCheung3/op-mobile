@@ -1,0 +1,189 @@
+<ion-view view-title="{{vm.store.displayName}}">
+  <ion-nav-title>
+    <i ng-show="!vm.shoppingMode" class="icon ion-edit"></i>
+    <i ng-show="vm.shoppingMode" class="icon ion-ios-cart"></i>
+     {{vm.store.displayName}}
+  </ion-nav-title>
+
+  <ion-nav-buttons side="right">
+    <button ng-show="!vm.shoppingMode" class="button button-positive" ng-click="vm.clearShoppingList()"> Clear </button>
+    <!-- <button ng-show="vm.shoppingMode" class="button button-icon icon ion-ios-plus-empty" ng-click="vm.addNewItem()"></button> -->
+  </ion-nav-buttons>
+
+  <!-- display shopping list items with search box -->
+  <ion-content has-bouncing="false" ng-show="!vm.shoppingMode">
+      <!-- Search items from remote server -->
+      <div class="ion-autocomplete shopping-item-search">
+          <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off"
+                 ng-model="model"
+                 external-model="externalModel"
+                 select-items-label="Search results"
+                 item-value-key="id"
+                 item-view-value-key="naturalName"
+                 items-method="vm.searchItemsFromServer(query)"
+                 items-method-value-key="items"
+                 placeholder="Search items to add..."
+                 items-clicked-method="vm.itemsClicked(callback)"
+                 cancel-label="Done"
+                 cancel-button-clicked-method="vm.doneSearch(callback)"
+                 max-selected-items="5"/>
+      </div>
+
+    <ion-item class="store-items list-border item-divider">
+      <p class="inline vertical-align-bottom white-text"> Items: {{vm.totalNumber}} </p>
+      <p class="inline float-right vertical-align-bottom white-text"> Total: ${{vm.totalPrice|number:2}}</p>
+    </ion-item>
+
+    <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="both">
+      <div  ng-repeat="(categoryLabel, items) in vm.category | orderBy:categoryLabel">
+        <ion-item class="category item-dark" ng-click="vm.categoryDetail(categoryLabel)">
+          <img class="inline category-icon" ng-src="img/custom_icons/{{categoryLabel|lowercase}}.svg">
+          <div class="center" style="width: 50%;">
+            <p class="center inline text-center">{{categoryLabel}}</p></div>
+          <p class="inline category-price">${{subtotal[categoryLabel]|number:2}}</p>
+        </ion-item>
+
+        <div ng-show="vm.show[categoryLabel]">
+          <ion-item class="store-items" ng-repeat="(index, item) in items" ng-click="vm.itemDetail(item)">
+            <div ng-if="item.catalog !==null">
+              <div ng-if="vm.number[item.catalog.name]==1">
+                <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.catalog.naturalName}} </p>
+                <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{vm.price[item.catalog.name] | number:2}}</p>
+              </div>
+              <div ng-if="vm.number[item.catalog.name]!==1">
+                <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.catalog.naturalName}} </p>
+                <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
+                <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item.catalog.name]}}</p>
+                <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{vm.price[item.catalog.name] | number:2}}</p>
+              </div>
+            </div>
+            <!-- for "noCategory" sub-category [this is a little stupid]-->
+            <div ng-if="item.catalog ==null">
+              <div ng-if="vm.number[item.name]==1">
+                <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.name}} </p>
+                <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{vm.price[item.name] | number:2}}</p>
+              </div>
+              <div ng-if="vm.number[item.name]!==1">
+                <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.name}} </p>
+                <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
+                <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item.name]}}</p>
+                <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{vm.price[item.name] | number:2}}</p>
+              </div>
+            </div>
+
+            <ion-option-buttons side="left" class="button-positive swipe-button" ng-click="vm.addItemNumber(item)"> <i class="icon icon-medium center ion-ios-plus-outline"></i> </ion-option-buttons>
+            <ion-option-buttons side="left" class="button-positive swipe-button quantity-minus" ng-click="vm.minusItemNumber(item)"> <i class="icon icon-medium center ion-ios-minus-outline"></i> </ion-option-buttons>
+
+            <!-- <ion-option-buttons side="right" class="button-positive swipe-button" ng-click="vm.editItem(index)"> <i class="icon icon-medium center ion-ios-compose-outline"></i> </ion-option-buttons> -->
+            <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(index,item)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
+
+            <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[item.name]">
+              <div ng-if="item.catalog == null">
+                <p>{{item.name}}  </p>
+              </div>
+              <div ng-if="item.catalog !== null">
+                <p>{{item.catalog.naturalName}}  </p>
+              </div>
+              <!--
+              <p>${{item.id}} </p>
+              we don't need to display id... -->
+              <!--
+              <p>{{item.catalog.price}} </p>
+              price should only be displayed for items that have a price/kg price such as vegetables, fruits, etc. -->
+              <!--
+              <p>{{item.catalog.labelCodes}} </p>
+              we don't need to display category names .. -->
+            </div>
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+    <!--  scroll to load more -->
+    <!-- <ion-infinite-scroll ng-if="vm.moreItemsCanBeLoaded()" on-infinite="vm.scrollToLoadMore()"> </ion-infinite-scroll> -->
+
+  </ion-content>
+
+  <!-- Bottom button -->
+  <ion-footer-bar class="bar bar-positive bar-footer mode-switch padding-vertical-small">
+    <div ng-if= "!vm.shoppingMode" class="center padding-vertical-medium capital-letters" ng-click="vm.goShoppingMode()">Go Shopping</div>
+    <div ng-if= "vm.shoppingMode"  class="center padding-vertical-medium capital-letters" ng-click="vm.doneShoppingMode(category)">Done Shopping</div>
+  </ion-footer-bar>
+
+  <!-- NOTE: Here is the Shopping Mode NOT shopping-mode folder-->
+  <ion-content ng-show="vm.shoppingMode">
+    <!-- Search -->
+    <div class="ion-autocomplete shopping-item-search" ng-show="!vm.search">
+        <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off"
+               ng-model="model"
+               select-items-label="Search results"
+               item-value-key="id"
+               item-view-value-key="naturalName"
+               items-method="vm.searchItemsFromServer(query)"
+               items-method-value-key="items"
+               placeholder="Search items to add..."
+               items-clicked-method="vm.itemsClicked(callback)"
+               cancel-label="Done"
+               cancel-button-clicked-method="vm.doneSearch(callback)"
+               max-selected-items="5"/>
+    </div>
+
+    <ion-refresher on-refresh="vm.pullToSearch()">  </ion-refresher>
+
+    <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="both">
+      <div  ng-repeat="(categoryLabel, items) in category | orderBy:categoryLabel">
+        <ion-item class="category item-dark" ng-click="vm.categoryDetail(categoryLabel)">
+          <img class="inline category-icon" ng-src="img/custom_icons/{{categoryLabel|lowercase}}.svg">
+          <div class="center" style="width: 50%;">
+            <p class="center inline text-center">{{categoryLabel}}</p></div>
+          <p class="inline category-price">${{subtotal[categoryLabel]|number:2}}</p>
+        </ion-item>
+
+        <div ng-show="vm.show[categoryLabel]">
+          <ion-item class="store-items list-border" ng-repeat="(index, item) in items"  >
+            <ion-checkbox ng-model="item.checked" >
+              <div ng-if="item.catalog !==null">
+                <div ng-if="vm.number[item.catalog.name]==1">
+                  <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.catalog.naturalName}} </p>
+                  <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{vm.price[item.catalog.name] | number:2}}</p>
+                </div>
+                <div ng-if="vm.number[item.catalog.name]!==1">
+                  <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.catalog.naturalName}} </p>
+                  <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
+                  <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item.catalog.name]}}</p>
+                  <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{vm.price[item.catalog.name] | number:2}}</p>
+                </div>
+              </div>
+              <!-- for "noCategory" sub-category [this is a little stupid]-->
+              <div ng-if="item.catalog ==null">
+                <div ng-if="vm.number[item.name]==1">
+                  <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.name}} </p>
+                  <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{vm.price[item.name] | number:2}}</p>
+                </div>
+                <div ng-if="vm.number[item.name]!==1">
+                  <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.name}} </p>
+                  <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
+                  <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{vm.number[item.name]}}</p>
+                  <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{vm.price[item.name] | number:2}}</p>
+                </div>
+              </div>
+
+            </ion-checkbox>
+
+            <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(index,item)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
+
+            <div class="shopping-item-details padding-horizontal-large padding-bottom-small" ng-show="vm.show[item.name]">
+              <div ng-if="item.catalog == null">
+                <p>{{item.name}}  </p>
+              </div>
+              <div ng-if="item.catalog !== null">
+                <p>{{item.catalog.naturalName}}  </p>
+              </div>
+            </div>
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+
+  </ion-contet>
+
+</ion-view>

@@ -95,33 +95,29 @@
 
         // need to extract it out into a service
         function addToShoppingList(){
-            console.log("=======>addToShoppingList");
             var items = [];
 
-            for(var i=0;i<vm.receiptItems.length; i++){
-                if(vm.receiptItems[i].checked){
-                    var item = new Object();
-                    console.log("vm.receiptItems[i].name", vm.receiptItems[i].displayName);
-                    item["name"] = vm.receiptItems[i].displayName;
-                    item["displayPrice"] = vm.receiptItems[i].displayPrice;
-                    item["catalogCode"] = vm.receiptItems[i].catalogCode;
-                    item["labelCodes"] = vm.receiptItems[i].labelCodes;
-                    items.push(item);
+            for(var i=0;i<vm.receipt.result.items.length; i++){
+                var receiptItem = vm.receipt.result.items[i];
+                if(receiptItem.checked){
+                    items.push({
+                        name : receiptItem.displayName,
+                        catalogCode : receiptItem.catalogCode
+                    });
                 }
             }
 
-            var object =
+            var shoppingList =
               {
-                "chainCode" : vm.receiptParseResult.chainCode, //receipt.chainCode
+                "chainCode" : vm.receipt.result.chainCode, //receipt.chainCode
                 "items" : items
               };
-            console.log("added items obect", object);
 
-            // post to database
-            //FIXME: please change to real data come from parser(OCR)
-            apiService.getUserResource()
+            // post shopping list to database
+            apiService
+            .getUserResource()
             .then(function (userResource) {
-                userResource.$post('shoppingList', {}, object)
+                userResource.$post('shoppingList', {}, shoppingList)
                   .then(function(r){
                       console.log("result", "success");
                       // confirm("add items to shoppingList success!");

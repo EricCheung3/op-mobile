@@ -11,143 +11,195 @@
         $log.debug('==> StoreShoppingListController');
 
         var vm = this;
-        vm.shouldShowDelete = false;
+        vm.store = null;
+        vm.categoryMap = {};
+        vm.totalNumber = 0;
+        vm.totalPrice = 0;
+
+        vm.shouldShowDelete = false; //?
         vm.listCanSwipe = true;
 
-        vm.store = null;
-        vm.items = [];
-        vm.lastItemsPage = null;
-        vm.deleteItem = deleteItem;
-        vm.editItem = editItem;
-        vm.itemDetail = itemDetail;
-        vm.categoryDetail = categoryDetail;
-        vm.addNewItem = addNewItem;
-        vm.addItemNumber = addItemNumber;
+        vm.plusItemNumber = plusItemNumber;
         vm.minusItemNumber = minusItemNumber;
-        vm.clearShoppingList = clearShoppingList;
-        vm.show = [];
-        vm.number = [];
-        vm.price = [];
+        vm.deleteItem = deleteItem;
 
-        vm.goShoppingMode =goShoppingMode;
-        vm.doneShoppingMode = doneShoppingMode;
-        vm.shoppingMode = false;
-        vm.pullToRefresh = pullToRefresh;
-        vm.pullToSearch = pullToSearch;
-
-        // for global display data
-        $scope.category = {};
-        $scope.totalNumber = 0;
-        $scope.totalPrice = 0;
-        $scope.subtotal = {};
-
-        // for search items
-        vm.searchItemsFromServer = searchItemsFromServer;
+        vm.model = ""; //value is then saved in the defined ng-model ??? What is this?
+        vm.searchProductsFromServer = searchProductsFromServer;
         vm.itemsClicked = itemsClicked;
         vm.itemsRemoved = itemsRemoved;
         vm.doneSearch = doneSearch;
 
 
-        var storeId = $stateParams.storeId;
-        console.log("storeId", storeId);
+        vm.shoppingMode = false; // whether in shopping
+        vm.goShoppingMode =goShoppingMode;
+        vm.doneShoppingMode = doneShoppingMode;
 
-        storeService.getStoreAllItems(storeId, function(store){
+        storeService.getStoreAllItems($stateParams.storeId, function(store){
+            console.log(store);
             vm.store = store;
-            vm.items = store.items;
-            categorizeItems(store.items, 0);
+            vm.totalNumber = vm.store.items.length;
+            vm.store.items.forEach(function (shoppingItem) {
+                addShoppingItemToCategory(shoppingItem);
+            });
+            calculateTotalSubtotal();
         });
 
+        // ---------------------------------------------------------------------
+        // public functions for UI
 
-        function categorizeItems(items, flag){
-            $scope.totalNumber = items.length;
-            // click to display detail
-            items.forEach(function (item) {
-                // item.catalog.labelCodes="Fruit, Food", extract the first category
-                if(item.catalog !== null){
-                  if (flag==0){
-                      vm.show[item.catalog.labelCodes.split(",")[0]] = true;
-
-                      vm.number[item.catalog.name] = 1;
-                      vm.price[item.catalog.name] = item.catalog.price; // need to make sure
-                      vm.show[item.name] = false;
-                      $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.catalog.name]);
-                    }
-                      $scope.category[item.catalog.labelCodes.split(",")[0]] = [];
-                      $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = 0;
-
-
-                }else {
-                  if (flag==0){
-                      vm.show["noCategory"] = true;
-
-                      vm.number[item.name] = 1;
-                      vm.price[item.name] = 0; // need to make sure
-                      vm.show[item.name] = false;
-                      $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.name]);
-                    }
-                      $scope.category["noCategory"] = [];
-                      $scope.subtotal["noCategory"] = 0;
-
-                }
-
-            });
-
-            // vm.category
-            items.forEach(function (item) {
-                vm.show[item.name] = false;
-                //NOTE: catalogCode should be labelCodes
-                if (item.catalog === null){
-
-                    $scope.category["noCategory"].push(item);
-                    $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
-                }else {
-                    $scope.category[item.catalog.labelCodes.split(",")[0]].push(item);
-                    $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) + Number(vm.price[item.catalog.name]);
-                }
-
-            });
-
-            console.log("category", $scope.category);
-
+        function plusItemNumber(item) {
+            item.number = item.number + 1;
+            calculateTotalSubtotal();
         };
 
+        function minusItemNumber(item) {
+            if (item.number > 1) {
+                item.number = item.number - 1;
+                calculateTotalSubtotal();
+            }
+        };
+
+        function deleteItem(index,item) {
+            vm.totalNumber = vm.totalNumber - 1;
+            var category = item.category;
+            item.shoppingIte.$del('self')
+            category.items.splice(index, 1);
+            if (category.items.length === 0) {
+                delete vm.categoryMap[category.code];
+            }
+            calculateTotalSubtotal();
+        };
+
+        // parameter must be named "query", see ion-autocomplete for detail
+        function searchProductsFromServer(query) {
+            // items should come from remote server
+            if (query) {
+                return searchService.searchItems(vm.store.id, query);
+            }
+            // add selected items to shoppinglist
+            // return {items: []};
+            vm.externalModel = []; // use to clear the selected items
+        };
+
+        // parameter must be named "callback"
+        function itemsClicked(callback) {
+            console.log('callback',callback);
+            //addToShoppingList(callback.item);
+        };
+
+        function itemsRemoved(callback) {
+            console.log('callback',callback);
+        };
+
+        function doneSearch(callback) {
+            console.log("Done",callback); // this will return an array
+            // add selected items to shopping list
+            addToShoppingList(callback.selectedItems);
+            vm.search = !vm.search; // hide search box
+        };
+
+        // ---------------------------------------------------------------------
+        // private functions
+
+        function addShoppingItemToCategory(shoppingItem) {
+            var item = {
+                name : shoppingItem.name,
+                number : 1,
+                catalog: shoppingItem.catalog,
+                price : Number(shoppingItem.catalog.price),
+                showDetail : false,
+                shoppingItem : shoppingItem
+            };
+
+            if(shoppingItem.catalog !== null) {
+                item.code = shoppingItem.catalog.productCategory;
+                catalog: shoppingItem.catalog;
+                price : shoppingItem.catalog.price;
+            } else {
+                item.code = 'uncategoried';
+                catalog: null;
+                price : 0;
+            }
+
+            var category = vm.categoryMap[item.code];
+            if (category === undefined) {
+                category = {
+                    code : item.code,
+                    label : item.code,
+                    items : [],
+                    showDetail : false,
+                    subtotal : 0,
+                };
+                vm.categoryMap[item.code] = category;
+            }
+            item.category = category;
+            category.items.push(item);
+        };
+
+        function calculateTotalSubtotal() {
+            vm.totalPrice = 0;
+            for (var key in vm.categoryMap) {
+                var category = vm.categoryMap[key];
+                category.subtotal = 0;
+                category.items.forEach( function(item){
+                    category.subtotal = category.subtotal + Number(item.price) * item.number;
+                })
+                vm.totalPrice = vm.totalPrice + category.subtotal;
+            }
+        }
+
+        function addToShoppingList(items) {
+            console.log("=======>addToShoppingList");
+            // add array to shoppinglist after click Done button
+            items.forEach(function(item){
+                var newItem = {
+                    name : item.naturalName,
+                    catalogCode : item.catalogCode
+                };
+                console.log('post new item:', newItem);
+                vm.store
+                .$post('items', {}, newItem)
+                .then( function(location){
+                    var itemId = location.substring(location.lastIndexOf('/') + 1);
+                    loadShoppingItem(itemId);
+                });
+            });
+        };
+
+        function loadShoppingItem(itemId) {
+            vm.store
+            .$get('item', {'itemId': itemId})
+            .then( function(shoppingItem){
+                addShoppingItemToCategory(shoppingItem);
+            });
+        }
+        //===== old code
+        //----------------------------------------------------------------------
+
+
+        vm.items = [];
+        vm.lastItemsPage = null;
+
+        vm.editItem = editItem;
+        vm.addNewItem = addNewItem;
+        vm.clearShoppingList = clearShoppingList;
+        vm.show = [];
+        vm.number = [];
+        vm.price = [];
+
+        vm.pullToRefresh = pullToRefresh;
+        vm.pullToSearch = pullToSearch;
+
+        // for global display data
+        vm.category = {};
+        vm.subtotal = {};
+
+        // for search items
 
         function editItem(index){
             console.log("edit item test");
             // need server API supporting
             // vm.items[index].$put(...)
-        };
-
-        function deleteItem(index,item){
-
-            $scope.totalNumber = $scope.totalNumber - 1;
-
-
-            if(item.catalog == null){
-                $scope.totalPrice = Number($scope.totalPrice) - Number(vm.price[item.name]);
-                $scope.category["noCategory"][index].$del('self');
-                $scope.category["noCategory"].splice(index,1);
-                // $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) - 0;
-                if($scope.category["noCategory"].length == 0){
-                    delete $scope.category["noCategory"];
-                }
-            }else {
-              $scope.totalPrice = Number($scope.totalPrice) - Number(vm.price[item.catalog.name]);
-                $scope.category[item.catalog.labelCodes.split(",")[0]][index].$del('self');
-                $scope.category[item.catalog.labelCodes.split(",")[0]].splice(index,1);
-                $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) - Number(item.catalog.price)*Number(vm.number[item.catalog.name]);
-                if($scope.category[item.catalog.labelCodes.split(",")[0]].length == 0){
-                    delete $scope.category[item.catalog.labelCodes.split(",")[0]];
-                }
-            }
-        };
-
-        function itemDetail(item) {
-            vm.show[item.name] = !vm.show[item.name];
-        };
-
-        function categoryDetail(categoryLabel){
-            vm.show[categoryLabel] = !vm.show[categoryLabel];
         };
 
 
@@ -180,37 +232,6 @@
           });
         };
 
-        function addItemNumber(item){ // NOTE: parameter should be index
-
-          if (item.catalog === null) {
-            vm.number[item.name] = vm.number[item.name] + 1;
-            vm.price[item.name] = 0;
-          }else {
-            vm.number[item.catalog.name] = vm.number[item.catalog.name] + 1;
-            vm.price[item.catalog.name] = Number(vm.price[item.catalog.name]) + Number(item.catalog.price);
-            $scope.totalPrice = Number($scope.totalPrice) + Number(item.catalog.price);
-            $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) + Number(item.catalog.price);
-          }
-
-        };
-
-        function minusItemNumber(item){
-
-              if(item.catalog !== null){
-                if(vm.number[item.catalog.name] > 1){
-                  vm.number[item.catalog.name] = vm.number[item.catalog.name] - 1;
-                  vm.price[item.catalog.name] = Number(vm.price[item.catalog.name]) - Number(item.catalog.price);
-                  $scope.totalPrice = $scope.totalPrice - Number(item.catalog.price);
-                  $scope.subtotal[item.catalog.labelCodes.split(",")[0]] = Number($scope.subtotal[item.catalog.labelCodes.split(",")[0]]) - Number(item.catalog.price);
-                }
-              }else {
-                if(vm.number[item.name] > 1){
-                  vm.number[item.name] = vm.number[item.name] - 1;
-                  vm.price[item.name] = 0;
-                }
-              }
-
-        };
 
 
         function goShoppingMode(){
@@ -227,7 +248,7 @@
                 console.log("item-checked", category["Uncategorized"][i].checked);
             }
             */
-            $state.go('app.dashboard.home');
+            $state.go('app.dashboard.shoppinglist');
         };
 
         function clearShoppingList(){
@@ -260,127 +281,7 @@
             });
         };
 
-        // search test from remote server
-        $scope.model = ""; //value is then saved in the defined ng-model
 
-        // parameter must be named "query", see ion-autocomplete for detail
-        function searchItemsFromServer(query) {
-            // items should come from remote server
-            if (query) {
-                return searchService.searchItems(storeId, query);
-            }
-            // add selected items to shoppinglist
-            // return {items: []};
-            $scope.externalModel = []; // use to clear the selected items
-        };
-
-        // parameter must be named "callback"
-        function itemsClicked(callback) {
-            console.log('callback',callback);
-            // addToShoppingList(callback.item);
-        };
-        function itemsRemoved(callback) {
-            console.log('callback',callback);
-        };
-        function doneSearch(callback) {
-            console.log("Done",callback); // this will return an array
-            // add selected items to shopping list
-            addToShoppingList(callback.selectedItems);
-            vm.search = !vm.search; // hide search box
-        };
-
-        function addToShoppingList(items){
-            console.log("=======>addToShoppingList");
-            // add array to shoppinglist after click Done button
-            items.forEach(function(item){
-
-              if(item.labelCodes!==undefined ){
-                // add check for new category...
-                if(!$scope.category[item.labelCodes.split(",")[0]]){
-                    $scope.category[item.labelCodes.split(",")[0]] = [];
-                    $scope.subtotal[item.labelCodes.split(",")[0]] = 0;
-                }
-                vm.show[item.labelCodes.split(",")[0]] = true;
-                /** add items to category [used to display and refresh UI]*/
-                // if item in shoppinglist already
-                if(arrayContainsObj($scope.category[item.labelCodes.split(",")[0]], item)){
-                    vm.number[item.name] = vm.number[item.name] + 1;
-                    vm.price[item.name] = Number(vm.price[item.name]) + Number(item.price);
-                    $scope.subtotal[item.labelCodes.split(",")[0]] = Number($scope.subtotal[item.labelCodes.split(",")[0]]) + Number(item.price);
-                    $scope.totalPrice = Number($scope.totalPrice) + Number(item.price);
-                }else {
-                    $scope.totalNumber = $scope.totalNumber + 1;
-
-                    vm.show[item.labelCodes.split(",")[0]] = true;
-                    vm.number[item.name] = 1;
-                    vm.price[item.name] = item.price; // need to make sure
-                    vm.show[item.name] = false;
-                    //NOTE: catalogCode should be labelCodes
-                    if (item.code === null){
-                        $scope.category["noCategory"].push(item);
-                        $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
-                    }else {
-                        $scope.category[item.labelCodes.split(",")[0]].push(item);
-                        $scope.subtotal[item.labelCodes.split(",")[0]] = Number($scope.subtotal[item.labelCodes.split(",")[0]]) + Number(vm.price[item.name]);
-                        $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.name]);
-                    }
-                    // [add to use's shopping list [database]]
-                    var object =
-                        {
-                          "catalogCode" : item.code, //item.catalogCode
-                          "name" : item.naturalName
-                         };
-                    console.log("added items obect", object);
-                    postToDatabase(storeId, object);
-
-                }
-              }else { // item is not in catalog
-                console.log("item is not in catalog!!!");
-
-                // check noCategory existed or not
-                if ($scope.category["noCategory"] == undefined){
-                    vm.show["noCategory"] = true;
-
-                    vm.number[item.naturalName] = 1;
-                    vm.price[item.naturalName] = 0; // need to make sure
-                    vm.show[item.naturalName] = false;
-                    // $scope.totalPrice = Number($scope.totalPrice) + Number(vm.price[item.name]);
-                    $scope.category["noCategory"] = [];
-                    $scope.subtotal["noCategory"] = 0;
-                    $scope.category["noCategory"].push(item);
-                    $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
-
-                    var object =
-                        {
-                          "catalogCode" : null, //item.catalogCode
-                          "name" : item.naturalName
-                         };
-                    console.log("added items obect", object);
-                    postToDatabase(storeId, object);
-
-                // check item existed or not
-                }else if (arrayContainsObj($scope.category["noCategory"], item)){
-                    console.log("item exist");
-                    vm.number[item.naturalName] = vm.number[item.naturalName] + 1;
-                }else {
-                  vm.number[item.naturalName] = 1;
-                  vm.price[item.naturalName] = 0;
-                  vm.show[item.naturalName] = false;
-                  $scope.category["noCategory"].push(item);
-                  $scope.subtotal["noCategory"] = Number($scope.subtotal["noCategory"]) + 0;
-                  var object =
-                      {
-                        "catalogCode" : null, //item.catalogCode
-                        "name" : item.naturalName
-                       };
-                  console.log("added items obect", object);
-                  postToDatabase(storeId, object);
-
-                }
-
-              }
-            });
-        };
 
         function pullToRefresh() {
             console.log("=========> pull to refresh");

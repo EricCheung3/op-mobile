@@ -20,15 +20,12 @@
         vm.shouldShowDelete = false;
         vm.listCanSwipe = true;
 
-
         storeService
-            .getStoresResource()
-            .then(function(stores){
-                console.log("stores", stores);
-                vm.stores = stores;
-            });
+        .loadFirstPageOfUserStores( function(storeList, storeListPage) {
+            vm.stores = storeList;
+            vm.lastStoreListPage = storeListPage;
+        })
 
-        //vm.pullToRefresh();
         function pullToRefresh(){
             $log.debug('==> stores pullToRefresh');
             storeService
