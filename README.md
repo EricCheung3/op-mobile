@@ -2,7 +2,7 @@
 
 This README would normally document whatever steps are necessary to get your application up and running.
 
-### This is the repo for OpenPrice Phone App code. ###
+### This is the repo for OpenPrice Mobile App code. ###
 
 Developer Guide
 ================
@@ -42,22 +42,23 @@ Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 Install [Docker](https://docs.docker.com/installation/)
 
-## Bitbucket Account ##
+### Github Account
+Create free account in Github:
+[https://github.com/](https://github.com/)
 
-Create free account in Bitbucket:
-[https://bitbucket.org/](https://bitbucket.org/)
+Ask admin to add your account to groundtruth (opgt).
 
-Ask admin to add your account to groundtruthinc team.
+Setup [SSH key for Github](https://help.github.com/articles/generating-ssh-keys/)
 
-Setup [SSH key for Bitbucket](https://confluence.atlassian.com/display/BITBUCKET/How+to+install+a+public+key+on+your+Bitbucket+account)
+Fork the project from [Open Price Backend Project](https://github.com/opgt/op-backend)
+to your personal account through Web UI at Github.
 
+### Checkout code
+Create a local folder for `~/groundtruth/git`, and check out the code from Github your private repository for **op-mobile** to this folder. 
+```
+git clone git@github.com:opgt/op-mobile.git
+```
 ## Run OpenPrice Mobile Project locally first time ##
-
-### Checkout code ###
-Check out the code from Bitbucket 
-```
-git clone git@bitbucket.org:groundtruthinc/openprice-mobile.git
-```
 
 ### Install dependencies ###
 
@@ -76,12 +77,22 @@ cordova plugin add https://github.com/EricCheung3/cordova-plugin-camera.git
 cordova plugin add org.apache.cordova.splashscreen
 ```
 
-### Run with Brwoser ###
+### Run with Browser ###
 You can run OpenPrice mobile app inside browser with Ionic:
 ```
 ionic serve
 ```
 It will open a browser window and display the login page. You can register an account and login with this account.
+
+To work with local servers running inside docker containers, for Windows/MacOSX, run
+```
+env=localdocker ionic serve
+```
+
+For Linux PC, run
+```
+env=local ionic serve
+```
 
 ### Run in Android Phone ###
 You can connect your Android phone with your computer and run mobile app in it:
