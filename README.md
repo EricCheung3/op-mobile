@@ -82,7 +82,7 @@ You can run OpenPrice mobile app inside browser with Ionic:
 ```
 ionic serve
 ```
-It will open a browser window and display the login page. You can register an account and login with this account.
+It will open a browser window and display the login page. By default, it will connect to DEV server running in Google Cloud. You can register an account and login with this account.
 
 To work with local servers running inside docker containers, for Windows/MacOSX, run
 ```
@@ -106,10 +106,10 @@ The master branch is for production release, and for each developer, we are all 
 release branch, such as release1, release2, etc.
 
 
-So we need to switch to development branch, such as release1:
+So we need to switch to development branch, such as release2:
 
 ```
-git checkout release1
+git checkout release2
 ```
 
 After you have done code changes, you first need to commit it, for example:
