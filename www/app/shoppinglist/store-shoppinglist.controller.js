@@ -8,7 +8,7 @@
     StoreShoppingListController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', '$stateParams', 'storeService', '$ionicPopup', '$state', 'searchService'];
 
     function StoreShoppingListController(   $log,   $rootScope,   $scope,   $location,   apiService ,  $stateParams ,  storeService ,  $ionicPopup ,  $state,   searchService) {
-        $log.debug('==> StoreShoppingListController');
+        $log.debug('==> StoreShoppingListController test');
 
         var vm = this;
         vm.store = null;
@@ -29,9 +29,8 @@
         vm.itemsRemoved = itemsRemoved;
         vm.doneSearch = doneSearch;
 
-
         vm.shoppingMode = false; // whether in shopping
-        vm.goShoppingMode =goShoppingMode;
+        vm.goShoppingMode = goShoppingMode;
         vm.doneShoppingMode = doneShoppingMode;
 
         storeService.getStoreAllItems($stateParams.storeId, function(store){
@@ -42,6 +41,7 @@
                 addShoppingItemToCategory(shoppingItem);
             });
             calculateTotalSubtotal();
+            console.log('categoryMap is :', vm.categoryMap);
         });
 
         // ---------------------------------------------------------------------
@@ -98,6 +98,23 @@
             vm.search = !vm.search; // hide search box
         };
 
+        function goShoppingMode(){
+            vm.shoppingMode = !vm.shoppingMode;
+        };
+
+        function doneShoppingMode(category){
+            vm.shoppingMode = !vm.shoppingMode;
+            /*
+            // clear checked items
+            for(var i=0;i<category["Uncategorized"].length;i++){
+                if(category["Uncategorized"][i].checked)
+                  category["Uncategorized"][i].checked = !category["Uncategorized"][i].checked;
+                console.log("item-checked", category["Uncategorized"][i].checked);
+            }
+            */
+            $state.go('app.dashboard.shoppinglist');
+        };
+
         // ---------------------------------------------------------------------
         // private functions
 
@@ -105,20 +122,18 @@
             var item = {
                 name : shoppingItem.name,
                 number : 1,
-                catalog: shoppingItem.catalog,
-                price : Number(shoppingItem.catalog.price),
                 showDetail : false,
                 shoppingItem : shoppingItem
             };
 
             if(shoppingItem.catalog !== null) {
                 item.code = shoppingItem.catalog.productCategory;
-                catalog: shoppingItem.catalog;
-                price : shoppingItem.catalog.price;
+                item.catalog = shoppingItem.catalog;
+                item.price = shoppingItem.catalog.price;
             } else {
-                item.code = 'uncategoried';
-                catalog: null;
-                price : 0;
+                item.code = 'uncategorized';
+                item.catalog = null;
+                item.price = 0;
             }
 
             var category = vm.categoryMap[item.code];
@@ -181,7 +196,6 @@
         vm.lastItemsPage = null;
 
         vm.editItem = editItem;
-        vm.addNewItem = addNewItem;
         vm.clearShoppingList = clearShoppingList;
         vm.show = [];
         vm.number = [];
@@ -202,54 +216,6 @@
             // vm.items[index].$put(...)
         };
 
-
-        function addNewItem() {
-          var popup = $ionicPopup.confirm({
-            title: 'Add New Item',
-            subTitle: 'Please input item name and price',
-            template: '<input type="text" ng-model="vm.item">',
-            buttons: [
-              { text: 'Cancel' ,
-                type: 'button-positive',
-                onTap: function(e) {
-                    popup.close();
-                }
-              },
-              { text: 'Add',
-                type: 'button-positive',
-                onTap: function(e) {
-                  // add new ite function
-                  if(vm.item==null){
-                      //alert
-                      popup.close();
-                  }else {
-                      popup.close();
-                  }
-
-                }
-              }
-            ]
-          });
-        };
-
-
-
-        function goShoppingMode(){
-            vm.shoppingMode = !vm.shoppingMode;
-        };
-
-        function doneShoppingMode(category){
-            vm.shoppingMode = !vm.shoppingMode;
-            /*
-            // clear checked items
-            for(var i=0;i<category["Uncategorized"].length;i++){
-                if(category["Uncategorized"][i].checked)
-                  category["Uncategorized"][i].checked = !category["Uncategorized"][i].checked;
-                console.log("item-checked", category["Uncategorized"][i].checked);
-            }
-            */
-            $state.go('app.dashboard.shoppinglist');
-        };
 
         function clearShoppingList(){
             var popup = $ionicPopup.confirm({
@@ -311,21 +277,6 @@
                     return true;
                 }
             }
-        };
-
-
-        function postToDatabase(storeId, object){
-            // post to database
-            apiService.getUserResource()
-            .then(function (userResource) {
-                userResource.$get('store', {storeId:storeId})
-                .then(function(userStore){
-                    userStore.$post('items', {}, object)
-                    .then(function () {
-                        pullToRefresh();
-                    })
-                })
-            });
         };
 
     }; // end of storeController
