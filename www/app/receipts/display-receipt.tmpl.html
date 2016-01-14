@@ -2,7 +2,7 @@
 
     <!-- fix the select mode selection -->
     <ion-header-bar class="bar bar-subheader">
-      <ion-toggle ng-model="EditModel" class="grey-background">Select items</ion-toggle>
+      <ion-toggle ng-model="EditModel" class="bar select-items-bar">Select items</ion-toggle>
     </ion-header-bar>
 
     <ion-content class="home-page grey-background">
@@ -41,8 +41,8 @@
       <div ng-hide="EditModel" ng-if="vm.receipt.needFeedback">
         <h3 class="padding-top-large text-center">How did we do?</h3>
           <div class="row margin-bottom-large">
-            <div class="col button button-balanced text-center" ng-click="ratingResultY()">GOOD RESULTS</div>
-            <div class="col button button-assertive text-center" ng-click="ratingResultN()">BAD RESULTS</div>
+            <div class="col button button-balanced text-center margin-horizontal-small" ng-click="ratingResultY()">GOOD RESULTS</div>
+            <div class="col button button-assertive text-center margin-horizontal-small" ng-click="ratingResultN()">BAD RESULTS</div>
           </div>
       </div>
 
