@@ -1,26 +1,4 @@
 <ion-view view-title="Timeline">
-  <div class="float-button">
-      <md-fab-speed-dial md-open="vm.openFab" md-direction="up" class="md-scale">
-        <md-fab-trigger>
-          <md-button aria-label="menu" class="md-fab md-warn" ng-click="vm.switchFabMenu()">
-            <md-icon md-svg-src="img/icons/add.svg"></md-icon>
-          </md-button>
-        </md-fab-trigger>
-        <md-fab-actions>
-          <md-button aria-label="snap by camera" class="md-fab md-raised md-mini"
-              ng-click="vm.takePicture()">
-            <md-tooltip md-visible="vm.tooltipVisible" md-direction="left">Snap new photo</md-tooltip>
-            <md-icon md-svg-src="img/icons/camera.svg"></md-icon>
-          </md-button>
-          <md-button aria-label="crop from gallary" class="md-fab md-raised md-mini"
-              ng-click="vm.cropFromGallery()">
-            <md-tooltip md-visible="vm.tooltipVisible" md-direction="left">Crop from gallery</md-tooltip>
-            <md-icon md-svg-src="img/icons/crop.svg"></md-icon>
-          </md-button>
-        </md-fab-actions>
-      </md-fab-speed-dial>
-  </div>
-
     <ion-content class="home-page grey-background">
         <ion-refresher
           pulling-text="Pull to refresh..."
@@ -30,7 +8,7 @@
         <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="left">
             <ion-item ng-repeat="(index, receipt) in vm.receipts" >
                 <div class="timeline-item">
-                    <p class="inline padding-top-large vertical-align-bottom padding-left-small">Store Name: {{receipt.result.storeName}}</p>
+                    <p class="inline padding-top-large vertical-align-bottom padding-left-small">{{receipt.result.storeName}}</p>
                     <p class="inline float-right padding-top-large vertical-align-bottom padding-right-small">Total: {{receipt.result.parsedTotal}}</p>
                 </div>
                 <div class="receipt-img" >

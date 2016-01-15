@@ -18,6 +18,7 @@
 
         var vm = this;
         vm.receipt;
+        vm.selectItemMode = false;
         vm.showItems = showItems;
         vm.editItem = editItem;
         vm.deleteItem = deleteItem;
@@ -117,10 +118,14 @@
             apiService
             .getUserResource()
             .then(function (userResource) {
-                userResource.$post('shoppingList', {}, shoppingList)
-                  .then(function(r){
-                      console.log("result", "success");
-                      // confirm("add items to shoppingList success!");
+                userResource
+                .$post('shoppingList', {}, shoppingList)
+                .then( function(location){
+                      // jump to shopping list page
+                      var shoppingStoreId = location.substring(location.lastIndexOf('/') + 1);
+                      console.log('upload shopping list success! shoppingStoreId is', shoppingStoreId);
+                      vm.selectItemMode = false; // clear selec mode
+                      $state.go('app.dashboard.store', {'storeId':shoppingStoreId});
                   });
             });
         };
