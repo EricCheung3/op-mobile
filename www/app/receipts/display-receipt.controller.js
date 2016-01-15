@@ -118,9 +118,16 @@
             .getUserResource()
             .then(function (userResource) {
                 userResource.$post('shoppingList', {}, shoppingList)
-                  .then(function(r){
-                      console.log("result", "success");
-                      // confirm("add items to shoppingList success!");
+                  .then(function(location){
+                      console.log("result success", location);
+                      // get the storeId according the location path
+                      var pathArray = location.split( '/' );
+                      return pathArray[pathArray.length-1];
+                  }).then(function(storeId) {
+                    // switch to shopping list page
+                    $state.go("app.dashboard.shoppinglist");
+                    $state.go("app.dashboard.store",{storeId:storeId});
+
                   });
             });
         };
