@@ -118,6 +118,7 @@
             apiService
             .getUserResource()
             .then(function (userResource) {
+
                 userResource
                 .$post('shoppingList', {}, shoppingList)
                 .then( function(location){
@@ -126,6 +127,7 @@
                       console.log('upload shopping list success! shoppingStoreId is', shoppingStoreId);
                       vm.selectItemMode = false; // clear selec mode
                       $state.go('app.dashboard.store', {'storeId':shoppingStoreId});
+
                   });
             });
         };

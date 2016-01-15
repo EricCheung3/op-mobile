@@ -62,7 +62,7 @@
         function deleteItem(index,item) {
             vm.totalNumber = vm.totalNumber - 1;
             var category = item.category;
-            item.shoppingIte.$del('self')
+            item.shoppingItem.$del('self')
             category.items.splice(index, 1);
             if (category.items.length === 0) {
                 delete vm.categoryMap[category.code];
@@ -167,17 +167,48 @@
             console.log("=======>addToShoppingList");
             // add array to shoppinglist after click Done button
             items.forEach(function(item){
-                var newItem = {
-                    name : item.naturalName,
-                    catalogCode : item.catalogCode
-                };
-                console.log('post new item:', newItem);
-                vm.store
-                .$post('items', {}, newItem)
-                .then( function(location){
-                    var itemId = location.substring(location.lastIndexOf('/') + 1);
-                    loadShoppingItem(itemId);
-                });
+
+              // new item belong to our catalog
+              if(item.productCategory !== undefined){
+                // if item category existed in shoppinglist
+                if (vm.categoryMap[item.productCategory]!==undefined) {
+
+                  if (categoryContainsItem(vm.categoryMap[item.productCategory].items, item)){
+                    console.log("exist category exist item: just add item number");
+                  }else {
+                    console.log("exist category but new item: add item to the category");
+                    postToDataBase(item);
+                  }
+                }else {// if item belongs to new category in shoppinglist
+                  console.log("new category / new item");
+                  postToDataBase(item);
+                }
+              // item is not in our catalog, they belong to [uncategorized]
+              }else {
+                // if item in [uncategorized]
+                if (categoryContainsItem(vm.categoryMap.uncategorized.items, item)){
+                  item.number = item.number + 1;
+                  item.price = item.price + 0;
+                }else {
+                  postToDataBase(item);
+                }
+              }
+              // re-calculate the price
+              calculateTotalSubtotal();
+            });
+        };
+
+        function postToDataBase(item){
+            var newItem = {
+                name : item.naturalName,
+                catalogCode : item.catalogCode
+            };
+            console.log('post new item:', newItem);
+            vm.store
+            .$post('items', {}, newItem)
+            .then( function(location){
+                var itemId = location.substring(location.lastIndexOf('/') + 1);
+                loadShoppingItem(itemId);
             });
         };
 
@@ -233,13 +264,13 @@
                   onTap: function(e) {
                       console.log("clear the ShoppingList");
                       // delete function at here
-                      vm.items.forEach(function (item){
+                      vm.store.items.forEach(function (item){
                           console.log("item-self",item);
                           item.$del('self');
                       });
-                      $scope.category = {};
-                      $scope.totalNumber = 0;
-                      $scope.totalPrice = 0;
+                      vm.categoryMap = {};
+                      vm.totalNumber = 0;
+                      vm.totalPrice = 0;
                       popup.close();
                   }
                 }
@@ -268,13 +299,20 @@
         };
 
         //  most concise and efficient way to find out if a JavaScript array contains an obj use underscore.js
-        function arrayContainsObj(arr, obj){
-            for(var i=0; i<arr.length; i++) {
-                if(arr[i].catalog !== null && (arr[i].catalog.id == obj.id)){
+        function categoryContainsItem(category, item){
+            for(var i=0; i<category.length; i++) {
+                if(category[i].catalog !== null){
+                  if(category[i].catalog.id === item.id){
+                    category[i].number = category[i].number + 1;
+                    // category[i].price = Number(category[i].price) + Number(item.price);
                     return true;
+                  }
+
                 }else {
-                  if (arr[i].name == obj.naturalName)
+                  if (category[i].name === item.naturalName){
+                    category[i].number = category[i].number + 1;
                     return true;
+                  }
                 }
             }
         };
