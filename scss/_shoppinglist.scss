@@ -56,9 +56,10 @@
 }
 
 .shopping-item-search {
-  padding-bottom: 10px !important;
-  padding-left: 10px !important;
-  padding-right: 10px !important;
+  padding-bottom: 6px !important;
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+  padding-top: 6px !important;
   background-color: $positive;
   input {
     background-color: white !important;
@@ -82,6 +83,7 @@
 .item-divider {
   background-color: $dark !important;
   color: white !important;
+  padding-top: 10px !important;
 }
 
 /* overriding the ionic search bar background color settings for the search-bar when searching */

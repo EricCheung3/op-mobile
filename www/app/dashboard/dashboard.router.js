@@ -30,7 +30,7 @@
                 }
             })
             .state('app.dashboard.store', {
-                url: '/shoppinglist/:storeId',
+                url: '/shoppingstore/:storeId',
                 views: {
                     'shoppinglist-tab': {
                         templateUrl: 'app/shoppinglist/store-shoppinglist.tmpl.html',

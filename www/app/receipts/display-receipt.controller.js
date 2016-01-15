@@ -18,6 +18,7 @@
 
         var vm = this;
         vm.receipt;
+        vm.selectItemMode = false;
         vm.showItems = showItems;
         vm.editItem = editItem;
         vm.deleteItem = deleteItem;
@@ -117,16 +118,15 @@
             apiService
             .getUserResource()
             .then(function (userResource) {
-                userResource.$post('shoppingList', {}, shoppingList)
-                  .then(function(location){
-                      console.log("result success", location);
-                      // get the storeId according the location path
-                      var pathArray = location.split( '/' );
-                      return pathArray[pathArray.length-1];
-                  }).then(function(storeId) {
-                    // switch to shopping list page
-                    $state.go("app.dashboard.shoppinglist");
-                    $state.go("app.dashboard.store",{storeId:storeId});
+
+                userResource
+                .$post('shoppingList', {}, shoppingList)
+                .then( function(location){
+                      // jump to shopping list page
+                      var shoppingStoreId = location.substring(location.lastIndexOf('/') + 1);
+                      console.log('upload shopping list success! shoppingStoreId is', shoppingStoreId);
+                      vm.selectItemMode = false; // clear selec mode
+                      $state.go('app.dashboard.store', {'storeId':shoppingStoreId});
 
                   });
             });

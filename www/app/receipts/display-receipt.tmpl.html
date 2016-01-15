@@ -2,12 +2,12 @@
 
     <!-- fix the select mode selection -->
     <ion-header-bar class="bar bar-subheader">
-      <ion-toggle ng-model="EditModel" class="grey-background">Select items</ion-toggle>
+      <ion-toggle ng-model="vm.selectItemMode" class="bar select-items-bar">Select items</ion-toggle>
     </ion-header-bar>
 
     <ion-content class="home-page grey-background">
 
-      <div ng-show="EditModel">
+      <div ng-show="vm.selectItemMode">
         <ion-list >
           <ion-item class="store-items list-border" ng-repeat="item in vm.receipt.result.items">
             <ion-checkbox ng-model="item.checked" >
@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div ng-hide="EditModel">
+      <div ng-hide="vm.selectItemMode">
         <ion-list show-delete="false" can-swipe="true" swipe-direction="left">
           <ion-item ng-repeat="(index,item) in vm.receipt.result.items">
               <div class="store-items list-border">
@@ -38,22 +38,18 @@
         </ion-list>
       </div>
 
-      <div ng-hide="EditModel" ng-if="vm.receipt.needFeedback">
+      <div ng-hide="vm.selectItemMode" ng-if="vm.receipt.needFeedback">
         <h3 class="padding-top-large text-center">How did we do?</h3>
           <div class="row margin-bottom-large">
-            <div class="col button button-balanced text-center" ng-click="ratingResultY()">GOOD RESULTS</div>
-            <div class="col button button-assertive text-center" ng-click="ratingResultN()">BAD RESULTS</div>
+            <div class="col button button-balanced text-center margin-horizontal-small" ng-click="ratingResultY()">GOOD RESULTS</div>
+            <div class="col button button-assertive text-center margin-horizontal-small" ng-click="ratingResultN()">BAD RESULTS</div>
           </div>
       </div>
 
       <!-- receipt dislay part-->
-      <ion-item ng-hide="EditModel" ng-repeat="image in vm.receipt.images" >
+      <ion-item ng-hide="vm.selectItemMode" ng-repeat="image in vm.receipt.images" >
         <p class="padding-left-small padding-top-medium padding-bottom-medium">Original photo</p>
         <img class="vertical-align-bottom" ng-src="{{image.path}}">
-        <!-- This creates separate "cards" for each image,
-        but here I think all the images should be on one "card"
-        in the future I think we will use panorama for longer
-        receipts so we will only have 1 image-->
       </ion-item>
     </ion-content>
 </ion-view>

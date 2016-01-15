@@ -293,7 +293,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 .button {
   border: none;
-  margin: 0px !important;
 }
 
 .swipe-button {
@@ -321,6 +320,8 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .bar {
   border: none !important;
 }
+
+@import 'parsed-receipt';
 
 
 
