@@ -22,6 +22,7 @@
             })
             .state('app.dashboard.shoppinglist', {
                 url: '/shoppinglist',
+                cache: false,
                 views: {
                     'shoppinglist-tab': {
                         templateUrl: 'app/shoppinglist/list-stores.tmpl.html',
@@ -31,6 +32,7 @@
             })
             .state('app.dashboard.store', {
                 url: '/shoppingstore/:storeId',
+                cache: false,
                 views: {
                     'shoppinglist-tab': {
                         templateUrl: 'app/shoppinglist/store-shoppinglist.tmpl.html',

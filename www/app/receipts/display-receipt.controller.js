@@ -103,7 +103,8 @@
                 if(receiptItem.checked){
                     items.push({
                         name : receiptItem.displayName,
-                        catalogCode : receiptItem.catalogCode
+                        catalogCode : receiptItem.catalogCode,
+                        number : 1
                     });
                 }
             }

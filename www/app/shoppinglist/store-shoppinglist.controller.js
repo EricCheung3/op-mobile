@@ -21,6 +21,7 @@
 
         vm.plusItemNumber = plusItemNumber;
         vm.minusItemNumber = minusItemNumber;
+        vm.editItem = editItem;
         vm.deleteItem = deleteItem;
 
         vm.model = ""; //value is then saved in the defined ng-model ??? What is this?
@@ -33,15 +34,17 @@
         vm.goShoppingMode = goShoppingMode;
         vm.doneShoppingMode = doneShoppingMode;
 
+        vm.clearShoppingList = clearShoppingList;
+
         storeService.getStoreAllItems($stateParams.storeId, function(store){
-            console.log(store);
+            //console.log(store);
             vm.store = store;
             vm.totalNumber = vm.store.items.length;
             vm.store.items.forEach(function (shoppingItem) {
                 addShoppingItemToCategory(shoppingItem);
             });
             calculateTotalSubtotal();
-            console.log('categoryMap is :', vm.categoryMap);
+            //console.log('categoryMap is :', vm.categoryMap);
         });
 
         // ---------------------------------------------------------------------
@@ -49,14 +52,20 @@
 
         function plusItemNumber(item) {
             item.number = item.number + 1;
+            updateShoppingItem(item);
             calculateTotalSubtotal();
         };
 
         function minusItemNumber(item) {
             if (item.number > 1) {
                 item.number = item.number - 1;
+                updateShoppingItem(item);
                 calculateTotalSubtotal();
             }
+        };
+
+        function editItem(index){
+            console.log("edit item test");
         };
 
         function deleteItem(index,item) {
@@ -104,24 +113,47 @@
 
         function doneShoppingMode(category){
             vm.shoppingMode = !vm.shoppingMode;
-            /*
-            // clear checked items
-            for(var i=0;i<category["Uncategorized"].length;i++){
-                if(category["Uncategorized"][i].checked)
-                  category["Uncategorized"][i].checked = !category["Uncategorized"][i].checked;
-                console.log("item-checked", category["Uncategorized"][i].checked);
-            }
-            */
             $state.go('app.dashboard.shoppinglist');
+        };
+
+        function clearShoppingList(){
+            var popup = $ionicPopup.confirm({
+              // title: 'clear the ShoppingList',
+              title: '<div class="text-center"> Are you sure you want to delete this shopping list?</div>',
+              buttons: [
+                { text: 'Cancel' ,
+                  type: 'button-positive',
+                  onTap: function(e) {
+                      popup.close();
+                  }
+                },
+                { text: 'Delete',
+                  type: 'button-positive',
+                  onTap: function(e) {
+                      console.log("clear the ShoppingList");
+                      // delete function at here
+                      vm.store.items.forEach(function (item){
+                          console.log("item-self",item);
+                          item.$del('self');
+                      });
+                      vm.categoryMap = {};
+                      vm.totalNumber = 0;
+                      vm.totalPrice = 0;
+                      popup.close();
+                  }
+                }
+              ]
+            });
         };
 
         // ---------------------------------------------------------------------
         // private functions
 
+        // helper function to add shoppingItem loaded from server to UI category
         function addShoppingItemToCategory(shoppingItem) {
             var item = {
                 name : shoppingItem.name,
-                number : 1,
+                number : shoppingItem.number,
                 showDetail : false,
                 shoppingItem : shoppingItem
             };
@@ -163,15 +195,16 @@
             }
         }
 
+        // after user selects search result or creates item, add it to shopping list
         function addToShoppingList(items) {
             console.log("=======>addToShoppingList");
             // add array to shoppinglist after click Done button
             items.forEach(function(item){
 
               // new item belong to our catalog
-              if(item.productCategory !== undefined){
+              if(item.productCategory !== undefined) {
                 // if item category existed in shoppinglist
-                if (vm.categoryMap[item.productCategory]!==undefined) {
+                if (vm.categoryMap[item.productCategory] !== undefined) {
 
                   if (categoryContainsItem(vm.categoryMap[item.productCategory].items, item)){
                     console.log("exist category exist item: just add item number");
@@ -201,7 +234,8 @@
         function postToDataBase(item){
             var newItem = {
                 name : item.naturalName,
-                catalogCode : item.catalogCode
+                catalogCode : item.catalogCode,
+                number : 1
             };
             console.log('post new item:', newItem);
             vm.store
@@ -218,103 +252,21 @@
             .then( function(shoppingItem){
                 addShoppingItemToCategory(shoppingItem);
             });
-        }
-        //===== old code
-        //----------------------------------------------------------------------
-
-
-        vm.items = [];
-        vm.lastItemsPage = null;
-
-        vm.editItem = editItem;
-        vm.clearShoppingList = clearShoppingList;
-        vm.show = [];
-        vm.number = [];
-        vm.price = [];
-
-        vm.pullToRefresh = pullToRefresh;
-        vm.pullToSearch = pullToSearch;
-
-        // for global display data
-        vm.category = {};
-        vm.subtotal = {};
-
-        // for search items
-
-        function editItem(index){
-            console.log("edit item test");
-            // need server API supporting
-            // vm.items[index].$put(...)
         };
 
-
-        function clearShoppingList(){
-            var popup = $ionicPopup.confirm({
-              // title: 'clear the ShoppingList',
-              title: '<div class="text-center"> Are you sure you want to delete this shopping list?</div>',
-              buttons: [
-                { text: 'Cancel' ,
-                  type: 'button-positive',
-                  onTap: function(e) {
-                      popup.close();
-                  }
-                },
-                { text: 'Delete',
-                  type: 'button-positive',
-                  onTap: function(e) {
-                      console.log("clear the ShoppingList");
-                      // delete function at here
-                      vm.store.items.forEach(function (item){
-                          console.log("item-self",item);
-                          item.$del('self');
-                      });
-                      vm.categoryMap = {};
-                      vm.totalNumber = 0;
-                      vm.totalPrice = 0;
-                      popup.close();
-                  }
-                }
-              ]
+        function updateShoppingItem(item) {
+            var itemForm = {
+                name : item.name,
+                number : item.number
+            };
+            item.shoppingItem.$put('self', {}, itemForm)
+            .then( function() {
+                item.shoppingItem.$get('self')
+                .then( function(shoppingItem) {
+                    console.log('Updated shopping item is ', shoppingItem);
+                    item.shoppingItem = shoppingItem; //update it
+                });
             });
-        };
-
-
-
-        function pullToRefresh() {
-            console.log("=========> pull to refresh");
-            storeService.getStoreAllItems(storeId, function(store) {
-                vm.items = store.items;
-                categorizeItems(store.items, 1);
-            })
-            .finally( function() {
-                // Stop the ion-refresher from spinning
-                $scope.$broadcast('scroll.refreshComplete');
-            });
-        };
-
-        vm.search = true;
-        function pullToSearch(){
-            vm.search = !vm.search;
-            $scope.$broadcast('scroll.refreshComplete');
-        };
-
-        //  most concise and efficient way to find out if a JavaScript array contains an obj use underscore.js
-        function categoryContainsItem(category, item){
-            for(var i=0; i<category.length; i++) {
-                if(category[i].catalog !== null){
-                  if(category[i].catalog.id === item.id){
-                    category[i].number = category[i].number + 1;
-                    // category[i].price = Number(category[i].price) + Number(item.price);
-                    return true;
-                  }
-
-                }else {
-                  if (category[i].name === item.naturalName){
-                    category[i].number = category[i].number + 1;
-                    return true;
-                  }
-                }
-            }
         };
 
     }; // end of storeController
