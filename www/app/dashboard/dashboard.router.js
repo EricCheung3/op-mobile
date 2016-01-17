@@ -42,6 +42,7 @@
             })
             .state('app.dashboard.receipts', {
                 url: '/receipts',
+                cache: false,
                 views: {
                     'receipt-tab': {
                         templateUrl: 'app/receipts/list-receipts.tmpl.html',
@@ -51,6 +52,7 @@
             })
             .state('app.dashboard.receipt', {
                 url: '/receipts/:receiptId',
+                cache: false,
                 views: {
                     'receipt-tab': {
                         templateUrl: 'app/receipts/display-receipt.tmpl.html',

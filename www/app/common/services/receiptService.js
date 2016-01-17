@@ -39,6 +39,10 @@
                 receipt.$get('result')
                 .then( function(result){
                     receipt.result = result;
+                    receipt.result.$get('receiptItems')
+                    .then( function(receiptItems){
+                        receipt.result.items = receiptItems;
+                    });
                 });
 
                 deferred.resolve(receipt);
@@ -74,6 +78,10 @@
                         receipt.$get('result')
                         .then( function(result){
                             receipt.result = result;
+                            receipt.result.$get('receiptItems')
+                            .then( function(receiptItems){
+                                receipt.result.items = receiptItems;
+                            });
                         });
                     });
                 }).catch ( function(err){
