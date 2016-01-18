@@ -20,6 +20,7 @@
         $log.debug('==> StoreShoppingListController test');
 
         var vm = this;
+        vm.storeId = $stateParams.storeId;
         vm.store = null;
         vm.categoryMap = {};
         vm.totalNumber = 0;
@@ -36,8 +37,7 @@
         vm.model = ""; //value is then saved in the defined ng-model, used by ion-autocomplete. Do we need this?
         vm.searchProductsFromServer = searchProductsFromServer;
         vm.itemsClicked = itemsClicked;
-        vm.itemsRemoved = itemsRemoved;
-        vm.doneSearch = doneSearch;
+        vm.cancelSearch = cancelSearch;
 
         vm.shoppingMode = false; // whether in shopping
         vm.goShoppingMode = goShoppingMode;
@@ -45,16 +45,7 @@
 
         vm.clearShoppingList = clearShoppingList;
 
-        storeService.getStoreAllItems($stateParams.storeId, function(store){
-            //console.log(store);
-            vm.store = store;
-            vm.totalNumber = vm.store.items.length;
-            vm.store.items.forEach(function (shoppingItem) {
-                addShoppingItemToCategory(shoppingItem);
-            });
-            calculateTotalSubtotal();
-            //console.log('categoryMap is :', vm.categoryMap);
-        });
+        reloadShoppingList();
 
         // ---------------------------------------------------------------------
         // public functions for UI
@@ -74,7 +65,8 @@
         };
 
         function editItem(index){
-            console.log("edit item test");
+            console.log("edit item. Under Construction...");
+            // TODO implement Edit Item
         };
 
         function deleteItem(index,item) {
@@ -88,34 +80,27 @@
             calculateTotalSubtotal();
         };
 
+        //---------- Search ----------
         // parameter must be named "query", see ion-autocomplete for detail
         function searchProductsFromServer(query) {
             // items should come from remote server
             if (query) {
-                return searchService.searchItems(vm.store.id, query);
+                return searchService.searchItems(vm.storeId, query);
             }
-            // add selected items to shoppinglist
-            // return {items: []};
             vm.externalModel = []; // use to clear the selected items
         };
 
         // parameter must be named "callback"
         function itemsClicked(callback) {
-            console.log('callback',callback);
-            //addToShoppingList(callback.item);
+            addToShoppingList(callback.item);
+            vm.externalModel = []; // use to clear the selected items
         };
 
-        function itemsRemoved(callback) {
-            console.log('callback',callback);
+        function cancelSearch(callback) {
+            vm.externalModel = []; // use to clear the selected items
         };
 
-        function doneSearch(callback) {
-            console.log("Done",callback); // this will return an array
-            // add selected items to shopping list
-            addToShoppingList(callback.selectedItems);
-            vm.search = !vm.search; // hide search box
-        };
-
+        // ---------- Shopping Mode ----------
         function goShoppingMode(){
             vm.shoppingMode = !vm.shoppingMode;
         };
@@ -158,6 +143,19 @@
         // ---------------------------------------------------------------------
         // private functions
 
+        function reloadShoppingList() {
+            storeService.getStoreAllItems(vm.storeId, function(store){
+                //console.log(store);
+                vm.categoryMap = {}; // clear category
+                vm.store = store;
+                vm.totalNumber = vm.store.items.length;
+                vm.store.items.forEach(function (shoppingItem) {
+                    addShoppingItemToCategory(shoppingItem);
+                });
+                calculateTotalSubtotal();
+                //console.log('categoryMap is :', vm.categoryMap);
+            });
+        }
         // helper function to add shoppingItem loaded from server to UI category
         function addShoppingItemToCategory(shoppingItem) {
             var item = {
@@ -205,62 +203,24 @@
         }
 
         // after user selects search result or creates item, add it to shopping list
-        function addToShoppingList(items) {
-            console.log("=======>addToShoppingList");
-            // add array to shoppinglist after click Done button
-            items.forEach(function(item){
-
-              // new item belong to our catalog
-              if(item.productCategory !== undefined) {
-                // if item category existed in shoppinglist
-                if (vm.categoryMap[item.productCategory] !== undefined) {
-
-                  if (categoryContainsItem(vm.categoryMap[item.productCategory].items, item)){
-                    console.log("exist category exist item: just add item number");
-                  }else {
-                    console.log("exist category but new item: add item to the category");
-                    postToDataBase(item);
-                  }
-                }else {// if item belongs to new category in shoppinglist
-                  console.log("new category / new item");
-                  postToDataBase(item);
-                }
-              // item is not in our catalog, they belong to [uncategorized]
-              }else {
-                // if item in [uncategorized]
-                if (categoryContainsItem(vm.categoryMap.uncategorized.items, item)){
-                  item.number = item.number + 1;
-                  item.price = item.price + 0;
-                }else {
-                  postToDataBase(item);
-                }
-              }
-              // re-calculate the price
-              calculateTotalSubtotal();
-            });
-        };
-
-        function postToDataBase(item){
-            var newItem = {
+        function addToShoppingList(item) {
+            //console.log("add item to shopping list", item);
+            var itemForm = {
                 name : item.naturalName,
                 catalogCode : item.catalogCode,
                 number : 1
             };
-            console.log('post new item:', newItem);
-            vm.store
-            .$post('items', {}, newItem)
-            .then( function(location){
-                var itemId = location.substring(location.lastIndexOf('/') + 1);
-                loadShoppingItem(itemId);
-            });
+            createShoppingItem(itemForm);
         };
 
-        function loadShoppingItem(itemId) {
+        function createShoppingItem(itemForm) {
             vm.store
-            .$get('item', {'itemId': itemId})
-            .then( function(shoppingItem){
-                addShoppingItemToCategory(shoppingItem);
+            .$post('items', {}, itemForm)
+            .then( function(location){
+                var itemId = location.substring(location.lastIndexOf('/') + 1);
+                reloadShoppingList(); // to simplify the process, just refresh the whole item llist
             });
+
         };
 
         function updateShoppingItem(item) {
@@ -272,7 +232,7 @@
             .then( function() {
                 item.shoppingItem.$get('self')
                 .then( function(shoppingItem) {
-                    console.log('Updated shopping item is ', shoppingItem);
+                    //console.log('Updated shopping item is ', shoppingItem);
                     item.shoppingItem = shoppingItem; //update it
                 });
             });
