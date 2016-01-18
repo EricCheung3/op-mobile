@@ -3,6 +3,15 @@
 
     angular
         .module('openprice.mobile')
+        .filter('object2Array', function() {
+            return function(input) {
+                var out = [];
+                for(var i in input){
+                    out.push(input[i]);
+                }
+                return out;
+            }
+        })
         .controller('StoreShoppingListController', StoreShoppingListController);
 
     StoreShoppingListController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', '$stateParams', 'storeService', '$ionicPopup', '$state', 'searchService'];
@@ -24,7 +33,7 @@
         vm.editItem = editItem;
         vm.deleteItem = deleteItem;
 
-        vm.model = ""; //value is then saved in the defined ng-model ??? What is this?
+        vm.model = ""; //value is then saved in the defined ng-model, used by ion-autocomplete. Do we need this?
         vm.searchProductsFromServer = searchProductsFromServer;
         vm.itemsClicked = itemsClicked;
         vm.itemsRemoved = itemsRemoved;
