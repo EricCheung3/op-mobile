@@ -45,7 +45,7 @@
                 <p class="inline category-price">${{category.subtotal|number:2}}</p>
             </ion-item>
             <div ng-show="category.showDetail">
-                <ion-item class="store-items" ng-repeat="(index, item) in category.items | orderBy: 'name'"
+                <ion-item class="store-items" ng-repeat="item in category.items | orderBy: 'name'"
                     ng-click="item.showDetail = !item.showDetail">
                     <div ng-if="item.number === 1">
                         <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.name}} </p>
@@ -59,8 +59,8 @@
                     </div>
                     <ion-option-buttons side="left" class="button-positive swipe-button" ng-click="vm.plusItemNumber(item)"> <i class="icon icon-medium center ion-ios-plus-outline"></i> </ion-option-buttons>
                     <ion-option-buttons side="left" class="button-positive swipe-button quantity-minus" ng-click="vm.minusItemNumber(item)"> <i class="icon icon-medium center ion-ios-minus-outline"></i> </ion-option-buttons>
-                    <!-- <ion-option-buttons side="right" class="button-positive swipe-button" ng-click="vm.editItem(index)"> <i class="icon icon-medium center ion-ios-compose-outline"></i> </ion-option-buttons> -->
-                    <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(index,item)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
+                    <ion-option-buttons side="right" class="button-positive swipe-button" ng-click="vm.editItem(item)"> <i class="icon icon-medium center ion-ios-compose-outline"></i> </ion-option-buttons>
+                    <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteItem(item)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
 
                     <div ng-show="item.showDetail" class="shopping-item-details padding-horizontal-large padding-bottom-small">
                         <div ng-if="item.catalog === null">

@@ -64,20 +64,54 @@
             }
         };
 
-        function editItem(index){
-            console.log("edit item. Under Construction...");
-            // TODO implement Edit Item
+        function editItem(item){
+            $scope.itemForm = {
+                name: item.name,
+                number: item.number,
+                code: item.code
+                };
+
+            var popup = $ionicPopup.show({
+                title: 'Edit Item',
+                // subTitle: 'Please input item name and price',
+                scope: $scope,
+                // TODO add category dropdown list
+                template: '<input type="text" placeholder="item name" ng-model="itemForm.name"><input type="number" placeholder="item number" ng-model="itemForm.number" >',
+                buttons: [
+                    { text: 'Cancel' ,
+                      type: 'button-positive',
+                      onTap: function(e) {
+                          popup.close();
+                      }
+                    },
+                    { text: 'Save',
+                      type: 'button-positive',
+                      onTap: function(e) {
+                        return $scope.itemForm;
+                      }
+                    }
+                ]
+            });
+
+            popup.then(function(itemForm) {
+                if (itemForm === undefined ) {
+                    console.log('cancel');
+                } else if (itemForm.name!==null&&itemForm.number!==null&& itemForm.name!== undefined&&itemForm.number!== undefined) {
+                    // update shoping item
+                    item.name = itemForm.name;
+                    item.number = itemForm.number;
+                    item.code = itemForm.code;
+                    updateShoppingItem(item);
+                } else {
+                    console.log('Input is illegal');
+                }
+             });
+
         };
 
-        function deleteItem(index,item) {
-            vm.totalNumber = vm.totalNumber - 1;
-            var category = item.category;
+        function deleteItem(item) {
             item.shoppingItem.$del('self')
-            category.items.splice(index, 1);
-            if (category.items.length === 0) {
-                delete vm.categoryMap[category.code];
-            }
-            calculateTotalSubtotal();
+            reloadShoppingList();
         };
 
         //---------- Search ----------
@@ -156,9 +190,11 @@
                 //console.log('categoryMap is :', vm.categoryMap);
             });
         }
+
         // helper function to add shoppingItem loaded from server to UI category
         function addShoppingItemToCategory(shoppingItem) {
             var item = {
+                code : shoppingItem.productCategory,
                 name : shoppingItem.name,
                 number : shoppingItem.number,
                 showDetail : false,
@@ -166,12 +202,8 @@
             };
 
             if(shoppingItem.catalog !== null) {
-                item.code = shoppingItem.catalog.productCategory;
-                item.catalog = shoppingItem.catalog;
                 item.price = shoppingItem.catalog.price;
             } else {
-                item.code = 'uncategorized';
-                item.catalog = null;
                 item.price = 0;
             }
 
@@ -226,13 +258,14 @@
         function updateShoppingItem(item) {
             var itemForm = {
                 name : item.name,
-                number : item.number
+                number : item.number,
+                categoryCode : item.code
             };
             item.shoppingItem.$put('self', {}, itemForm)
             .then( function() {
                 item.shoppingItem.$get('self')
                 .then( function(shoppingItem) {
-                    //console.log('Updated shopping item is ', shoppingItem);
+                    console.log('Updated shopping item is ', shoppingItem);
                     item.shoppingItem = shoppingItem; //update it
                 });
             });
