@@ -45,6 +45,15 @@
 
         vm.clearShoppingList = clearShoppingList;
 
+        apiService
+        .getUserResource()
+        .then(function (userResource) {
+            return userResource.$get('categories')
+        })
+        .then( function(categories){
+            vm.categoryList = categories;
+        });
+        
         reloadShoppingList();
 
         // ---------------------------------------------------------------------
@@ -70,13 +79,13 @@
                 number: item.number,
                 code: item.code
                 };
-
+            $scope.categoryList = vm.categoryList;
             var popup = $ionicPopup.show({
                 title: 'Edit Item',
                 // subTitle: 'Please input item name and price',
                 scope: $scope,
                 // TODO add category dropdown list
-                template: '<input type="text" placeholder="item name" ng-model="itemForm.name"><input type="number" placeholder="item number" ng-model="itemForm.number" >',
+                templateUrl: 'app/shoppinglist/edit-item.tmpl.html',
                 buttons: [
                     { text: 'Cancel' ,
                       type: 'button-positive',
@@ -251,7 +260,7 @@
             .$post('items', {}, itemForm)
             .then( function(location){
                 var itemId = location.substring(location.lastIndexOf('/') + 1);
-                reloadShoppingList(); // to simplify the process, just refresh the whole item llist
+                reloadShoppingList(); // to simplify the process, just refresh the whole item list
             });
 
         };
@@ -264,11 +273,7 @@
             };
             item.shoppingItem.$put('self', {}, itemForm)
             .then( function() {
-                item.shoppingItem.$get('self')
-                .then( function(shoppingItem) {
-                    console.log('Updated shopping item is ', shoppingItem);
-                    item.shoppingItem = shoppingItem; //update it
-                });
+                reloadShoppingList(); // item category may change, so reload the whole list
             });
         };
 

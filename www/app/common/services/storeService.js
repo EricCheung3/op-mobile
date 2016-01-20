@@ -43,29 +43,27 @@
                     callback(storeList, storePage);
                 });
 
-          };
-
-          function getStoreAllItems(storeId, callback) {
-              var resultStore;
-              apiService
-              .getUserResource()
-              .then(function (userResource) {
-                  userResource.$get('store',{'storeId': storeId})
-                  .then(function(store) {
-                      resultStore = store;
-                      return store.$get('shoppingItems');
-                  }).then(function (items) {
-                      resultStore.items = items;
-                  })
-                  .catch ( function(err){
-                      console.error('ERROR code', err); // TODO handle error
-                  })
-                  .finally( function() {
-                      callback(resultStore);
-                  });
-              });
         };
 
-
+        function getStoreAllItems(storeId, callback) {
+            var resultStore;
+            apiService
+            .getUserResource()
+            .then(function (userResource) {
+                userResource.$get('store',{'storeId': storeId})
+                .then(function(store) {
+                    resultStore = store;
+                    return store.$get('shoppingItems');
+                }).then(function (items) {
+                    resultStore.items = items;
+                })
+                .catch ( function(err){
+                    console.error('ERROR code', err); // TODO handle error
+                })
+                .finally( function() {
+                    callback(resultStore);
+                });
+            });
+        };
     }
 })();
