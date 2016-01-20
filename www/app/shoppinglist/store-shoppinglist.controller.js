@@ -197,6 +197,7 @@
                 code : shoppingItem.productCategory,
                 name : shoppingItem.name,
                 number : shoppingItem.number,
+                catalog : shoppingItem.catalog,
                 showDetail : false,
                 shoppingItem : shoppingItem
             };
