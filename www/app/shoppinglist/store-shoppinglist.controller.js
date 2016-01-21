@@ -52,23 +52,23 @@
         })
         .then( function(categories){
             vm.categoryList = categories;
+            reloadShoppingList();
         });
-        
-        reloadShoppingList();
+
 
         // ---------------------------------------------------------------------
         // public functions for UI
 
         function plusItemNumber(item) {
             item.number = item.number + 1;
-            updateShoppingItem(item);
+            updateShoppingItem(item, false);
             calculateTotalSubtotal();
         };
 
         function minusItemNumber(item) {
             if (item.number > 1) {
                 item.number = item.number - 1;
-                updateShoppingItem(item);
+                updateShoppingItem(item, false);
                 calculateTotalSubtotal();
             }
         };
@@ -106,11 +106,13 @@
                 if (itemForm === undefined ) {
                     console.log('cancel');
                 } else if (itemForm.name!==null&&itemForm.number!==null&& itemForm.name!== undefined&&itemForm.number!== undefined) {
+                    var reload = (item.code !== itemForm.code);
+                    console.log("update item need reload : "+reload);
                     // update shoping item
                     item.name = itemForm.name;
                     item.number = itemForm.number;
                     item.code = itemForm.code;
-                    updateShoppingItem(item);
+                    updateShoppingItem(item, reload);
                 } else {
                     console.log('Input is illegal');
                 }
@@ -120,7 +122,9 @@
 
         function deleteItem(item) {
             item.shoppingItem.$del('self')
-            reloadShoppingList();
+            .then( function() {
+                reloadShoppingList();
+            });
         };
 
         //---------- Search ----------
@@ -186,10 +190,15 @@
         // ---------------------------------------------------------------------
         // private functions
 
-        function reloadShoppingList() {
+        function reloadShoppingList(focusItemId) {
+            //empty category list for each code
+            for (var code in  vm.categoryMap) {
+                vm.categoryMap[code].items = [];
+                vm.categoryMap[code].subtotal = 0;
+            }
+
             storeService.getStoreAllItems(vm.storeId, function(store){
                 //console.log(store);
-                vm.categoryMap = {}; // clear category
                 vm.store = store;
                 vm.totalNumber = vm.store.items.length;
                 vm.store.items.forEach(function (shoppingItem) {
@@ -197,6 +206,18 @@
                 });
                 calculateTotalSubtotal();
                 //console.log('categoryMap is :', vm.categoryMap);
+                for (var code in  vm.categoryMap) {
+                    if (vm.categoryMap[code].items.length === 0) {
+                        delete vm.categoryMap[code];
+                    } else {
+                        vm.categoryMap[code].items.forEach( function(item){
+                            if (item.shoppingItem.id === focusItemId) {
+                                vm.categoryMap[code].showDetail = true;
+                            }
+                        });
+                    }
+                };
+
             });
         }
 
@@ -221,11 +242,16 @@
             if (category === undefined) {
                 category = {
                     code : item.code,
-                    label : item.code,
                     items : [],
                     showDetail : false,
                     subtotal : 0,
                 };
+                vm.categoryList.forEach(function(pc) {
+                    if (pc.code === category.code) {
+                        category.label = pc.label;
+                    }
+                });
+
                 vm.categoryMap[item.code] = category;
             }
             item.category = category;
@@ -260,12 +286,12 @@
             .$post('items', {}, itemForm)
             .then( function(location){
                 var itemId = location.substring(location.lastIndexOf('/') + 1);
-                reloadShoppingList(); // to simplify the process, just refresh the whole item list
+                reloadShoppingList(itemId);
             });
 
         };
 
-        function updateShoppingItem(item) {
+        function updateShoppingItem(item, reload) {
             var itemForm = {
                 name : item.name,
                 number : item.number,
@@ -273,7 +299,9 @@
             };
             item.shoppingItem.$put('self', {}, itemForm)
             .then( function() {
-                reloadShoppingList(); // item category may change, so reload the whole list
+                if (reload) {
+                    reloadShoppingList(item.shoppingItem.id);
+                }
             });
         };
 
