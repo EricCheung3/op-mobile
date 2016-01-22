@@ -5,7 +5,6 @@
     angular.module('openprice.mobile', [
         'ionic',
         'ngMessages',
-        'ngMaterial',
         'angular-hal',
         'base64',
         'ngCordova',
@@ -16,7 +15,7 @@
         'ion-autocomplete',
         'ngOpenFB' // fb login
     ])
-    .config(function($httpProvider, $ionicConfigProvider, $mdThemingProvider, $mdGestureProvider) {
+    .config(function($httpProvider, $ionicConfigProvider) {
         $httpProvider.interceptors.push('tokenAuthInterceptor');
 
         // set tabs or nav-bar position
@@ -34,8 +33,6 @@
 
         $ionicConfigProvider.backButton.text('').previousTitleText('').icon('ion-ios-arrow-thin-left');
 
-        $mdThemingProvider.theme('default');
-        $mdGestureProvider.skipClickHijack();
     });
 
 }());
