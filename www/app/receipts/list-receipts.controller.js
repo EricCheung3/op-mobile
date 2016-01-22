@@ -5,8 +5,8 @@
         .module('openprice.mobile')
         .controller('ReceiptListController', ReceiptListController);
 
-    ReceiptListController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', 'receiptService', '$q', '$http' ,'$base64', '$state', '$stateParams', '$cordovaCamera', '$ionicPopup', '$ionicLoading', '$timeout'];
-    function ReceiptListController(   $log,   $rootScope,   $scope,   $location,   apiService ,  receiptService,   $q,   $http  , $base64 ,  $state ,  $stateParams,   $cordovaCamera,   $ionicPopup,   $ionicLoading,   $timeout) {
+    ReceiptListController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', 'receiptService', '$q', '$http' ,'$base64', '$state', '$stateParams', '$cordovaCamera', '$cordovaToast', '$ionicPopup', '$ionicLoading', '$timeout'];
+    function ReceiptListController(   $log,   $rootScope,   $scope,   $location,   apiService ,  receiptService,   $q,   $http  , $base64 ,  $state ,  $stateParams,   $cordovaCamera,   $cordovaToast,   $ionicPopup,   $ionicLoading,   $timeout) {
         $log.debug('==> ReceiptListController');
         // get all the receipts of user
         var vm = this;
@@ -31,11 +31,30 @@
 
         function pullToRefresh() {
             console.log('==>pullToRefresh()');
+            var oldLatestReceiptId = null;
+            if (vm.receipts.length > 0) {
+                oldLatestReceiptId = vm.receipts[0].id;
+            }
+
             receiptService
             .loadFirstPageOfUserReceipts( function(receipts, receiptListsPage) {
                 vm.receipts = receipts;
                 vm.lastReceiptListPage = receiptListsPage;
+                var latestReceiptId = null;
+                if (vm.receipts.length > 0) {
+                    latestReceiptId = vm.receipts[0].id;
+                }
+
                 console.log("vm.receipts",vm.receipts);
+                if (latestReceiptId === null || latestReceiptId === oldLatestReceiptId) {
+                    $cordovaToast.show('No new receipts', 'short', 'top')
+                    .then( function(success){
+                        console.log("The toast was shown", success);
+                    }, function (error) {
+                        console.log("The toast was not shown due to " + error);
+                    });
+
+                }
             })
             .finally( function() {
                 // Stop the ion-refresher from spinning
@@ -62,7 +81,6 @@
               });
 
             }else {
-                console.log("No next page now...");
                 $scope.$broadcast('scroll.infiniteScrollComplete');
             }
         };
