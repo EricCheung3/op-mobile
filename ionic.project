@@ -1,6 +1,6 @@
 {
   "name": "OpenPrice",
-  "app_id": "cedada33",
+  "app_id": "4734a10e",
   "gulpStartupTasks": [
     "sass",
     "config",
