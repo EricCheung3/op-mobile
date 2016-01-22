@@ -12,7 +12,7 @@ First you need to install and setup tools needed for local development. Prefer U
 
 ### NodeJS ###
 
-Install [NodeJS 0.12.7](https://nodejs.org/)
+Install [NodeJS 4.2.x LTS](https://nodejs.org/)
 
 ### Javascript Tools ###
 
@@ -54,7 +54,7 @@ Fork the project from [Open Price Backend Project](https://github.com/opgt/op-ba
 to your personal account through Web UI at Github.
 
 ### Checkout code
-Create a local folder for `~/groundtruth/git`, and check out the code from Github your private repository for **op-mobile** to this folder. 
+Create a local folder for `~/groundtruth/git`, and check out the code from Github your private repository for **op-mobile** to this folder.
 ```
 git clone git@github.com:opgt/op-mobile.git
 ```
@@ -74,6 +74,7 @@ You also need to install several cordova plugs:
 ```
 ionic plugin add https://github.com/apache/cordova-plugin-whitelist.git
 cordova plugin add https://github.com/EricCheung3/cordova-plugin-camera.git
+cordova plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git
 cordova plugin add org.apache.cordova.splashscreen
 ```
 
@@ -102,14 +103,14 @@ ionic run android
 ```
 
 ## On-going Development Process ##
-The master branch is for production release, and for each developer, we are all working on 
+The master branch is for production release, and for each developer, we are all working on
 release branch, such as release1, release2, etc.
 
 
 So we need to switch to development branch, such as release2:
 
 ```
-git checkout release2
+git checkout release3
 ```
 
 After you have done code changes, you first need to commit it, for example:
@@ -126,5 +127,3 @@ git push
 ```
 
 If `git pull` return merge error, you need to manually fix the merge conflict, before push.
-
-
