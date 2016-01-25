@@ -14,7 +14,6 @@
         var vm = this;
         vm.imgURI = 'img/background.png';
         vm.imgUpload = null;
-        vm.takePicture = takePicture;
         vm.cropFromGallery = cropFromGallery;
         vm.upload = upload;
         vm.multiReceiptPopup = multiReceiptPopup;
@@ -22,35 +21,6 @@
         // receiptImages to control multi-upload
         vm.receiptImages = null;
         vm.cropFromGallery();
-        function takePicture() {
-            $log.debug('call takePicture()');
-            document.addEventListener("deviceready", function () {
-                var options = {
-                    quality:50,
-                    allowEdit:true,
-                    //  targetWidth: 150, //[any size when crop]
-                    //  targetHeight: 350,
-                    // destinationType: should be DATA_URL for crop
-                    destinationType:Camera.DestinationType.DATA_URL,
-                    sourceType:Camera.PictureSourceType.Camera,
-                    encodingType:Camera.EncodingType.JPEG,
-                    popoverOptions:CameraPopoverOptions,
-                    correctOrientation:true,
-                    saveToPhotoAlbum:true
-                };
-
-                /*  BUG [solved]: imgURI is not defined*/
-                $cordovaCamera.getPicture(options).then( function(imageData) {
-                    vm.imgURI = "data:image/jpeg;base64,"+ imageData; //[DATA_URL]
-                    vm.imgUpload = imageData;
-                    console.log('imgURI_takePicture====>'+vm.imgURI);
-                },function(err){
-                    console.log(err);
-                }).then(function(){
-                    vm.upload();
-                });
-            }, false);
-        };
 
         function cropFromGallery() {
             $log.debug('call cropFromGallery()');
@@ -69,8 +39,6 @@
             $cordovaCamera.getPicture(options).then(function(imageData){
                 vm.imgURI = "data:image/jpeg;base64,"+ imageData;
                 vm.imgUpload = imageData;
-
-                console.log("imgURI_fromGallery====>:"+vm.imgURI);
             },function(err){
                 console.log(err);
             }).then(function(){
@@ -89,8 +57,7 @@
                 onTap: function(e) {
                     console.log("Finish and send request to server to get receipt items");
                     vm.receiptImages = null;
-                    //FIXME: send request to server to get receipt items
-                    $state.go('app.dashboard.home', {}, {reload: true});
+                    $state.go('app.dashboard.receipts', {}, {reload: true});
                 }
               },
               {
@@ -98,7 +65,7 @@
                 type: 'button-positive',
                 onTap: function(e) {
                     console.log("call snap receipt function");
-                    vm.takePicture();
+                    vm.cropFromGallery();
                     popup.close();
                 }
               }
@@ -148,7 +115,7 @@
 
             }else{
                 console.log("Please snap a receipt ");
-                $state.go('app.dashboard.home');
+                $state.go('app.dashboard.receipts');
             }
 
         };
