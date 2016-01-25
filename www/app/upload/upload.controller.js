@@ -45,14 +45,16 @@
             console.log("Successfully uploaded item "+item.alias+", filename "+item.file.name);
             console.log("Status:"+status);
             console.log("response:"+response);
-
-            if (status === 201 && response !== null && response.length > 0) {
-                // upload ocr result
-                var ocrItem = vm.uploader.queue[1];
-                ocrItem.url = vm.receiptsUrl + "/" + response + "/hackload";
-                console.log("Hackload OCR to :"+ocrItem.url);
-                ocrItem.upload();
-            }
+            //
+            // if (status === 201 && response !== null && response.length > 0) {
+            //     // upload ocr result
+            //     var ocrItem = vm.uploader.queue[1];
+            //     if (ocrItem) {
+            //         ocrItem.url = vm.receiptsUrl + "/" + response + "/hackload";
+            //         console.log("Hackload OCR to :"+ocrItem.url);
+            //         ocrItem.upload();
+            //     }
+            // }
         };
     };
 
