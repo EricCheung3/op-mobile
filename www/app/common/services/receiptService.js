@@ -36,18 +36,28 @@
                         });
                     });
                 });
-                receipt.$get('result')
-                .then( function(result){
-                    receipt.result = result;
-                    receipt.result.$get('receiptItems')
-                    .then( function(receiptItems){
-                        receipt.result.items = receiptItems;
-                    });
-                });
+
+                loadReceiptResult(receipt);
 
                 deferred.resolve(receipt);
             });
             return deferred.promise;
+        };
+
+        function loadReceiptResult(receipt) {
+            receipt.resultLoaded = false;
+            receipt.$get('result')
+            .then( function(result) {
+                console.log("loadReceiptResult return: ",result);
+                receipt.result = result;
+                if (result) {
+                    receipt.resultLoaded = true;
+                    receipt.result.$get('receiptItems')
+                    .then( function(receiptItems){
+                        receipt.result.items = receiptItems;
+                    });
+                }
+            });
         };
 
         function loadFirstPageOfUserReceipts(callback) {
@@ -68,21 +78,16 @@
                 }).then( function(receipts) {
                     receipts.forEach( function(receipt) {
                         resultReceipts.push(receipt);
-                        receipt.$get('receiptImages')
-                        .then( function(images){
-                            getImageBase64Data(images[0].base64Url)
-                            .then( function(imageData){
-                                receipt.path = imageData;
-                            });
-                        });
-                        receipt.$get('result')
-                        .then( function(result){
-                            receipt.result = result;
-                            receipt.result.$get('receiptItems')
-                            .then( function(receiptItems){
-                                receipt.result.items = receiptItems;
-                            });
-                        });
+
+                        // receipt.$get('receiptImages')
+                        // .then( function(images){
+                        //     getImageBase64Data(images[0].base64Url)
+                        //     .then( function(imageData){
+                        //         receipt.path = imageData;
+                        //     });
+                        // });
+
+                        loadReceiptResult(receipt);
                     });
                 }).catch ( function(err){
                     console.error('ERROR code', err); // TODO handle error
@@ -104,13 +109,15 @@
             .then( function(receipts) {
                 receipts.forEach( function(receipt) {
                     vmreceipts.push(receipt);
-                    receipt.$get('receiptImages')
-                    .then( function(images){
-                        getImageBase64Data(images[0].base64Url)
-                        .then( function(imageData){
-                            receipt.path = imageData;
-                        });
-                    });
+                    loadReceiptResult(receipt);
+
+                    // receipt.$get('receiptImages')
+                    // .then( function(images){
+                    //     getImageBase64Data(images[0].base64Url)
+                    //     .then( function(imageData){
+                    //         receipt.path = imageData;
+                    //     });
+                    // });
 
                 });
             }).finally(function() {

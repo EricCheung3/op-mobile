@@ -5,21 +5,17 @@
           on-refresh="vm.pullToRefresh()">
         </ion-refresher>
 
-        <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="left">
-            <ion-item ng-repeat="(index, receipt) in vm.receipts" >
-                <div class="timeline-item">
-                    <p class="inline padding-top-large vertical-align-bottom padding-left-small">{{receipt.result.storeName}}</p>
-                    <p class="inline float-right padding-top-large vertical-align-bottom padding-right-small">Total: {{receipt.result.parsedTotal}}</p>
-                </div>
-                <div class="receipt-img" >
-                    <img ng-src="{{receipt.path}}" ng-click="vm.showReceipt(receipt.id)">
-                </div>
-                <ion-option-buttons side="right" class="ion-minus-circled" ng-click="vm.deleteReceipt(index)">
-                    delete
-                </ion-option-buttons>
-                <div class="receipt-label margin-horizontal-small">
-                    <p class="float-right padding-top-small"> {{receipt.result.parsedDate | date:'hh:mm:ss  yyyy-MM-dd'}} </p>
-                </div>
+        <ion-list show-delete="false"
+                  can-swipe="true"
+                  swipe-direction="both">
+            <ion-item class="myreceipts" ng-repeat="(index, receipt) in vm.receipts" ng-click="vm.showReceipt(receipt.id)">
+
+                <img class="store-icon" ng-src="img/store_icons/{{receipt.result.chainCode}}-blue.png">
+                <h2 class="store-name">{{receipt.result.storeName}}</h2>
+                <p class="receipt-detail">Date: {{receipt.result.parsedDate | date:'hh:mm:ss  yyyy-MM-dd'}}, Total: ${{receipt.result.parsedTotal}}</p>
+
+                <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteReceipt(index)">
+                     <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
             </ion-item>
         </ion-list>
 
