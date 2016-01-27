@@ -19,9 +19,6 @@
         vm.showReceipt = showReceipt;
         vm.deleteReceipt = deleteReceipt;
 
-        vm.shouldShowDelete = true;
-        vm.listCanSwipe = true;
-
         // when enter the receipts screen, load first page of receipts (default are three receipts)
         receiptService
         .loadFirstPageOfUserReceipts( function(receipts, receiptListsPage) {

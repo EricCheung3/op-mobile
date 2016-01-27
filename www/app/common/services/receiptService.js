@@ -44,22 +44,6 @@
             return deferred.promise;
         };
 
-        function loadReceiptResult(receipt) {
-            receipt.resultLoaded = false;
-            receipt.$get('result')
-            .then( function(result) {
-                console.log("loadReceiptResult return: ",result);
-                receipt.result = result;
-                if (result) {
-                    receipt.resultLoaded = true;
-                    receipt.result.$get('receiptItems')
-                    .then( function(receiptItems){
-                        receipt.result.items = receiptItems;
-                    });
-                }
-            });
-        };
-
         function loadFirstPageOfUserReceipts(callback) {
             var resultReceipts = [];
             var receiptListPage;
@@ -78,15 +62,6 @@
                 }).then( function(receipts) {
                     receipts.forEach( function(receipt) {
                         resultReceipts.push(receipt);
-
-                        // receipt.$get('receiptImages')
-                        // .then( function(images){
-                        //     getImageBase64Data(images[0].base64Url)
-                        //     .then( function(imageData){
-                        //         receipt.path = imageData;
-                        //     });
-                        // });
-
                         loadReceiptResult(receipt);
                     });
                 }).catch ( function(err){
@@ -110,15 +85,6 @@
                 receipts.forEach( function(receipt) {
                     vmreceipts.push(receipt);
                     loadReceiptResult(receipt);
-
-                    // receipt.$get('receiptImages')
-                    // .then( function(images){
-                    //     getImageBase64Data(images[0].base64Url)
-                    //     .then( function(imageData){
-                    //         receipt.path = imageData;
-                    //     });
-                    // });
-
                 });
             }).finally(function() {
                 callback(vmreceipts, vmlastReceiptListPage);
@@ -126,6 +92,36 @@
 
         };
 
+        function loadReceiptResult(receipt) {
+            receipt.resultLoaded = false;
+            receipt.resultError = false;
+            receipt.errCount = 0;
+            getReceiptResult(receipt);
+        };
+
+        function getReceiptResult(receipt) {
+            receipt.$get('result')
+            .then( function(result) {
+                receipt.result = result;
+                receipt.resultLoaded = true;
+                receipt.result
+                .$get('receiptItems')
+                .then( function(receiptItems) {
+                    receipt.result.items = receiptItems;
+                });
+            }, function(error) {
+                console.log("Error returned : ",error);
+                console.log("receipt.errCount = "+receipt.errCount);
+                receipt.errCount = receipt.errCount+1;
+                if (receipt.errCount > 10) {
+                    console.log("tried 20 times, treat it as error");
+                    receipt.resultError = true;
+                    return;
+                } else {
+                    setTimeout(function(){getReceiptResult(receipt);}, 2000);
+                }
+            });
+        };
 
          // get image base64 data according to the download url
         function getImageBase64Data(downloadUrl) {
