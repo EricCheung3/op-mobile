@@ -27,7 +27,7 @@
             })
             .then( function(receipt) {
                 receipt.$get('receiptImages')
-                .then( function(images){
+                .then( function(images) {
                     receipt.images = images;
                     images.forEach( function(image) {
                         getImageBase64Data(image.base64Url)
@@ -96,6 +96,7 @@
             receipt.resultLoaded = false;
             receipt.resultError = false;
             receipt.errCount = 0;
+            receipt.chainCode = 'generic';
             getReceiptResult(receipt);
         };
 
@@ -103,6 +104,9 @@
             receipt.$get('result')
             .then( function(result) {
                 receipt.result = result;
+                if (result.chainCode && result.chainCode !== '') {
+                    receipt.chainCode = result.chainCode;
+                }
                 receipt.resultLoaded = true;
                 receipt.result
                 .$get('receiptItems')
