@@ -11,15 +11,14 @@
               }
         });
 
-    ReceiptDisplayController.$inject = ['$log', '$location','$rootScope', '$scope', '$state', '$stateParams', '$ionicPopup', 'receiptService', 'apiService'];
+    ReceiptDisplayController.$inject = ['$log', '$location','$rootScope', '$scope', '$state', '$stateParams', '$ionicPopup', 'UserReceiptData', 'apiService'];
 
-    function ReceiptDisplayController(   $log,   $location , $rootScope ,  $scope ,  $state ,  $stateParams ,  $ionicPopup ,  receiptService ,  apiService) {
+    function ReceiptDisplayController(   $log,   $location , $rootScope ,  $scope ,  $state ,  $stateParams ,  $ionicPopup ,  UserReceiptData ,  apiService) {
         $log.debug('==> ReceiptDisplayController');
 
         var vm = this;
         vm.receipt;
         vm.selectItemMode = false;
-        vm.showItems = showItems;
         vm.editItem = editItem;
         vm.deleteItem = deleteItem;
         vm.addToShoppingList = addToShoppingList;
@@ -39,15 +38,11 @@
         }
 
         // load receipt data from database
-        receiptService
-        .loadReceipt($stateParams.receiptId)
+        UserReceiptData
+        .loadReceiptById($stateParams.receiptId)
         .then( function(receipt) {
             vm.receipt = receipt;
         })
-
-        function showItems () {
-            $state.go('app.dashboard.receiptItems',{receiptId:$scope.receiptId});
-        };
 
         function editItem (item){
             $scope.item1 = {"name":item.displayName,"price":Number(item.displayPrice)};
@@ -88,7 +83,7 @@
 
         };
 
-        function deleteItem (index,item){
+        function deleteItem(index,item) {
             vm.receipt.$del("item",{itemId:item.id});
             console.log("Delete",item.id);
             vm.receiptItems.splice(index, 1);

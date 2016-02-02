@@ -22,6 +22,7 @@
         UserReceiptData
         .loadFirstPage()
         .then( function(receipts) {
+            console.log('init : ', receipts);
             vm.receipts = receipts;
         });
 
@@ -48,6 +49,7 @@
                         console.log("The toast was not shown due to " + error);
                     });
                 }
+                $scope.$broadcast('scroll.refreshComplete');
             });
         };
 
@@ -57,26 +59,31 @@
 
         function scrollToLoadMore() {
             console.log('==>scrollToLoadMore()');
-            if(UserReceiptData.hasNextPage()){
+            if(UserReceiptData.hasNextPage()) {
                 UserReceiptData
                 .loadNextPage()
                 .then( function(receipts){
                     vm.receipts = receipts;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
                 });
-            }else {
+            } else {
                 $scope.$broadcast('scroll.infiniteScrollComplete');
             }
         };
 
         // Change to showReceipt page when users click receipt in receipt List
         function showReceipt (receipt) {
-            vm.tooltipVisible = false;
-            $state.go('app.dashboard.receipt',{receiptId: receipt.resource.id});
+            if (receipt.loaded) {
+                $state.go('app.dashboard.receipt',{receiptId: receipt.resource.id});
+            }
         };
 
-        function deleteReceipt(index) {
-            vm.receipts[index].$del('self');
-            vm.receipts.splice(index, 1);
-        }
+        function deleteReceipt(receipt) {
+            receipt.resource.$del('self');
+            var index = vm.receipts.indexOf(receipt);
+            if (index > -1) {
+                vm.receipts.splice(index, 1);
+            }
+        };
     } // end of function receiptsController
 })();
