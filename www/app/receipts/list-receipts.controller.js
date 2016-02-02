@@ -5,8 +5,8 @@
         .module('openprice.mobile')
         .controller('ReceiptListController', ReceiptListController);
 
-    ReceiptListController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', 'receiptService', '$q', '$http' ,'$base64', '$state', '$stateParams', '$cordovaCamera', '$cordovaToast', '$ionicPopup', '$ionicLoading', '$timeout'];
-    function ReceiptListController(   $log,   $rootScope,   $scope,   $location,   apiService ,  receiptService,   $q,   $http  , $base64 ,  $state ,  $stateParams,   $cordovaCamera,   $cordovaToast,   $ionicPopup,   $ionicLoading,   $timeout) {
+    ReceiptListController.$inject = ['$log', '$scope', 'apiService', 'UserReceiptData', '$q', '$state', '$cordovaToast'];
+    function ReceiptListController(   $log,   $scope,   apiService ,  UserReceiptData,   $q,   $state ,  $cordovaToast) {
         $log.debug('==> ReceiptListController');
         // get all the receipts of user
         var vm = this;
@@ -19,11 +19,10 @@
         vm.showReceipt = showReceipt;
         vm.deleteReceipt = deleteReceipt;
 
-        // when enter the receipts screen, load first page of receipts (default are three receipts)
-        receiptService
-        .loadFirstPageOfUserReceipts( function(receipts, receiptListsPage) {
+        UserReceiptData
+        .loadFirstPage()
+        .then( function(receipts) {
             vm.receipts = receipts;
-            vm.lastReceiptListPage = receiptListsPage;
         });
 
         function pullToRefresh() {
@@ -33,59 +32,46 @@
                 oldLatestReceiptId = vm.receipts[0].id;
             }
 
-            receiptService
-            .loadFirstPageOfUserReceipts( function(receipts, receiptListsPage) {
+            UserReceiptData
+            .loadFirstPage()
+            .then( function(receipts) {
                 vm.receipts = receipts;
-                vm.lastReceiptListPage = receiptListsPage;
                 var latestReceiptId = null;
                 if (vm.receipts.length > 0) {
                     latestReceiptId = vm.receipts[0].id;
                 }
-
-                console.log("vm.receipts",vm.receipts);
                 if (latestReceiptId === null || latestReceiptId === oldLatestReceiptId) {
                     $cordovaToast.show('No new receipts', 'short', 'top')
                     .then( function(success){
-                        console.log("The toast was shown", success);
+                        //console.log("The toast was shown", success);
                     }, function (error) {
                         console.log("The toast was not shown due to " + error);
                     });
-
                 }
-            })
-            .finally( function() {
-                // Stop the ion-refresher from spinning
-                $scope.$broadcast('scroll.refreshComplete');
             });
         };
 
         function moreReceiptsCanBeLoaded() {
-            if(vm.lastReceiptListPage){
-                return vm.lastReceiptListPage.$has("next");
-            }else {
-                return false;
-            }
+            return UserReceiptData.hasNextPage();
         };
 
-        function scrollToLoadMore(){
-
-            if(vm.lastReceiptListPage !== null && vm.lastReceiptListPage.$has("next")){
-              receiptService
-              .loadMoreReceipts(vm.receipts, vm.lastReceiptListPage,
-                 function(receipts, lastReceiptListPage) {
-                  vm.receipts = receipts;
-                  vm.lastReceiptListPage = lastReceiptListPage;
-              });
-
+        function scrollToLoadMore() {
+            console.log('==>scrollToLoadMore()');
+            if(UserReceiptData.hasNextPage()){
+                UserReceiptData
+                .loadNextPage()
+                .then( function(receipts){
+                    vm.receipts = receipts;
+                });
             }else {
                 $scope.$broadcast('scroll.infiniteScrollComplete');
             }
         };
 
         // Change to showReceipt page when users click receipt in receipt List
-        function showReceipt (receiptId) {
+        function showReceipt (receipt) {
             vm.tooltipVisible = false;
-            $state.go('app.dashboard.receipt',{receiptId:receiptId});
+            $state.go('app.dashboard.receipt',{receiptId: receipt.resource.id});
         };
 
         function deleteReceipt(index) {

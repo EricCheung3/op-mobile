@@ -8,13 +8,15 @@
         <ion-list show-delete="false"
                   can-swipe="true"
                   swipe-direction="both">
-            <ion-item class="myreceipts" ng-repeat="(index, receipt) in vm.receipts" ng-click="vm.showReceipt(receipt.id)">
-                <ion-spinner ng-hide="receipt.resultLoaded || receipt.resultError"></ion-spinner>
-                <h2 class="store-name" ng-show="receipt.resultError">Cannot recognize the receipt!</h2>
-                <img class="store-icon" ng-show="receipt.resultLoaded"
-                    ng-src="img/store_icons/{{receipt.chainCode}}-blue.png">
-                <h2 class="store-name" ng-show="receipt.resultLoaded">{{receipt.result.storeName}}</h2>
-                <p class="receipt-detail" ng-show="receipt.resultLoaded">Date: {{receipt.receiptDate[0]}}-{{receipt.receiptDate[1]}}-{{receipt.receiptDate[2]}}, Total: ${{receipt.result.parsedTotal}}</p>
+                  
+            <ion-item class="myreceipts" ng-repeat="(index, receipt) in vm.receipts" ng-click="vm.showReceipt(receipt)">
+                <ion-spinner ng-show="receipt.waiting"></ion-spinner>
+                <h2 class="store-name" ng-show="receipt.waiting">Still processing, please refresh later!</h2>
+                <h2 class="store-name" ng-hide="receipt.waiting || receipt.loaded">Cannot recognize the receipt!</h2>
+                <img class="store-icon" ng-show="receipt.loaded"
+                    ng-src="img/store_icons/{{receipt.resource.chainCode}}-blue.png">
+                <h2 class="store-name" ng-show="receipt.loaded">{{receipt.resource.storeName}}</h2>
+                <p class="receipt-detail" ng-show="receipt.loaded">Date: {{receipt.receiptDate}}, Total: ${{receipt.resource.total}}</p>
 
                 <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteReceipt(index)">
                      <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>

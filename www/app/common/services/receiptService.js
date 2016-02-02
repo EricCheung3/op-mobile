@@ -18,6 +18,14 @@
             'getImageBase64Data' : getImageBase64Data
         };
 
+        function Receipt(receiptResource) {
+            this.resource = receiptResource;
+            this.waiting = (receiptResource.status === 'WAIT_FOR_RESULT');
+            this.loaded = (receiptResource.status === 'HAS_RESULT');
+            this.receiptDate = receiptResource.receiptDate.join('-');
+        };
+
+
         function loadReceipt(receiptId) {
             var deferred = $q.defer();
             apiService
@@ -37,7 +45,7 @@
                     });
                 });
 
-                loadReceiptResult(receipt);
+                //loadReceiptResult(receipt);
 
                 deferred.resolve(receipt);
             });
@@ -61,8 +69,7 @@
                     }
                 }).then( function(receipts) {
                     receipts.forEach( function(receipt) {
-                        resultReceipts.push(receipt);
-                        loadReceiptResult(receipt);
+                        resultReceipts.push(new Receipt(receipt));
                     });
                 }).catch ( function(err){
                     console.error('ERROR code', err); // TODO handle error
@@ -72,7 +79,7 @@
         };
 
         function loadMoreReceipts(receipts, lastReceiptListPage, callback){
-            console.log('==>scrollToLoadMore');
+            console.log('==>loadMoreReceipts');
             var vmreceipts = receipts;
             var vmlastReceiptListPage = lastReceiptListPage;
 
@@ -83,50 +90,13 @@
             })
             .then( function(receipts) {
                 receipts.forEach( function(receipt) {
-                    vmreceipts.push(receipt);
-                    loadReceiptResult(receipt);
+                    vmreceipts.push(new Receipt(receipt));
                 });
             }).finally(function() {
                 callback(vmreceipts, vmlastReceiptListPage);
             });
 
         };
-
-        function loadReceiptResult(receipt) {
-            receipt.resultLoaded = false;
-            receipt.resultError = false;
-            receipt.errCount = 0;
-            receipt.chainCode = 'generic';
-            getReceiptResult(receipt);
-        };
-
-        function getReceiptResult(receipt) {
-            receipt.$get('result')
-            .then( function(result) {
-                receipt.result = result;
-                if (result.chainCode && result.chainCode !== '') {
-                    receipt.chainCode = result.chainCode;
-                }
-                receipt.resultLoaded = true;
-                receipt.result
-                .$get('receiptItems')
-                .then( function(receiptItems) {
-                    receipt.result.items = receiptItems;
-                });
-            }, function(error) {
-                console.log("Error returned : ",error);
-                console.log("receipt.errCount = "+receipt.errCount);
-                receipt.errCount = receipt.errCount+1;
-                if (receipt.errCount > 10) {
-                    console.log("tried 20 times, treat it as error");
-                    receipt.resultError = true;
-                    return;
-                } else {
-                    setTimeout(function(){getReceiptResult(receipt);}, 2000);
-                }
-            });
-        };
-
          // get image base64 data according to the download url
         function getImageBase64Data(downloadUrl) {
             var deferred = $q.defer();
