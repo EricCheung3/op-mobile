@@ -44,7 +44,7 @@
             vm.receipt = receipt;
         })
 
-        function editItem (item){
+        function editItem(item){
             $scope.item1 = {"name":item.displayName,"price":Number(item.displayPrice)};
 
             var popup = $ionicPopup.show({
@@ -69,32 +69,29 @@
             });
 
             popup.then(function(res) {
-                if(res==undefined ){
+                if (res === undefined ){
                     console.log('cancel');
-                }else if (res.name!==null&&res.price!==null&& res.name!== undefined&&res.price!== undefined) {
+                } else if (res.name!==null&&res.price!==null&& res.name!== undefined&&res.price!== undefined) {
                     item.displayName = res.name;
                     item.displayPrice = res.price;
                     // update data to server
-                    vm.receipt.$put("item",{itemId:item.id},res);
-                }else {
+                    vm.receipt.$put("item", {itemId:item.id}, res);
+                } else {
                     console.log('Input is illegal');
                 }
              });
-
-        };
+        }; // end of editItem()
 
         function deleteItem(index,item) {
             vm.receipt.$del("item",{itemId:item.id});
-            console.log("Delete",item.id);
             vm.receiptItems.splice(index, 1);
         };
 
         // need to extract it out into a service
-        function addToShoppingList(){
+        function addToShoppingList() {
             var items = [];
 
-            for(var i=0;i<vm.receipt.result.items.length; i++){
-                var receiptItem = vm.receipt.result.items[i];
+            vm.receipt.items.forEach( function(receiptItem) {
                 if(receiptItem.checked){
                     items.push({
                         name : receiptItem.displayName,
@@ -102,11 +99,11 @@
                         number : 1
                     });
                 }
-            }
+            });
 
             var shoppingList =
               {
-                "chainCode" : vm.receipt.result.chainCode, //receipt.chainCode
+                "chainCode" : vm.receipt.chainCode, //receipt.chainCode
                 "items" : items
               };
 
@@ -123,11 +120,9 @@
                       console.log('upload shopping list success! shoppingStoreId is', shoppingStoreId);
                       vm.selectItemMode = false; // clear selec mode
                       $state.go('app.dashboard.store', {'storeId':shoppingStoreId});
-
                   });
             });
-        };
-
+        }; // end of addToShoppingList()
 
     };
 })();

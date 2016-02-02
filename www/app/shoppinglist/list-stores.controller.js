@@ -44,8 +44,7 @@
         };
 
         function deleteStore(index){
-
-            console.log("DELETE-STORE",vm.stores[index]);
+            //console.log("DELETE-STORE",vm.stores[index]);
             vm.stores[index].$del('self');
             vm.stores.splice(index, 1);
         };

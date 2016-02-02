@@ -45,9 +45,11 @@
                         return receiptList.$get('receipts');
                     }
                 }).then( function(receipts) {
-                    receipts.forEach( function(receipt) {
-                        userReceipts.push(new Receipt(receipt));
-                    });
+                    if (receipts) {
+                        receipts.forEach( function(receipt) {
+                            userReceipts.push(new Receipt(receipt));
+                        });
+                    }
                     resolve(userReceipts);
                 });
             });
@@ -98,6 +100,10 @@
                                 image.path = imageData;
                             });
                         });
+                    });
+                    receipt.$get('receiptItems')
+                    .then( function(items) {
+                        receipt.items = items;
                     });
                     resolve(receipt);
                 });
