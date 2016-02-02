@@ -19,7 +19,8 @@ $dark:                            #444 !default;
 // -------------------------------
 $positive:                        #01ced1;
 $balanced:                        #00e19a;
-$dark:                            #282828 !default;
+$dark-grey:                       #282828 !default;
+$grey:                            #F5F5F5 !default;
 
 // Base
 // -------------------------------
@@ -318,6 +319,20 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 @import 'shoppinglist';
 
 .bar {
+  border: none !important;
+  background-size: 0% 0px !important;
+}
+
+.tabs {
+  background-size: 0% 0px !important;
+}
+
+.bar-footer {
+  margin-bottom: 2px;
+}
+
+.no-border {
+  border-width: 0px !important;
   border: none !important;
 }
 
