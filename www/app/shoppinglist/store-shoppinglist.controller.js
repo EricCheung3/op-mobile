@@ -14,9 +14,9 @@
         })
         .controller('StoreShoppingListController', StoreShoppingListController);
 
-    StoreShoppingListController.$inject = ['$log', '$scope', 'apiService', '$stateParams', 'storeService', '$ionicPopup', '$state', 'UserShoppingData'];
+    StoreShoppingListController.$inject = ['$log', '$scope', 'apiService', '$stateParams', 'searchService', '$ionicPopup', '$state', 'UserShoppingData'];
 
-    function StoreShoppingListController(   $log,   $scope,   apiService ,  $stateParams ,  storeService ,  $ionicPopup ,  $state,   UserShoppingData) {
+    function StoreShoppingListController(   $log,   $scope,   apiService ,  $stateParams ,  searchService ,  $ionicPopup ,  $state,   UserShoppingData) {
         $log.debug('==> StoreShoppingListController');
 
         var vm = this;
@@ -75,7 +75,7 @@
                             });
                         }
                     };
-                    calculateTotalSubtotal();
+                    vmstore.calculateTotalSubtotal();
                 });
             };
 
@@ -117,7 +117,7 @@
                 category.items.push(item);
             };
 
-            function calculateTotalSubtotal() {
+            vmstore.calculateTotalSubtotal = function() {
                 vmstore.totalPrice = 0;
                 for (var key in vmstore.categoryMap) {
                     var category = vmstore.categoryMap[key];
@@ -128,6 +128,45 @@
                     vmstore.totalPrice = vmstore.totalPrice + category.subtotal;
                 }
             }
+
+            vmstore.clearList = function() {
+                vmstore.items.forEach( function(item) {
+                    item.$del('self');
+                });
+                vmstore.categoryMap = {};
+                vmstore.totalNumber = 0;
+                vmstore.totalPrice = 0;
+            };
+
+            vmstore.updateShoppingItem = function(item, reload) {
+                var itemForm = {
+                    name : item.name,
+                    number : item.number,
+                    categoryCode : item.code
+                };
+                item.shoppingItem.$put('self', {}, itemForm)
+                .then( function() {
+                    if (reload) {
+                        vmstore.reload(item.shoppingItem.id);
+                    }
+                });
+            };
+
+            vmstore.searchItems = function(query) {
+                return new Promise(resolve => {
+                    vmstore
+                    .resource
+                    .$get('catalogs', {query:query})
+                    .then( function(items) {
+                        if (items.length === 0) {
+                            resolve({items: [{'naturalName':query}]});
+                        } else {
+                            resolve({items: items});
+                        }
+                    });
+                });
+            };
+
 
         };
 
@@ -149,15 +188,15 @@
 
         function plusItemNumber(item) {
             item.number = item.number + 1;
-            updateShoppingItem(item, false);
-            calculateTotalSubtotal();
+            vm.store.updateShoppingItem(item, false);
+            vm.store.calculateTotalSubtotal();
         };
 
         function minusItemNumber(item) {
             if (item.number > 1) {
                 item.number = item.number - 1;
-                updateShoppingItem(item, false);
-                calculateTotalSubtotal();
+                vm.store.updateShoppingItem(item, false);
+                vm.store.calculateTotalSubtotal();
             }
         };
 
@@ -200,7 +239,7 @@
                     item.name = itemForm.name;
                     item.number = itemForm.number;
                     item.code = itemForm.code;
-                    updateShoppingItem(item, reload);
+                    vm.store.updateShoppingItem(item, reload);
                 } else {
                     console.log('Input is illegal');
                 }
@@ -211,7 +250,7 @@
         function deleteItem(item) {
             item.shoppingItem.$del('self')
             .then( function() {
-                reloadShoppingList();
+                vm.store.reload();
             });
         };
 
@@ -219,10 +258,11 @@
         // parameter must be named "query", see ion-autocomplete for detail
         function searchProductsFromServer(query) {
             // items should come from remote server
-            if (query) {
-                return searchService.searchItems(vm.storeId, query);
+            if (query && query !== '') {
+                return vm.store.searchItems(query);
             }
             vm.externalModel = []; // use to clear the selected items
+            return [];
         };
 
         // parameter must be named "callback"
@@ -260,14 +300,7 @@
                   type: 'button-positive',
                   onTap: function(e) {
                       console.log("clear the ShoppingList");
-                      // delete function at here
-                      vm.store.items.forEach(function (item){
-                          console.log("item-self",item);
-                          item.$del('self');
-                      });
-                      vm.categoryMap = {};
-                      vm.totalNumber = 0;
-                      vm.totalPrice = 0;
+                      vm.store.clearList();
                       popup.close();
                   }
                 }
@@ -277,86 +310,6 @@
 
         // ---------------------------------------------------------------------
         // private functions
-
-        function reloadShoppingList(focusItemId) {
-            //empty category list for each code
-            for (var code in  vm.categoryMap) {
-                vm.categoryMap[code].items = [];
-                vm.categoryMap[code].subtotal = 0;
-            }
-
-            storeService.getStoreAllItems(vm.storeId, function(store){
-                //console.log(store);
-                vm.store = store;
-                vm.totalNumber = vm.store.items.length;
-                vm.store.items.forEach(function (shoppingItem) {
-                    addShoppingItemToCategory(shoppingItem);
-                });
-                calculateTotalSubtotal();
-                //console.log('categoryMap is :', vm.categoryMap);
-                for (var code in  vm.categoryMap) {
-                    if (vm.categoryMap[code].items.length === 0) {
-                        delete vm.categoryMap[code];
-                    } else {
-                        vm.categoryMap[code].items.forEach( function(item){
-                            if (item.shoppingItem.id === focusItemId) {
-                                vm.categoryMap[code].showDetail = true;
-                            }
-                        });
-                    }
-                };
-
-            });
-        }
-
-        // helper function to add shoppingItem loaded from server to UI category
-        function addShoppingItemToCategory(shoppingItem) {
-            var item = {
-                code : shoppingItem.productCategory,
-                name : shoppingItem.name,
-                number : shoppingItem.number,
-                catalog : shoppingItem.catalog,
-                showDetail : false,
-                shoppingItem : shoppingItem
-            };
-
-            if(shoppingItem.catalog !== null) {
-                item.price = shoppingItem.catalog.price;
-            } else {
-                item.price = 0;
-            }
-
-            var category = vm.categoryMap[item.code];
-            if (category === undefined) {
-                category = {
-                    code : item.code,
-                    items : [],
-                    showDetail : false,
-                    subtotal : 0,
-                };
-                vm.categoryList.forEach(function(pc) {
-                    if (pc.code === category.code) {
-                        category.label = pc.label;
-                    }
-                });
-
-                vm.categoryMap[item.code] = category;
-            }
-            item.category = category;
-            category.items.push(item);
-        };
-
-        function calculateTotalSubtotal() {
-            vm.totalPrice = 0;
-            for (var key in vm.categoryMap) {
-                var category = vm.categoryMap[key];
-                category.subtotal = 0;
-                category.items.forEach( function(item){
-                    category.subtotal = category.subtotal + Number(item.price) * item.number;
-                })
-                vm.totalPrice = vm.totalPrice + category.subtotal;
-            }
-        }
 
         // after user selects search result or creates item, add it to shopping list
         function addToShoppingList(item) {
@@ -374,24 +327,11 @@
             .$post('items', {}, itemForm)
             .then( function(location){
                 var itemId = location.substring(location.lastIndexOf('/') + 1);
-                reloadShoppingList(itemId);
+                vm.store.reload(itemId);
             });
 
         };
 
-        function updateShoppingItem(item, reload) {
-            var itemForm = {
-                name : item.name,
-                number : item.number,
-                categoryCode : item.code
-            };
-            item.shoppingItem.$put('self', {}, itemForm)
-            .then( function() {
-                if (reload) {
-                    reloadShoppingList(item.shoppingItem.id);
-                }
-            });
-        };
 
     }; // end of storeController
 
