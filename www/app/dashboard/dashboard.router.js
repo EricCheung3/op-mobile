@@ -20,8 +20,8 @@
                     }
                 }
             })
-            .state('app.dashboard.shoppinglist', {
-                url: '/shoppinglist',
+            .state('app.dashboard.stores', {
+                url: '/shoppingstores',
                 cache: false,
                 views: {
                     'shoppinglist-tab': {
@@ -31,7 +31,7 @@
                 }
             })
             .state('app.dashboard.store', {
-                url: '/shoppingstore/:storeId',
+                url: '/shoppingstores/:storeId',
                 cache: false,
                 views: {
                     'shoppinglist-tab': {

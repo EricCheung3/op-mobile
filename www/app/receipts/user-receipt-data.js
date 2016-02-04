@@ -41,8 +41,10 @@
                 })
                 .then( function(receiptList) {
                     lastReceiptListPage = receiptList;
-                    if(receiptList.$has('receipts')){
+                    if (receiptList.$has('receipts')) {
                         return receiptList.$get('receipts');
+                    } else {
+                        return $q.reject("NO receipts!");
                     }
                 }).then( function(receipts) {
                     if (receipts) {

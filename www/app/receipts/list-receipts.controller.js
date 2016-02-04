@@ -41,14 +41,14 @@
                 if (vm.receipts.length > 0) {
                     latestReceiptId = vm.receipts[0].id;
                 }
-                if (latestReceiptId === null || latestReceiptId === oldLatestReceiptId) {
-                    $cordovaToast.show('No new receipts', 'short', 'top')
-                    .then( function(success){
-                        //console.log("The toast was shown", success);
-                    }, function (error) {
-                        console.log("The toast was not shown due to " + error);
-                    });
-                }
+                // if (latestReceiptId === null || latestReceiptId === oldLatestReceiptId) {
+                //     $cordovaToast.show('No new receipts', 'short', 'top')
+                //     .then( function(success){
+                //         //console.log("The toast was shown", success);
+                //     }, function (error) {
+                //         console.log("The toast was not shown due to " + error);
+                //     });
+                // }
                 $scope.$broadcast('scroll.refreshComplete');
             });
         };

@@ -5,54 +5,53 @@
         .module('openprice.mobile')
         .controller('StoreListController', StoreListController);
 
-    StoreListController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService' , '$state', 'storeService'];
+    StoreListController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService' , '$state', 'UserShoppingData'];
 
-    function StoreListController(   $log,   $rootScope,   $scope,   $location,   apiService ,   $state ,  storeService) {
+    function StoreListController(   $log,   $rootScope,   $scope,   $location,   apiService ,   $state ,  UserShoppingData) {
         $log.debug('==> StoreListController');
 
         var vm = this;
         vm.stores = [];
         vm.pullToRefresh = pullToRefresh;
-        vm.showStoreItems = showStoreItems;
+        vm.showShoppingStore = showShoppingStore;
         vm.deleteStore = deleteStore;
         vm.addNewStore = addNewStore;
 
-        vm.shouldShowDelete = false;
-        vm.listCanSwipe = true;
-
-        storeService
-        .loadFirstPageOfUserStores( function(storeList, storeListPage) {
-            vm.stores = storeList;
-            vm.lastStoreListPage = storeListPage;
-        })
+        UserShoppingData
+        .loadFirstPage()
+        .then( function(stores) {
+            console.log('init : ', stores);
+            vm.stores = stores;
+        });
 
         function pullToRefresh(){
-            $log.debug('==> stores pullToRefresh');
-            storeService
-            .loadFirstPageOfUserStores( function(storeList, storeListPage) {
-                vm.stores = storeList;
-                vm.lastStoreListPage = storeListPage;
+            $log.debug('==> StoreListController.pullToRefresh');
+            UserShoppingData
+            .loadFirstPage()
+            .then( function(stores) {
+                vm.stores = stores;
             })
             .finally( function() {
-                // Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');
             });
         }
 
-        function showStoreItems(storeId){
-            $state.go('app.dashboard.store',{storeId:storeId});
+        function showShoppingStore(store){
+            $state.go('app.dashboard.store',{storeId:store.resource.id});
         };
 
-        function deleteStore(index){
-            //console.log("DELETE-STORE",vm.stores[index]);
-            vm.stores[index].$del('self');
-            vm.stores.splice(index, 1);
+        function deleteStore(store){
+            store.resource.$del('self');
+            var index = vm.stores.indexOf(store);
+            if (index > -1) {
+                vm.stores.splice(index, 1);
+            }
         };
 
         function addNewStore(){
             console.log("add new store at here");
         };
 
-    }; // end of shoppingListController
+    }; // end of StoreListController
 
 })();

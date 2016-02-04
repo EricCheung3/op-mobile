@@ -14,20 +14,13 @@
         })
         .controller('StoreShoppingListController', StoreShoppingListController);
 
-    StoreShoppingListController.$inject = ['$log', '$rootScope', '$scope', '$location', 'apiService', '$stateParams', 'storeService', '$ionicPopup', '$state', 'searchService'];
+    StoreShoppingListController.$inject = ['$log', '$scope', 'apiService', '$stateParams', 'storeService', '$ionicPopup', '$state', 'UserShoppingData'];
 
-    function StoreShoppingListController(   $log,   $rootScope,   $scope,   $location,   apiService ,  $stateParams ,  storeService ,  $ionicPopup ,  $state,   searchService) {
-        $log.debug('==> StoreShoppingListController test');
+    function StoreShoppingListController(   $log,   $scope,   apiService ,  $stateParams ,  storeService ,  $ionicPopup ,  $state,   UserShoppingData) {
+        $log.debug('==> StoreShoppingListController');
 
         var vm = this;
-        vm.storeId = $stateParams.storeId;
-        vm.store = null;
-        vm.categoryMap = {};
-        vm.totalNumber = 0;
-        vm.totalPrice = 0;
-
-        vm.shouldShowDelete = false; //?
-        vm.listCanSwipe = true;
+        vm.categoryList;
 
         vm.plusItemNumber = plusItemNumber;
         vm.minusItemNumber = minusItemNumber;
@@ -45,14 +38,109 @@
 
         vm.clearShoppingList = clearShoppingList;
 
+        function ShoppingStore(storeId) {
+            var vmstore = this;
+            vmstore.storeId = storeId;
+            vmstore.resource = null;
+            vmstore.items = [];
+            vmstore.categoryMap = {};
+            vmstore.totalPrice = 0;
+            vmstore.totalNumber = 0;
+
+            vmstore.reload = function(focusItemId) {
+                //console.log('==>ShoppingStore.reload() for '+vmstore.storeId);
+                //empty category list for each code
+                for (var code in  vmstore.categoryMap) {
+                    vmstore.categoryMap[code].items = [];
+                    vmstore.categoryMap[code].subtotal = 0;
+                }
+
+                UserShoppingData.loadShoppingStoreById(vmstore.storeId)
+                .then( function(shoppingStore) {
+                    //console.log("load shoppingStore:", shoppingStore);
+                    vmstore.resource = shoppingStore;
+                    vmstore.items = shoppingStore.items;
+                    vmstore.items.forEach(function (shoppingItem) {
+                        addShoppingItemToCategory(shoppingItem);
+                    });
+                    //console.log('categoryMap is :', vmstore.categoryMap);
+                    for (var code in  vmstore.categoryMap) {
+                        if (vmstore.categoryMap[code].items.length === 0) {
+                            delete vmstore.categoryMap[code];
+                        } else {
+                            vmstore.categoryMap[code].items.forEach( function(item){
+                                if (item.shoppingItem.id === focusItemId) {
+                                    vmstore.categoryMap[code].showDetail = true;
+                                }
+                            });
+                        }
+                    };
+                    calculateTotalSubtotal();
+                });
+            };
+
+            function addShoppingItemToCategory(shoppingItem) {
+                //console.log('==>ShoppingStore.addShoppingItemToCategory():', shoppingItem);
+                var item = {
+                    code : shoppingItem.categoryCode,
+                    name : shoppingItem.name,
+                    number : shoppingItem.number,
+                    catalog : shoppingItem.catalog,
+                    showDetail : false,
+                    shoppingItem : shoppingItem
+                };
+
+                if(shoppingItem.catalog !== null) {
+                    item.price = shoppingItem.catalog.price;
+                } else {
+                    item.price = 0;
+                }
+
+                var category = vmstore.categoryMap[item.code];
+                if (category === undefined) {
+                    category = {
+                        code : item.code,
+                        items : [],
+                        showDetail : false,
+                        subtotal : 0,
+                    };
+                    vm.categoryList.forEach( function(pc) {
+                        if (pc.code === category.code) {
+                            category.label = pc.label;
+                        }
+                    });
+
+                    vmstore.categoryMap[item.code] = category;
+                    //console.log('create new category:', category);
+                }
+                item.category = category;
+                category.items.push(item);
+            };
+
+            function calculateTotalSubtotal() {
+                vmstore.totalPrice = 0;
+                for (var key in vmstore.categoryMap) {
+                    var category = vmstore.categoryMap[key];
+                    category.subtotal = 0;
+                    category.items.forEach( function(item){
+                        category.subtotal = category.subtotal + Number(item.price) * item.number;
+                    })
+                    vmstore.totalPrice = vmstore.totalPrice + category.subtotal;
+                }
+            }
+
+        };
+
         apiService
         .getUserResource()
         .then(function (userResource) {
             return userResource.$get('categories')
         })
-        .then( function(categories){
+        .then( function(categories) {
+            //console.log("categoryList", categories);
             vm.categoryList = categories;
-            reloadShoppingList();
+            vm.store = new ShoppingStore($stateParams.storeId);
+            vm.store.reload();
         });
 
 
