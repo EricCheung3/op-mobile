@@ -27,7 +27,6 @@
         vm.editItem = editItem;
         vm.deleteItem = deleteItem;
 
-        vm.model = ""; //value is then saved in the defined ng-model, used by ion-autocomplete. Do we need this?
         vm.searchProductsFromServer = searchProductsFromServer;
         vm.itemsClicked = itemsClicked;
         vm.cancelSearch = cancelSearch;
@@ -35,9 +34,7 @@
         vm.shoppingMode = false; // whether in shopping
         vm.goShoppingMode = goShoppingMode;
         vm.doneShoppingMode = doneShoppingMode;
-
         vm.clearShoppingList = clearShoppingList;
-
 
         UserShoppingData
         .categoryList()
@@ -47,7 +44,6 @@
             vm.store = new ShoppingStore($stateParams.storeId, UserShoppingData, vm.categoryList);
             vm.store.reload();
         });
-
 
         // ---------------------------------------------------------------------
         // public functions for UI
@@ -210,7 +206,7 @@
             vmstore.totalNumber = 0;
 
             vmstore.reload = function(focusItemId) {
-                //console.log('==>ShoppingStore.reload() for '+vmstore.storeId);
+                console.log('==>ShoppingStore.reload() for '+vmstore.storeId);
                 //empty category list for each code
                 for (var code in  vmstore.categoryMap) {
                     vmstore.categoryMap[code].items = [];
