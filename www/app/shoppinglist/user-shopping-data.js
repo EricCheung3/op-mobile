@@ -7,10 +7,13 @@
 
     UserShoppingData.$inject = ['$log', '$q', '$http', 'apiService'];
     function UserShoppingData(   $log,   $q,   $http,   apiService) {
-        var userShoppingStores;
-        var lastStoreListPage;
+        var vmUserShoppingData = this;
+        vmUserShoppingData.userShoppingStores;
+        vmUserShoppingData.lastStoreListPage;
+        vmUserShoppingData.categoryList;
 
         return {
+            'categoryList' : categoryList,
             'loadFirstPage' : loadFirstPage,
             'hasNextPage' : hasNextPage,
             'loadNextPage' : loadNextPage,
@@ -19,6 +22,24 @@
 
         function Store(resource) {
             this.resource = resource;
+        };
+
+        function categoryList() {
+            if (vmUserShoppingData.categoryList) {
+                return Promise.resolve(vmUserShoppingData.categoryList);
+            }
+
+            return new Promise(resolve => {
+                apiService
+                .getUserResource()
+                .then(function (userResource) {
+                    return userResource.$get('categories')
+                })
+                .then( function(categories) {
+                    vmUserShoppingData.categoryList = categories;
+                    resolve(vmUserShoppingData.categoryList);
+                });
+            });
         };
 
         function loadFirstPage() {

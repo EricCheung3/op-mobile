@@ -14,9 +14,9 @@
         })
         .controller('StoreShoppingListController', StoreShoppingListController);
 
-    StoreShoppingListController.$inject = ['$log', '$scope', 'apiService', '$stateParams', 'searchService', '$ionicPopup', '$state', 'UserShoppingData'];
+    StoreShoppingListController.$inject = ['$log', '$scope', 'apiService', '$stateParams', '$ionicPopup', '$state', 'UserShoppingData'];
 
-    function StoreShoppingListController(   $log,   $scope,   apiService ,  $stateParams ,  searchService ,  $ionicPopup ,  $state,   UserShoppingData) {
+    function StoreShoppingListController(   $log,   $scope,   apiService ,  $stateParams ,  $ionicPopup ,  $state,   UserShoppingData) {
         $log.debug('==> StoreShoppingListController');
 
         var vm = this;
@@ -38,147 +38,13 @@
 
         vm.clearShoppingList = clearShoppingList;
 
-        function ShoppingStore(storeId) {
-            var vmstore = this;
-            vmstore.storeId = storeId;
-            vmstore.resource = null;
-            vmstore.items = [];
-            vmstore.categoryMap = {};
-            vmstore.totalPrice = 0;
-            vmstore.totalNumber = 0;
 
-            vmstore.reload = function(focusItemId) {
-                //console.log('==>ShoppingStore.reload() for '+vmstore.storeId);
-                //empty category list for each code
-                for (var code in  vmstore.categoryMap) {
-                    vmstore.categoryMap[code].items = [];
-                    vmstore.categoryMap[code].subtotal = 0;
-                }
-
-                UserShoppingData.loadShoppingStoreById(vmstore.storeId)
-                .then( function(shoppingStore) {
-                    //console.log("load shoppingStore:", shoppingStore);
-                    vmstore.resource = shoppingStore;
-                    vmstore.items = shoppingStore.items;
-                    vmstore.items.forEach(function (shoppingItem) {
-                        addShoppingItemToCategory(shoppingItem);
-                    });
-                    //console.log('categoryMap is :', vmstore.categoryMap);
-                    for (var code in  vmstore.categoryMap) {
-                        if (vmstore.categoryMap[code].items.length === 0) {
-                            delete vmstore.categoryMap[code];
-                        } else {
-                            vmstore.categoryMap[code].items.forEach( function(item){
-                                if (item.shoppingItem.id === focusItemId) {
-                                    vmstore.categoryMap[code].showDetail = true;
-                                }
-                            });
-                        }
-                    };
-                    vmstore.calculateTotalSubtotal();
-                });
-            };
-
-            function addShoppingItemToCategory(shoppingItem) {
-                //console.log('==>ShoppingStore.addShoppingItemToCategory():', shoppingItem);
-                var item = {
-                    code : shoppingItem.categoryCode,
-                    name : shoppingItem.name,
-                    number : shoppingItem.number,
-                    catalog : shoppingItem.catalog,
-                    showDetail : false,
-                    shoppingItem : shoppingItem
-                };
-
-                if(shoppingItem.catalog !== null) {
-                    item.price = shoppingItem.catalog.price;
-                } else {
-                    item.price = 0;
-                }
-
-                var category = vmstore.categoryMap[item.code];
-                if (category === undefined) {
-                    category = {
-                        code : item.code,
-                        items : [],
-                        showDetail : false,
-                        subtotal : 0,
-                    };
-                    vm.categoryList.forEach( function(pc) {
-                        if (pc.code === category.code) {
-                            category.label = pc.label;
-                        }
-                    });
-
-                    vmstore.categoryMap[item.code] = category;
-                    //console.log('create new category:', category);
-                }
-                item.category = category;
-                category.items.push(item);
-            };
-
-            vmstore.calculateTotalSubtotal = function() {
-                vmstore.totalPrice = 0;
-                for (var key in vmstore.categoryMap) {
-                    var category = vmstore.categoryMap[key];
-                    category.subtotal = 0;
-                    category.items.forEach( function(item){
-                        category.subtotal = category.subtotal + Number(item.price) * item.number;
-                    })
-                    vmstore.totalPrice = vmstore.totalPrice + category.subtotal;
-                }
-            }
-
-            vmstore.clearList = function() {
-                vmstore.items.forEach( function(item) {
-                    item.$del('self');
-                });
-                vmstore.categoryMap = {};
-                vmstore.totalNumber = 0;
-                vmstore.totalPrice = 0;
-            };
-
-            vmstore.updateShoppingItem = function(item, reload) {
-                var itemForm = {
-                    name : item.name,
-                    number : item.number,
-                    categoryCode : item.code
-                };
-                item.shoppingItem.$put('self', {}, itemForm)
-                .then( function() {
-                    if (reload) {
-                        vmstore.reload(item.shoppingItem.id);
-                    }
-                });
-            };
-
-            vmstore.searchItems = function(query) {
-                return new Promise(resolve => {
-                    vmstore
-                    .resource
-                    .$get('catalogs', {query:query})
-                    .then( function(items) {
-                        if (items.length === 0) {
-                            resolve({items: [{'naturalName':query}]});
-                        } else {
-                            resolve({items: items});
-                        }
-                    });
-                });
-            };
-
-
-        };
-
-        apiService
-        .getUserResource()
-        .then(function (userResource) {
-            return userResource.$get('categories')
-        })
+        UserShoppingData
+        .categoryList()
         .then( function(categories) {
             //console.log("categoryList", categories);
             vm.categoryList = categories;
-            vm.store = new ShoppingStore($stateParams.storeId);
+            vm.store = new ShoppingStore($stateParams.storeId, UserShoppingData, vm.categoryList);
             vm.store.reload();
         });
 
@@ -332,6 +198,139 @@
 
         };
 
+        function ShoppingStore(storeId, UserShoppingData, categoryList) {
+            var vmstore = this;
+            vmstore.storeId = storeId;
+            vmstore.UserShoppingData = UserShoppingData;
+            vmstore.categoryList = categoryList;
+            vmstore.resource = null;
+            vmstore.items = [];
+            vmstore.categoryMap = {};
+            vmstore.totalPrice = 0;
+            vmstore.totalNumber = 0;
+
+            vmstore.reload = function(focusItemId) {
+                //console.log('==>ShoppingStore.reload() for '+vmstore.storeId);
+                //empty category list for each code
+                for (var code in  vmstore.categoryMap) {
+                    vmstore.categoryMap[code].items = [];
+                    vmstore.categoryMap[code].subtotal = 0;
+                }
+
+                vmstore.UserShoppingData
+                .loadShoppingStoreById(vmstore.storeId)
+                .then( function(shoppingStore) {
+                    //console.log("load shoppingStore:", shoppingStore);
+                    vmstore.resource = shoppingStore;
+                    vmstore.items = shoppingStore.items;
+                    vmstore.items.forEach(function (shoppingItem) {
+                        addShoppingItemToCategory(shoppingItem);
+                    });
+                    //console.log('categoryMap is :', vmstore.categoryMap);
+                    for (var code in  vmstore.categoryMap) {
+                        if (vmstore.categoryMap[code].items.length === 0) {
+                            delete vmstore.categoryMap[code];
+                        } else {
+                            vmstore.categoryMap[code].items.forEach( function(item){
+                                if (item.shoppingItem.id === focusItemId) {
+                                    vmstore.categoryMap[code].showDetail = true;
+                                }
+                            });
+                        }
+                    };
+                    vmstore.calculateTotalSubtotal();
+                });
+            };
+
+            function addShoppingItemToCategory(shoppingItem) {
+                //console.log('==>ShoppingStore.addShoppingItemToCategory():', shoppingItem);
+                var item = {
+                    code : shoppingItem.categoryCode,
+                    name : shoppingItem.name,
+                    number : shoppingItem.number,
+                    catalog : shoppingItem.catalog,
+                    showDetail : false,
+                    shoppingItem : shoppingItem
+                };
+
+                if(shoppingItem.catalog !== null) {
+                    item.price = shoppingItem.catalog.price;
+                } else {
+                    item.price = 0;
+                }
+
+                var category = vmstore.categoryMap[item.code];
+                if (category === undefined) {
+                    category = {
+                        code : item.code,
+                        items : [],
+                        showDetail : false,
+                        subtotal : 0,
+                    };
+                    vmstore.categoryList.forEach( function(pc) {
+                        if (pc.code === category.code) {
+                            category.label = pc.label;
+                        }
+                    });
+
+                    vmstore.categoryMap[item.code] = category;
+                    //console.log('create new category:', category);
+                }
+                item.category = category;
+                category.items.push(item);
+            };
+
+            vmstore.calculateTotalSubtotal = function() {
+                vmstore.totalPrice = 0;
+                for (var key in vmstore.categoryMap) {
+                    var category = vmstore.categoryMap[key];
+                    category.subtotal = 0;
+                    category.items.forEach( function(item){
+                        category.subtotal = category.subtotal + Number(item.price) * item.number;
+                    })
+                    vmstore.totalPrice = vmstore.totalPrice + category.subtotal;
+                }
+            }
+
+            vmstore.clearList = function() {
+                vmstore.items.forEach( function(item) {
+                    item.$del('self');
+                });
+                vmstore.categoryMap = {};
+                vmstore.totalNumber = 0;
+                vmstore.totalPrice = 0;
+            };
+
+            vmstore.updateShoppingItem = function(item, reload) {
+                var itemForm = {
+                    name : item.name,
+                    number : item.number,
+                    categoryCode : item.code
+                };
+                item.shoppingItem.$put('self', {}, itemForm)
+                .then( function() {
+                    if (reload) {
+                        vmstore.reload(item.shoppingItem.id);
+                    }
+                });
+            };
+
+            vmstore.searchItems = function(query) {
+                return new Promise(resolve => {
+                    vmstore
+                    .resource
+                    .$get('catalogs', {query:query})
+                    .then( function(items) {
+                        if (items.length === 0) {
+                            resolve({items: [{'naturalName':query}]});
+                        } else {
+                            resolve({items: items});
+                        }
+                    });
+                });
+            };
+
+        };
 
     }; // end of storeController
 
