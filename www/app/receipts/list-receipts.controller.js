@@ -62,7 +62,7 @@
             if(UserReceiptData.hasNextPage()) {
                 UserReceiptData
                 .loadNextPage()
-                .then( function(receipts){
+                .then( function(receipts) {
                     vm.receipts = receipts;
                     $scope.$broadcast('scroll.infiniteScrollComplete');
                 });

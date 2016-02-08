@@ -209,8 +209,10 @@
                 console.log('==>ShoppingStore.reload() for '+vmstore.storeId);
                 //empty category list for each code
                 for (var code in  vmstore.categoryMap) {
-                    vmstore.categoryMap[code].items = [];
-                    vmstore.categoryMap[code].subtotal = 0;
+                    if (typeof vmstore.categoryMap[code] !== 'function') {
+                        vmstore.categoryMap[code].items = [];
+                        vmstore.categoryMap[code].subtotal = 0;
+                    }
                 }
 
                 vmstore.UserShoppingData
@@ -224,14 +226,16 @@
                     });
                     //console.log('categoryMap is :', vmstore.categoryMap);
                     for (var code in  vmstore.categoryMap) {
-                        if (vmstore.categoryMap[code].items.length === 0) {
-                            delete vmstore.categoryMap[code];
-                        } else {
-                            vmstore.categoryMap[code].items.forEach( function(item){
-                                if (item.shoppingItem.id === focusItemId) {
-                                    vmstore.categoryMap[code].showDetail = true;
-                                }
-                            });
+                        if (typeof vmstore.categoryMap[code] !== 'function') {
+                            if (vmstore.categoryMap[code].items.length === 0) {
+                                delete vmstore.categoryMap[code];
+                            } else {
+                                vmstore.categoryMap[code].items.forEach( function(item){
+                                    if (item.shoppingItem.id === focusItemId) {
+                                        vmstore.categoryMap[code].showDetail = true;
+                                    }
+                                });
+                            }
                         }
                     };
                     vmstore.calculateTotalSubtotal();

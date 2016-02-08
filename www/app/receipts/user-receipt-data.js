@@ -11,23 +11,80 @@
         var userReceipts;
         var lastReceiptListPage;
 
-        return {
-            'getReceiptGroups' : getReceiptGroups,
-            'loadFirstPage' : loadFirstPage,
-            'hasNextPage' : hasNextPage,
-            'loadNextPage' : loadNextPage,
-            'loadReceiptById' : loadReceiptById
+var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+        var vmUserReceiptData = this;
+
+        function refresh() {
+            //console.log("call refresh()");
+            delete vmUserReceiptData.data;
         };
 
+        function load() {
+            if (vmUserReceiptData.data) {
+                //console.log("return existing data");
+                return Promise.resolve(vmUserReceiptData.data);
+            }
+
+            return new Promise(resolve => {
+                //console.log("call backend API...");
+                apiService
+                .getUserResource()
+                .then( function(resource) {
+                    return resource.$get('allReceipts');
+                })
+                .then( function(receipts) {
+                    vmUserReceiptData.data = receipts;
+                    resolve(receipts);
+                });
+
+            });
+        };
+
+
+        function Group(key, receiptDate) {
+            var vmgroup = this;
+
+            vmgroup.key = key;
+            vmgroup.receiptDate = new Date(receiptDate[0], receiptDate[1], receiptDate[2]);
+            vmgroup.receipts = [];
+
+            vmgroup.weekDay = days[vmgroup.receiptDate.getDay()];
+
+            vmgroup.addReceipt = function(receipt) {
+                vmgroup.receipts.push(receipt);
+            };
+        };
+
+        function getTimeline() {
+            var groups = {};
+
+            return load().then(data => {
+                //console.log("load data", data);
+                if (data.length === 0) {
+                    return groups;
+                }
+                data.forEach( receipt => {
+                    var key = receipt.receiptDate.join('_');
+
+                    var group = groups[key];
+                    if (group === undefined) {
+                        group = new Group(key, receipt.receiptDate);
+                        groups[key] = group;
+                    }
+                    group.addReceipt(receipt);
+                });
+                return groups;
+            });
+        };
+
+// --- old code ----
         function Receipt(receiptResource) {
             this.resource = receiptResource;
             this.waiting = (receiptResource.status === 'WAIT_FOR_RESULT');
             this.loaded = (receiptResource.status === 'HAS_RESULT');
             this.receiptDate = receiptResource.receiptDate.join('-');
-        };
-
-        function getReceiptGroups() {
-
         };
 
         function loadFirstPage() {
@@ -131,6 +188,15 @@
                     console.log("ERROR",err); // TODO handle error
                 });
             });
+        };
+
+        return {
+            'getTimeline' : getTimeline,
+            'refresh' : refresh,
+            'loadFirstPage' : loadFirstPage,
+            'hasNextPage' : hasNextPage,
+            'loadNextPage' : loadNextPage,
+            'loadReceiptById' : loadReceiptById
         };
 
     }; // end of UserReceiptData

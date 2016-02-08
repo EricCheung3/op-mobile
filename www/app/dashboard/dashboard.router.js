@@ -45,8 +45,8 @@
                 cache: false,
                 views: {
                     'receipt-tab': {
-                        templateUrl: 'app/receipts/list-receipts.tmpl.html',
-                        controller: 'ReceiptListController as vm'
+                        templateUrl: 'app/receipts/timeline.tmpl.html',
+                        controller: 'TimelineController as vm'
                     }
                 }
             })
