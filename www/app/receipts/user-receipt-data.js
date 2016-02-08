@@ -51,6 +51,9 @@ var months = ['January','February','March','April','May','June','July','August',
             vmgroup.receipts = [];
 
             vmgroup.weekDay = days[vmgroup.receiptDate.getDay()];
+            vmgroup.year = receiptDate[0];
+            vmgroup.month = months[receiptDate[1]-1];
+            vmgroup.day = receiptDate[2];
 
             vmgroup.addReceipt = function(receipt) {
                 vmgroup.receipts.push(receipt);

@@ -11,7 +11,7 @@
                   swipe-direction="both">
             <div ng-repeat="group in vm.groups | object2Array | orderBy:'-key'">
 
-                <div class="item item-divider"> {{group.weekDay}} - {{group.key}}</div>
+                <div class="item item-divider"> {{group.weekDay}} - {{group.month}} {{group.day}}, {{group.year}}</div>
 
                 <div ng-repeat="receipt in group.receipts">
                     <ion-item class="item myreceipts" ng-show="receipt.status === 'HAS_RESULT'"
