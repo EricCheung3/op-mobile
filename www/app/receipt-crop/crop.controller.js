@@ -23,28 +23,32 @@
         vm.cropFromGallery();
 
         function cropFromGallery() {
-            $log.debug('call cropFromGallery()');
+            console.log('call cropFromGallery()');
             var isAndroid = ionic.Platform.isAndroid();
+            document.addEventListener("deviceready", function () {
+                var options = {
+                    quality: 50,
+                    allowEdit:true,
+                    destinationType: Camera.DestinationType.DATA_URL,
+                    sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                    encodingType:Camera.EncodingType.JPEG,
+                    correctOrientation:true,
+                    saveToPhotoAlbum: true
+                };
 
-            var options = {
-                quality: 50,
-                allowEdit:true,
-                destinationType: Camera.DestinationType.DATA_URL,
-                sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-                encodingType:Camera.EncodingType.JPEG,
-                correctOrientation:true,
-                saveToPhotoAlbum: true
-            };
-
-            $cordovaCamera.getPicture(options).then(function(imageData){
-                vm.imgURI = "data:image/jpeg;base64,"+ imageData;
-                vm.imgUpload = imageData;
-            },function(err){
-                console.log(err);
-            }).then(function(){
-                vm.upload();
-            });
-
+                $cordovaCamera
+                .getPicture(options)
+                .then(function(imageData){
+                    vm.imgURI = "data:image/jpeg;base64,"+ imageData;
+                    vm.imgUpload = imageData;
+                }, function(err) {
+                    console.log(err);
+                })
+                .then( function() {
+                    //$log.debug('finished from gallary.');
+                    vm.upload();
+                });
+            }, false);
         };
 
         function multiReceiptPopup(){
@@ -64,7 +68,7 @@
                 text: '<b>Continue</b>',
                 type: 'button-positive',
                 onTap: function(e) {
-                    console.log("call snap receipt function");
+                    //console.log("call crop receipt function");
                     vm.cropFromGallery();
                     popup.close();
                 }
@@ -75,7 +79,7 @@
 
 
         function upload() {
-            $log.debug('call upload()');
+            console.log('call upload()');
 
             if(vm.imgUpload!=null){
               $ionicLoading.show({template: 'Uploading to server ...'});
@@ -93,7 +97,6 @@
                         // A confirm dialog for multi-receipt upload
                         apiService.getResource(receiptUrl)
                           .then(function(receiptResource) {
-                            console.log("receiptResource", receiptResource);
                             // first upload or not
                             vm.receiptImages = receiptResource;
                           })

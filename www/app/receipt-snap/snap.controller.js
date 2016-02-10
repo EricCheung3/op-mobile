@@ -29,19 +29,19 @@
                     destinationType:Camera.DestinationType.DATA_URL,
                     sourceType:Camera.PictureSourceType.Camera,
                     encodingType:Camera.EncodingType.JPEG,
-                    popoverOptions:CameraPopoverOptions,
                     correctOrientation:true,
                     saveToPhotoAlbum:true
                 };
 
-                /*  BUG [solved]: imgURI is not defined*/
-                $cordovaCamera.getPicture(options).then( function(imageData) {
+                $cordovaCamera
+                .getPicture(options)
+                .then( function(imageData) {
                     vm.imgURI = "data:image/jpeg;base64,"+ imageData; //[DATA_URL]
                     vm.imgUpload = imageData;
-                    console.log('imgURI_takePicture====>'+vm.imgURI);
-                },function(err){
+                }, function(err) {
                     console.log(err);
-                }).then(function(){
+                })
+                .then(function() {
                     vm.upload();
                 });
             }, false);
@@ -64,7 +64,7 @@
                 text: '<b>Continue</b>',
                 type: 'button-positive',
                 onTap: function(e) {
-                    console.log("call snap receipt function");
+                    //console.log("call snap receipt function");
                     vm.takePicture();
                     popup.close();
                 }
