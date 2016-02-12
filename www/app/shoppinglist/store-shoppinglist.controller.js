@@ -73,7 +73,6 @@
                 title: 'Edit Item',
                 // subTitle: 'Please input item name and price',
                 scope: $scope,
-                // TODO add category dropdown list
                 templateUrl: 'app/shoppinglist/edit-item.tmpl.html',
                 buttons: [
                     { text: 'Cancel' ,
@@ -129,7 +128,12 @@
 
         // parameter must be named "callback"
         function itemsClicked(callback) {
-            addToShoppingList(callback.item);
+            var itemForm = {
+                name : callback.item.naturalName,
+                catalogCode : callback.item.catalogCode,
+                number : 1
+            };
+            vm.store.createShoppingItem(itemForm);
             vm.externalModel = []; // use to clear the selected items
         };
 
@@ -173,27 +177,6 @@
         // ---------------------------------------------------------------------
         // private functions
 
-        // after user selects search result or creates item, add it to shopping list
-        function addToShoppingList(item) {
-            //console.log("add item to shopping list", item);
-            var itemForm = {
-                name : item.naturalName,
-                catalogCode : item.catalogCode,
-                number : 1
-            };
-            createShoppingItem(itemForm);
-        };
-
-        function createShoppingItem(itemForm) {
-            vm.store
-            .$post('items', {}, itemForm)
-            .then( function(location){
-                var itemId = location.substring(location.lastIndexOf('/') + 1);
-                vm.store.reload(itemId);
-            });
-
-        };
-
         function ShoppingStore(storeId, UserShoppingData, categoryList) {
             var vmstore = this;
             vmstore.storeId = storeId;
@@ -207,13 +190,7 @@
 
             vmstore.reload = function(focusItemId) {
                 console.log('==>ShoppingStore.reload() for '+vmstore.storeId);
-                //empty category list for each code
-                for (var code in  vmstore.categoryMap) {
-                    if (typeof vmstore.categoryMap[code] !== 'function') {
-                        vmstore.categoryMap[code].items = [];
-                        vmstore.categoryMap[code].subtotal = 0;
-                    }
-                }
+                var newCategoryMap = {};
 
                 vmstore.UserShoppingData
                 .loadShoppingStoreById(vmstore.storeId)
@@ -222,27 +199,24 @@
                     vmstore.resource = shoppingStore;
                     vmstore.items = shoppingStore.items;
                     vmstore.items.forEach(function (shoppingItem) {
-                        addShoppingItemToCategory(shoppingItem);
+                        addShoppingItemToCategory(newCategoryMap, shoppingItem);
                     });
-                    //console.log('categoryMap is :', vmstore.categoryMap);
-                    for (var code in  vmstore.categoryMap) {
-                        if (typeof vmstore.categoryMap[code] !== 'function') {
-                            if (vmstore.categoryMap[code].items.length === 0) {
-                                delete vmstore.categoryMap[code];
-                            } else {
-                                vmstore.categoryMap[code].items.forEach( function(item){
-                                    if (item.shoppingItem.id === focusItemId) {
-                                        vmstore.categoryMap[code].showDetail = true;
-                                    }
-                                });
-                            }
+                    //console.log('after adding, categoryMap is :', newCategoryMap);
+                    for (var code in  newCategoryMap) {
+                        if (typeof newCategoryMap[code] !== 'function') {
+                            newCategoryMap[code].items.forEach( function(item){
+                                if (item.shoppingItem.id === focusItemId) {
+                                    newCategoryMap[code].showDetail = true;
+                                }
+                            });
                         }
                     };
+                    vmstore.categoryMap = newCategoryMap;
                     vmstore.calculateTotalSubtotal();
                 });
             };
 
-            function addShoppingItemToCategory(shoppingItem) {
+            function addShoppingItemToCategory(categoryMap, shoppingItem) {
                 //console.log('==>ShoppingStore.addShoppingItemToCategory():', shoppingItem);
                 var item = {
                     code : shoppingItem.categoryCode,
@@ -259,7 +233,7 @@
                     item.price = 0;
                 }
 
-                var category = vmstore.categoryMap[item.code];
+                var category = categoryMap[item.code];
                 if (category === undefined) {
                     category = {
                         code : item.code,
@@ -273,7 +247,7 @@
                         }
                     });
 
-                    vmstore.categoryMap[item.code] = category;
+                    categoryMap[item.code] = category;
                     //console.log('create new category:', category);
                 }
                 item.category = category;
@@ -327,6 +301,15 @@
                             resolve({items: items});
                         }
                     });
+                });
+            };
+
+            vmstore.createShoppingItem = function(itemForm) {
+                vmstore.resource
+                .$post('items', {}, itemForm)
+                .then( function(location){
+                    var itemId = location.substring(location.lastIndexOf('/') + 1);
+                    vmstore.reload(itemId);
                 });
             };
 
