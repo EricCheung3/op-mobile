@@ -10,7 +10,7 @@
         var vmUserShoppingData = this;
         vmUserShoppingData.userShoppingStores;
         vmUserShoppingData.lastStoreListPage;
-        vmUserShoppingData.categoryList;
+        vmUserShoppingData.categoryList = CATEGORY_LIST;
 
         return {
             'categoryList' : categoryList,
@@ -116,4 +116,153 @@
         };
 
     }; // end of UserReceiptData
+
+    var CATEGORY_LIST =
+[
+  {
+    "label": "Apparel",
+    "code": "apparel"
+  },
+  {
+    "label": "Baby Food",
+    "code": "babyfood"
+  },
+  {
+    "label": "Baby Items",
+    "code": "babyitems"
+  },
+  {
+    "label": "Bakery",
+    "code": "bakery"
+  },
+  {
+    "label": "Baking",
+    "code": "baking"
+  },
+  {
+    "label": "Beverages",
+    "code": "beverages"
+  },
+  {
+    "label": "Canned & Packaged",
+    "code": "canned"
+  },
+  {
+    "label": "Breakfast & Cereal",
+    "code": "cereal"
+  },
+  {
+    "label": "Cleaning Supplies",
+    "code": "cleaningsupplies"
+  },
+  {
+    "label": "Dairy & Egg",
+    "code": "dairy"
+  },
+  {
+    "label": "Deli",
+    "code": "deli"
+  },
+  {
+    "label": "Entertainment",
+    "code": "entertainment"
+  },
+  {
+    "label": "Floral",
+    "code": "floral"
+  },
+  {
+    "label": "Frozen",
+    "code": "frozen"
+  },
+  {
+    "label": "Fruits",
+    "code": "fruit"
+  },
+  {
+    "label": "Beans, Grains & Rice",
+    "code": "grains"
+  },
+  {
+    "label": "Health & Beauty",
+    "code": "health"
+  },
+  {
+    "label": "Home",
+    "code": "home"
+  },
+  {
+    "label": "International & Ethnic",
+    "code": "international"
+  },
+  {
+    "label": "Jams & Preserves",
+    "code": "jams"
+  },
+  {
+    "label": "Meat",
+    "code": "meat"
+  },
+  {
+    "label": "Nuts & Dried Fruit",
+    "code": "nuts"
+  },
+  {
+    "label": "Oil & Vinegar",
+    "code": "oil"
+  },
+  {
+    "label": "Paper Goods",
+    "code": "papergoods"
+  },
+  {
+    "label": "Pasta & Noodles",
+    "code": "pasta"
+  },
+  {
+    "label": "Personal Care",
+    "code": "personalitems"
+  },
+  {
+    "label": "Pet Food",
+    "code": "petfood"
+  },
+  {
+    "label": "Pharmacy",
+    "code": "pharmacy"
+  },
+  {
+    "label": "Condiments & Sauces",
+    "code": "sauces"
+  },
+  {
+    "label": "Seafood",
+    "code": "seafood"
+  },
+  {
+    "label": "Snacks",
+    "code": "snacks"
+  },
+  {
+    "label": "Soups & Broth",
+    "code": "soup"
+  },
+  {
+    "label": "Spices",
+    "code": "spices"
+  },
+  {
+    "label": "Uncategorized",
+    "code": "uncategorized"
+  },
+  {
+    "label": "Vegetables",
+    "code": "vegetables"
+  },
+  {
+    "label": "Wine & Spirits",
+    "code": "wine"
+  }
+];
+
 })();
