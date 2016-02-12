@@ -22,7 +22,7 @@
             })
             .state('app.dashboard.stores', {
                 url: '/shoppingstores',
-                cache: false,
+                //cache: false,
                 views: {
                     'shoppinglist-tab': {
                         templateUrl: 'app/shoppinglist/list-stores.tmpl.html',

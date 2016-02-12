@@ -5,8 +5,8 @@
         .module('openprice.mobile')
         .factory('UserShoppingData', UserShoppingData);
 
-    UserShoppingData.$inject = ['$log', '$q', '$http', 'apiService'];
-    function UserShoppingData(   $log,   $q,   $http,   apiService) {
+    UserShoppingData.$inject = ['$log', '$http', 'apiService'];
+    function UserShoppingData(   $log,   $http,   apiService) {
         var vmUserShoppingData = this;
         vmUserShoppingData.userShoppingStores;
         vmUserShoppingData.lastStoreListPage;
@@ -44,7 +44,7 @@
 
         function loadFirstPage() {
             console.log('==>UserShoppingData.loadFirstPage()');
-            userShoppingStores = [];
+            vmUserShoppingData.userShoppingStores = [];
             return new Promise(resolve => {
                 apiService
                 .getUserResource()
@@ -52,26 +52,26 @@
                     return resource.$get('stores');
                 })
                 .then( function(storeList) {
-                    lastStoreListPage = storeList;
+                    vmUserShoppingData.lastStoreListPage = storeList;
                     if(storeList.$has('shoppingStores')){
                         return storeList.$get('shoppingStores');
                     } else {
-                        return $q.reject("NO stores!");
+                        return Promise.reject("NO stores!");
                     }
                 }).then( function(stores) {
                     if (stores) {
                         stores.forEach( function(store) {
-                            userShoppingStores.push(new Store(store));
+                            vmUserShoppingData.userShoppingStores.push(new Store(store));
                         });
                     }
-                    resolve(userShoppingStores);
+                    resolve(vmUserShoppingData.userShoppingStores);
                 });
             });
         };
 
         function hasNextPage() {
-            if (lastStoreListPage) {
-                return lastStoreListPage.$has('next');
+            if (vmUserShoppingData.lastStoreListPage) {
+                return lvmUserShoppingData.astStoreListPage.$has('next');
             }
             return false;
         };
@@ -79,20 +79,20 @@
         function loadNextPage() {
             console.log('==>UserShoppingData.loadNextPage()');
             return new Promise(resolve => {
-                lastStoreListPage
+                vmUserShoppingData.lastStoreListPage
                 .$get('next')
                 .then( function(nextStoreList) {
                     console.log('get next page:', nextStoreList);
                     console.log('has next: ', nextStoreList.$has('next'));
-                    lastStoreListPage = nextStoreList;
+                    vmUserShoppingData.lastStoreListPage = nextStoreList;
                     return nextStoreList.$get('shoppingStores');
                 })
                 .then( function(shoppingStores) {
                     console.log('==>UserReceiptData.loadNextPage(), get next shoppingStores:', shoppingStores);
                     shoppingStores.forEach( function(store) {
-                        userShoppingStores.push(new Store(store));
+                        vmUserShoppingData.userShoppingStores.push(new Store(store));
                     });
-                    resolve(userStores);
+                    resolve(vmUserShoppingData.userShoppingStores);
                 });
             });
         };

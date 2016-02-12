@@ -100,6 +100,7 @@
                     });
                 }
             });
+console.log('=>addToShoppingList() with items:', items);
 
             var shoppingList =
               {

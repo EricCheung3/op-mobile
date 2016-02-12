@@ -264,7 +264,7 @@
                     category = {
                         code : item.code,
                         items : [],
-                        showDetail : false,
+                        showDetail : true,
                         subtotal : 0,
                     };
                     vmstore.categoryList.forEach( function(pc) {

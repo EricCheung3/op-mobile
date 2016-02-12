@@ -30,10 +30,11 @@
             .loadFirstPage()
             .then( function(stores) {
                 vm.stores = stores;
-            })
-            .finally( function() {
                 $scope.$broadcast('scroll.refreshComplete');
-            });
+            }, function(error) {
+                $scope.$broadcast('scroll.refreshComplete');
+            })
+            ;
         }
 
         function showShoppingStore(store){

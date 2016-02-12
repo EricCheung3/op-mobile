@@ -14,8 +14,8 @@
         })
         .controller('TimelineController', TimelineController);
 
-    TimelineController.$inject = ['$log', '$scope', 'apiService', 'UserReceiptData', '$q', '$state', '$cordovaToast'];
-    function TimelineController(   $log,   $scope,   apiService ,  UserReceiptData,   $q,   $state ,  $cordovaToast) {
+    TimelineController.$inject = ['$log', '$scope', 'apiService', 'UserReceiptData', '$state', '$cordovaToast'];
+    function TimelineController(   $log,   $scope,   apiService ,  UserReceiptData,   $state ,  $cordovaToast) {
         $log.debug('==> TimelineController');
 
         var vm = this;
@@ -57,5 +57,6 @@
                 vm.receipts.splice(index, 1);
             }
         };
+
     } // end of function receiptsController
 })();

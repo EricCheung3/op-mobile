@@ -104,7 +104,7 @@ var months = ['January','February','March','April','May','June','July','August',
                     if (receiptList.$has('receipts')) {
                         return receiptList.$get('receipts');
                     } else {
-                        return $q.reject("NO receipts!");
+                        return Promise.reject("NO receipts!");
                     }
                 }).then( function(receipts) {
                     if (receipts) {
