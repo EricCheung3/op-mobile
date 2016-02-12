@@ -32,12 +32,12 @@
       </div>
 
     <ion-item class="store-items shopping-item-divider">
-      <p class="inline vertical-align-bottom white-text"> Items: {{vm.totalNumber}} </p>
-      <p class="inline float-right vertical-align-bottom white-text"> Total: ${{vm.totalPrice|number:2}}</p>
+      <p class="inline vertical-align-bottom white-text"> Items: {{vm.store.totalNumber}} </p>
+      <p class="inline float-right vertical-align-bottom white-text"> Total: ${{vm.store.totalPrice|number:2}}</p>
     </ion-item>
 
     <ion-list show-delete="false" can-swipe="true" swipe-direction="both">
-        <div ng-repeat="category in vm.store.categoryMap | object2Array | orderBy:'code'">
+        <div ng-repeat="category in vm.categoryMap | object2Array | orderBy:'code'">
             <ion-item class="category item-dark padding-vertical-large" ng-click="category.showDetail = !category.showDetail">
                 <img class="inline category-icon" ng-src="img/custom_icons/{{category.code}}.svg">
                 <div class="center" style="width: 50%;">
@@ -89,8 +89,8 @@
 
     <ion-refresher on-refresh="vm.pullToSearch()">  </ion-refresher>
 
-    <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="both">
-      <div  ng-repeat="category in vm.store.categoryMap | object2Array | orderBy:'code'">
+    <ion-list show-delete="false" can-swipe="false">
+      <div  ng-repeat="category in vm.categoryMap | object2Array | orderBy:'code'">
         <ion-item class="category item-dark" ng-click="category.showDetail = !category.showDetail">
           <img class="inline category-icon" ng-src="img/custom_icons/{{category.code}}.svg">
           <div class="center" style="width: 50%;">

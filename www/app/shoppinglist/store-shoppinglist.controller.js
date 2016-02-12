@@ -14,13 +14,14 @@
         })
         .controller('StoreShoppingListController', StoreShoppingListController);
 
-    StoreShoppingListController.$inject = ['$log', '$scope', 'apiService', '$stateParams', '$ionicPopup', '$state', 'UserShoppingData'];
+    StoreShoppingListController.$inject = ['$log', '$rootScope', '$scope', 'apiService', '$stateParams', '$ionicPopup', '$state', 'UserShoppingData'];
 
-    function StoreShoppingListController(   $log,   $scope,   apiService ,  $stateParams ,  $ionicPopup ,  $state,   UserShoppingData) {
+    function StoreShoppingListController(   $log,   $rootScope,   $scope,   apiService ,  $stateParams ,  $ionicPopup ,  $state,   UserShoppingData) {
         $log.debug('==> StoreShoppingListController');
 
         var vm = this;
         vm.categoryList;
+        vm.categoryMap;
 
         vm.plusItemNumber = plusItemNumber;
         vm.minusItemNumber = minusItemNumber;
@@ -45,6 +46,12 @@
             vm.store.reload();
         });
 
+        // listen shoppinglist change events
+        $rootScope.$on('shoppinglist:reloaded', function() {
+            console.log("$ got shoppinglist:reloaded");
+            vm.categoryMap = vm.store.categoryMap;
+            console.log(vm.categoryMap);
+        });
         // ---------------------------------------------------------------------
         // public functions for UI
 
@@ -148,7 +155,7 @@
 
         function doneShoppingMode(category){
             vm.shoppingMode = !vm.shoppingMode;
-            $state.go('app.dashboard.shoppinglist');
+            $state.go('app.dashboard.stores');
         };
 
         function clearShoppingList(){
@@ -213,6 +220,7 @@
                     };
                     vmstore.categoryMap = newCategoryMap;
                     vmstore.calculateTotalSubtotal();
+                    $scope.$emit('shoppinglist:reloaded');
                 });
             };
 
@@ -264,6 +272,7 @@
                     })
                     vmstore.totalPrice = vmstore.totalPrice + category.subtotal;
                 }
+                vmstore.totalNumber = vmstore.items.length;
             }
 
             vmstore.clearList = function() {
