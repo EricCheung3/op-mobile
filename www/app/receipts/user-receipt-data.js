@@ -27,7 +27,7 @@ var months = ['January','February','March','April','May','June','July','August',
                 return Promise.resolve(vmUserReceiptData.data);
             }
 
-            return new Promise(resolve => {
+            return new Promise( function(resolve) {
                 //console.log("call backend API...");
                 apiService
                 .getUserResource()
@@ -63,12 +63,12 @@ var months = ['January','February','March','April','May','June','July','August',
         function getTimeline() {
             var groups = {};
 
-            return load().then(data => {
+            return load().then( function(data) {
                 //console.log("load data", data);
                 if (data.length === 0) {
                     return groups;
                 }
-                data.forEach( receipt => {
+                data.forEach( function(receipt) {
                     var key = receipt.receiptDate.join('_');
 
                     var group = groups[key];
@@ -93,7 +93,7 @@ var months = ['January','February','March','April','May','June','July','August',
         function loadFirstPage() {
             console.log('==>UserReceiptData.loadFirstPage()');
             userReceipts = [];
-            return new Promise(resolve => {
+            return new Promise( function(resolve) {
                 apiService
                 .getUserResource()
                 .then( function(resource) {
@@ -126,7 +126,7 @@ var months = ['January','February','March','April','May','June','July','August',
 
         function loadNextPage() {
             console.log('==>UserReceiptData.loadNextPage()');
-            return new Promise(resolve => {
+            return new Promise( function(resolve) {
                 lastReceiptListPage
                 .$get('next')
                 .then( function(nextReceiptsList) {
@@ -146,7 +146,7 @@ var months = ['January','February','March','April','May','June','July','August',
         };
 
         function loadReceiptById(receiptId) {
-            return new Promise(resolve => {
+            return new Promise( function(resolve) {
                 apiService
                 .getUserResource()
                 .then( function(userResource) {
@@ -180,7 +180,7 @@ var months = ['January','February','March','April','May','June','July','August',
                 return Promise.resolve(imageData);
             }
 
-            return new Promise(resolve => {
+            return new Promise( function(resolve) {
                 $http
                 .get(downloadUrl)
                 .then( function(base64) {

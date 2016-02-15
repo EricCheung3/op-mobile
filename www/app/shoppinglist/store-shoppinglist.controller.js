@@ -209,7 +209,7 @@
                         addShoppingItemToCategory(newCategoryMap, shoppingItem);
                     });
                     //console.log('after adding, categoryMap is :', newCategoryMap);
-                    for (var code in  newCategoryMap) {
+                    for (var code in newCategoryMap) {
                         if (typeof newCategoryMap[code] !== 'function') {
                             newCategoryMap[code].items.forEach( function(item){
                                 if (item.shoppingItem.id === focusItemId) {
@@ -299,7 +299,7 @@
             };
 
             vmstore.searchItems = function(query) {
-                return new Promise(resolve => {
+                return new Promise( function(resolve) {
                     vmstore
                     .resource
                     .$get('catalogs', {query:query})

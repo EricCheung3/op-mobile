@@ -29,7 +29,7 @@
                 return Promise.resolve(vmUserShoppingData.categoryList);
             }
 
-            return new Promise(resolve => {
+            return new Promise( function(resolve) {
                 apiService
                 .getUserResource()
                 .then(function (userResource) {
@@ -45,7 +45,7 @@
         function loadFirstPage() {
             console.log('==>UserShoppingData.loadFirstPage()');
             vmUserShoppingData.userShoppingStores = [];
-            return new Promise(resolve => {
+            return new Promise( function(resolve) {
                 apiService
                 .getUserResource()
                 .then( function(resource) {
@@ -78,7 +78,7 @@
 
         function loadNextPage() {
             console.log('==>UserShoppingData.loadNextPage()');
-            return new Promise(resolve => {
+            return new Promise( function(resolve) {
                 vmUserShoppingData.lastStoreListPage
                 .$get('next')
                 .then( function(nextStoreList) {
@@ -98,7 +98,7 @@
         };
 
         function loadShoppingStoreById(shoppingStoreId) {
-            return new Promise(resolve => {
+            return new Promise( function(resolve) {
                 apiService
                 .getUserResource()
                 .then( function(userResource) {
