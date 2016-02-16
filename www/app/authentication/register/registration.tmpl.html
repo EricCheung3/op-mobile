@@ -9,36 +9,44 @@
     <form class="login-register-form" ng-submit="vm.register(vm.registration)"
             novalidate="" role="form" name="userRegistrationForm">
         <div class="list list-inset">
-            <!-- email -->
+            <!-- first name -->
             <label class="item item-input"
-            ng-class="{ 'has-error' : userRegistrationForm.email.$invalid,
-                        'valid-input' : userRegistrationForm.email.$valid}">
-                <input type="email" placeholder="Your Email" name="email"
-                ng-model="vm.registration.email" required>
+                ng-class="{ 'has-error' : userRegistrationForm.firstName.$invalid,
+                        'valid-input' : userRegistrationForm.firstName.$valid}">
+                <input type="text" placeholder="First Name"
+                    ng-model="vm.registration.firstName">
             </label>
 
-            <!-- username -->
+            <!-- last name -->
             <label class="item item-input"
-            ng-class="{ 'has-error' : userRegistrationForm.username.$invalid,
-                        'valid-input' : userRegistrationForm.username.$valid}">
-                <input type="text" placeholder="Create Username" name="username"
-                ng-model="vm.registration.username" required>
+                ng-class="{ 'has-error' : userRegistrationForm.lastName.$invalid,
+                        'valid-input' : userRegistrationForm.lastName.$valid}">
+                <input type="text" placeholder="Last Name"
+                    ng-model="vm.registration.lastName">
+            </label>
+
+            <!-- email -->
+            <label class="item item-input"
+                ng-class="{ 'has-error' : userRegistrationForm.email.$invalid,
+                        'valid-input' : userRegistrationForm.email.$valid}">
+                <input type="email" placeholder="Your Email" name="email"
+                    ng-model="vm.registration.email" required>
             </label>
 
             <!-- password -->
             <label class="item item-input"
-            ng-class="{ 'has-error' : userRegistrationForm.password.$invalid,
+                ng-class="{ 'has-error' : userRegistrationForm.password.$invalid,
                         'valid-input' : userRegistrationForm.password.$valid}">
                 <input type="password" placeholder="Password" name="password"
-                ng-model="vm.registration.password" required>
+                    ng-model="vm.registration.password" required>
             </label>
 
             <!-- confirm password -->
             <label class="item item-input"
-            ng-class="{ 'has-error' : userRegistrationForm.confirmPassword.$invalid,
+                ng-class="{ 'has-error' : userRegistrationForm.confirmPassword.$invalid,
                         'valid-input' : userRegistrationForm.confirmPassword.$valid}">
                 <input type="password" placeholder="Confirm Password" name="confirmPassword"
-                ng-model="vm.registration.confirmPassword" compare-to="vm.registration.password">
+                    ng-model="vm.registration.confirmPassword" compare-to="vm.registration.password">
             </label>
             <ng-messages for="userRegistrationForm.confirmPassword.$error" role="alert">
                 <ng-messages-include src="app/common/templates/form-errors.html"></ng-messages-include>
