@@ -13,16 +13,16 @@
             <label class="item item-input"
                 ng-class="{ 'has-error' : userRegistrationForm.firstName.$invalid,
                         'valid-input' : userRegistrationForm.firstName.$valid}">
-                <input type="text" placeholder="First Name"
-                    ng-model="vm.registration.firstName">
+                <input type="text" placeholder="First Name" name="firstName"
+                    ng-model="vm.registration.firstName" required>
             </label>
 
             <!-- last name -->
             <label class="item item-input"
                 ng-class="{ 'has-error' : userRegistrationForm.lastName.$invalid,
                         'valid-input' : userRegistrationForm.lastName.$valid}">
-                <input type="text" placeholder="Last Name"
-                    ng-model="vm.registration.lastName">
+                <input type="text" placeholder="Last Name" name="lastName"
+                    ng-model="vm.registration.lastName" required>
             </label>
 
             <!-- email -->
