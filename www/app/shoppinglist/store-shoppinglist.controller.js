@@ -174,7 +174,6 @@
                   onTap: function(e) {
                       console.log("clear the ShoppingList");
                       vm.store.clearList();
-                      vm.categoryMap = {};
                       popup.close();
                   }
                 }
@@ -278,7 +277,6 @@
 
             vmstore.clearList = function() {
                 vmstore.items.forEach( function(item) {
-                  console.log(item);
                     item.$del('self');
                 });
                 vmstore.categoryMap = {};
