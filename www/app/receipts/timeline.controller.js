@@ -32,7 +32,7 @@
             UserReceiptData
             .getTimeline()
             .then( function(groups) {
-                //console.log('init groups: ', groups);
+                // console.log('init groups: ', groups);
                 vm.groups = groups;
                 $scope.$broadcast('scroll.refreshComplete');
             });
@@ -50,11 +50,10 @@
             }
         };
 
-        function deleteReceipt(receipt) {
-            receipt.resource.$del('self');
-            var index = vm.receipts.indexOf(receipt);
+        function deleteReceipt(group, index, receipt) {
+            receipt.$del('self');
             if (index > -1) {
-                vm.receipts.splice(index, 1);
+                vm.groups[group.key].receipts.splice(index, 1);
             }
         };
 

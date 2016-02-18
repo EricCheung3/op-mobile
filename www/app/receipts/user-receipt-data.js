@@ -32,7 +32,13 @@ var months = ['January','February','March','April','May','June','July','August',
                 apiService
                 .getUserResource()
                 .then( function(resource) {
-                    return resource.$get('allReceipts');
+                    return resource.$get('receipts');
+                })
+                .then(function(receipts) {
+                    if (receipts.$has('receipts')) {
+                        //FIXME: here is a hack to return 'all' user receipts
+                        return receipts.$get('receipts', {'page':10, 'size':100, 'sort':null});
+                    }
                 })
                 .then( function(receipts) {
                     vmUserReceiptData.data = receipts;
