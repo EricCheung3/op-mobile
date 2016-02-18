@@ -8,7 +8,7 @@
 
         <ion-list show-delete="false"
                   can-swipe="true"
-                  swipe-direction="both">
+                  swipe-direction="left">
             <div ng-repeat="group in vm.groups | object2Array | orderBy:'-key'">
 
                 <div class="item item-divider"> {{group.weekDay}} - {{group.month}} {{group.day}}, {{group.year}}</div>
