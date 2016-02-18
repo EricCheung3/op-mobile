@@ -108,9 +108,11 @@
                     item.number = itemForm.number;
                     item.code = itemForm.code;
                     vm.store.updateShoppingItem(item, reload);
+                    vm.store.calculateTotalSubtotal();
                 } else {
                     console.log('Input is illegal');
                 }
+
              });
 
         };
