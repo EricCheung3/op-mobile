@@ -46,12 +46,6 @@
             vm.store.reload();
         });
 
-        // listen shoppinglist change events
-        $rootScope.$on('shoppinglist:reloaded', function() {
-            console.log("$ got shoppinglist:reloaded");
-            vm.categoryMap = vm.store.categoryMap;
-            console.log(vm.categoryMap);
-        });
         // ---------------------------------------------------------------------
         // public functions for UI
 
@@ -222,7 +216,8 @@
                     };
                     vmstore.categoryMap = newCategoryMap;
                     vmstore.calculateTotalSubtotal();
-                    $scope.$emit('shoppinglist:reloaded');
+                    vm.categoryMap = vm.store.categoryMap;
+                    $scope.$apply();
                 });
             };
 
@@ -281,9 +276,7 @@
                 vmstore.items.forEach( function(item) {
                     item.$del('self');
                 });
-                vmstore.categoryMap = {};
-                vmstore.totalNumber = 0;
-                vmstore.totalPrice = 0;
+                vmstore.reload();
             };
 
             vmstore.updateShoppingItem = function(item, reload) {
