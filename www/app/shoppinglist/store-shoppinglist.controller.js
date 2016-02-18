@@ -198,26 +198,27 @@
                 vmstore.UserShoppingData
                 .loadShoppingStoreById(vmstore.storeId)
                 .then( function(shoppingStore) {
-                    //console.log("load shoppingStore:", shoppingStore);
-                    vmstore.resource = shoppingStore;
-                    vmstore.items = shoppingStore.items;
-                    vmstore.items.forEach(function (shoppingItem) {
-                        addShoppingItemToCategory(newCategoryMap, shoppingItem);
+                    // update UI after reload
+                    $scope.$apply(function() {
+                        vmstore.resource = shoppingStore;
+                        vmstore.items = shoppingStore.items;
+                        vmstore.items.forEach(function (shoppingItem) {
+                            addShoppingItemToCategory(newCategoryMap, shoppingItem);
+                        });
+                        //console.log('after adding, categoryMap is :', newCategoryMap);
+                        for (var code in newCategoryMap) {
+                            if (typeof newCategoryMap[code] !== 'function') {
+                                newCategoryMap[code].items.forEach( function(item){
+                                    if (item.shoppingItem.id === focusItemId) {
+                                        newCategoryMap[code].showDetail = true;
+                                    }
+                                });
+                            }
+                        };
+                        vmstore.categoryMap = newCategoryMap;
+                        vmstore.calculateTotalSubtotal();
+                        vm.categoryMap = vm.store.categoryMap;
                     });
-                    //console.log('after adding, categoryMap is :', newCategoryMap);
-                    for (var code in newCategoryMap) {
-                        if (typeof newCategoryMap[code] !== 'function') {
-                            newCategoryMap[code].items.forEach( function(item){
-                                if (item.shoppingItem.id === focusItemId) {
-                                    newCategoryMap[code].showDetail = true;
-                                }
-                            });
-                        }
-                    };
-                    vmstore.categoryMap = newCategoryMap;
-                    vmstore.calculateTotalSubtotal();
-                    vm.categoryMap = vm.store.categoryMap;
-                    $scope.$apply();
                 });
             };
 
