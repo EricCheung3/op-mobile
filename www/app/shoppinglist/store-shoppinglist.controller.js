@@ -56,7 +56,7 @@
         // public functions for UI
 
         function plusItemNumber(item) {
-            item.number = item.number + 1;
+            item.number = Number(item.number) + 1;
             vm.store.updateShoppingItem(item, false);
             vm.store.calculateTotalSubtotal();
         };
