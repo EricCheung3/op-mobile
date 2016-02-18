@@ -12,12 +12,12 @@
 
         /* jshint validthis: true */
         var vm = this;
-        vm.registration = {email: '', username: '', password: '', confirmPassword: ''};
+        vm.registration = {firstName: '', lastName: '', email: '', password: '', confirmPassword: ''};
         vm.register = register;
 
         function register(registration) {
             $log.debug('==> register() for '+registration.firstName+' '+registration.lastName);
-            $log.debug('new username is '+registration.username);
+            $log.debug('new username is '+registration.email);
 
             apiService
                 .getWebsiteResource()
@@ -26,7 +26,7 @@
                 })
                 .then( function() {
                     $ionicPopup.alert({
-                        title: 'Welcome ' + registration.username,
+                        title: 'Welcome ' + registration.firstName+' '+registration.lastName,
                         cssClass: 'success',
                         content: 'Thank you for registering to OpenPrice.'
                     }).then(function(res) {
@@ -41,7 +41,7 @@
                         $ionicPopup.alert({
                             title: 'Error',
                             cssClass: 'error',
-                            content: 'Username ' + registration.username + ' is already taken!'
+                            content: 'Email ' + registration.email + ' is already taken!'
                         });
                     }
                 })

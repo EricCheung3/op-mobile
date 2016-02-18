@@ -28,7 +28,7 @@
             document.addEventListener("deviceready", function () {
                 var options = {
                     quality: 50,
-                    allowEdit:true,
+                    allowEdit:false,
                     destinationType: Camera.DestinationType.DATA_URL,
                     sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                     encodingType:Camera.EncodingType.JPEG,
