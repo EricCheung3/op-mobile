@@ -25,16 +25,14 @@
         vm.receiptParseResult;
         vm.receiptImages = [];
         vm.receiptItems = [];
-        $scope.delay = false;
-        $scope.rating = [];
 
         $scope.ratingResultY = function() {
             vm.receipt.$post('feedback', {}, {"rating":1,"comment":""});
-            $scope.rating[$scope.receiptId] = 1;
+            vm.needFeedback = false;
         }
         $scope.ratingResultN = function() {
             vm.receipt.$post('feedback', {}, {"rating":0, "comment":""});
-            $scope.rating[$scope.receiptId] = 0;
+            vm.needFeedback = false;
         }
 
         // load receipt data from database
@@ -42,6 +40,7 @@
         .loadReceiptById($stateParams.receiptId)
         .then( function(receipt) {
             vm.receipt = receipt;
+            vm.needFeedback = vm.receipt.needFeedback;
         })
 
         function editItem(item){
