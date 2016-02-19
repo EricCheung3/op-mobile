@@ -6,7 +6,7 @@
         .controller('ForgotPasswordController', ForgotPasswordController);
 
     /* @ngInject */
-    function ForgotPasswordController($scope, $state, apiService) {
+    function ForgotPasswordController($scope, $state, apiService, $ionicPopup) {
         var vm = this;
         vm.user = {
             email: ''
@@ -23,9 +23,15 @@
                 return websiteResource.$post('forgetPassword', {}, user);
             })
             .then( function(response) {
-                console.log('forgot password returned:', response);
-                //TODO error handling
-                $state.go('login');
+              $ionicPopup.alert({
+                  title: 'New password link was sent to your Email',
+                  cssClass: 'success',
+                  content: 'Please check your Email to active and reset password.'
+              }).then(function(response) {
+                  console.log('forgot password returned:', response);
+                  //TODO error handling
+                  $state.go('login');
+              });
             });
         }
     }
