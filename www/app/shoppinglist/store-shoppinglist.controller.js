@@ -274,10 +274,10 @@
             }
 
             vmstore.clearList = function() {
-                vmstore.items.forEach( function(item) {
-                    item.$del('self');
+                vmstore.resource.$del('items')
+                .then(function () {
+                    vm.store.reload();
                 });
-                vmstore.reload();
             };
 
             vmstore.updateShoppingItem = function(item, reload) {

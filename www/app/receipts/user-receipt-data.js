@@ -38,11 +38,13 @@ var months = ['January','February','March','April','May','June','July','August',
                 .then(function(receipts) {
                     if (receipts.$has('receipts')) {
                         return receipts.$get('receipts');
+                    }else {
+                        return Promise.reject("NO receipts!");
                     }
                 })
                 .then( function(receipts) {
                     vmUserReceiptData.data = receipts;
-                    console.log("receipts", receipts);
+                    console.log('receipts',receipts);
                     resolve(receipts);
                 });
 
