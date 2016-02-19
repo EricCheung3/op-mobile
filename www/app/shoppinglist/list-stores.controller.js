@@ -21,7 +21,10 @@
         .loadFirstPage()
         .then( function(stores) {
             console.log('init : ', stores);
-            vm.stores = stores;
+            $scope.$apply(function () {
+              vm.stores = stores;
+            });
+
         });
 
         function pullToRefresh(){

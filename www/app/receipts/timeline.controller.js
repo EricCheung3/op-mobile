@@ -33,7 +33,9 @@
             .getTimeline()
             .then( function(groups) {
                 // console.log('init groups: ', groups);
-                vm.groups = groups;
+                $scope.$apply(function () {
+                  vm.groups = groups;
+                });
                 $scope.$broadcast('scroll.refreshComplete');
             });
         };
