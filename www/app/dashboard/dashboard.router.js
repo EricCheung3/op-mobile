@@ -22,7 +22,7 @@
             })
             .state('app.dashboard.stores', {
                 url: '/shoppingstores',
-                //cache: false,
+                cache: false,
                 views: {
                     'shoppinglist-tab': {
                         templateUrl: 'app/shoppinglist/list-stores.tmpl.html',
@@ -32,7 +32,7 @@
             })
             .state('app.dashboard.store', {
                 url: '/shoppingstores/:storeId',
-                cache: true,
+                cache: true, // FIXME:should be false because of re-parsed result
                 views: {
                     'shoppinglist-tab': {
                         templateUrl: 'app/shoppinglist/store-shoppinglist.tmpl.html',
@@ -52,7 +52,7 @@
             })
             .state('app.dashboard.receipt', {
                 url: '/receipts/:receiptId',
-                cache: false,
+                cache: true,
                 views: {
                     'receipt-tab': {
                         templateUrl: 'app/receipts/display-receipt.tmpl.html',

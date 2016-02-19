@@ -36,7 +36,7 @@
                 $scope.$apply(function () {
                   vm.groups = groups;
                 });
-                $scope.$broadcast('scroll.refreshComplete');
+                // $scope.$broadcast('scroll.refreshComplete');
             });
         };
 
@@ -44,6 +44,7 @@
             console.log('==>pullToRefresh()');
             UserReceiptData.refresh();
             updateGroups();
+            $scope.$broadcast('scroll.refreshComplete');
         };
 
         function showReceipt(receipt) {
