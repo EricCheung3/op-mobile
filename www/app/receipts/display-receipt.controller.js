@@ -99,7 +99,7 @@
                     });
                 }
             });
-console.log('=>addToShoppingList() with items:', items);
+            console.log('=>addToShoppingList() with items:', items);
 
             var shoppingList =
               {
@@ -115,11 +115,21 @@ console.log('=>addToShoppingList() with items:', items);
                 userResource
                 .$post('shoppingList', {}, shoppingList)
                 .then( function(location){
-                      // jump to shopping list page
-                      var shoppingStoreId = location.substring(location.lastIndexOf('/') + 1);
-                      console.log('upload shopping list success! shoppingStoreId is', shoppingStoreId);
-                      vm.selectItemMode = false; // clear selec mode
-                      $state.go('app.dashboard.store', {'storeId':shoppingStoreId});
+                      // FIXME: [should be ionic1 bug]: jump to shopping list page
+                      // var shoppingStoreId = location.substring(location.lastIndexOf('/') + 1);
+                      // console.log('upload shopping list success! shoppingStoreId is', shoppingStoreId);
+                      // vm.selectItemMode = false; // clear selec mode
+                      // $state.go('app.dashboard.store', {'storeId':shoppingStoreId});
+
+                      vm.storeName = vm.receipt.chainCode=='rcss' ? 'Superstore' : vm.receipt.chainCode;
+                      $ionicPopup.alert({
+                          title: 'Switch to ' + vm.storeName.toUpperCase() +' to check items',
+                          cssClass: 'success'
+                      }).then(function(response) {
+                          //switch to store list
+                          $state.go('app.dashboard.stores');
+                      });
+
                   });
             });
         }; // end of addToShoppingList()
