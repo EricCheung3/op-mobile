@@ -53,20 +53,20 @@
             template: 'Did you finish scaning the same receipt?',
             buttons: [
               {
-                text: 'Finish' ,
-                onTap: function(e) {
-                    console.log("Finish and send request to server to get receipt items");
-                    vm.newReceipt = null;
-                    $state.go('app.dashboard.receipts',{}, {reload: true});
-                }
-              },
-              {
                 text: '<b>Continue</b>',
-                type: 'button-positive',
                 onTap: function(e) {
                     //console.log("call snap receipt function");
                     vm.takePicture();
                     popup.close();
+                }
+              },
+              {
+                text: 'Finish' ,
+                type: 'button-positive',
+                onTap: function(e) {
+                    console.log("Finish and send request to server to get receipt items");
+                    vm.newReceipt = null;
+                    $state.go('app.dashboard.receipts',{}, {reload: true});
                 }
               }
             ]
