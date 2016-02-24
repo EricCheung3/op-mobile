@@ -6,7 +6,7 @@
         .controller('ForgotPasswordController', ForgotPasswordController);
 
     /* @ngInject */
-    function ForgotPasswordController($scope, $state, apiService, $ionicPopup) {
+    function ForgotPasswordController($scope, $state, apiService, $ionicPopup, $log) {
         var vm = this;
         vm.user = {
             email: ''
@@ -30,9 +30,19 @@
               }).then(function(response) {
                   console.log('forgot password returned:', response);
                   //TODO error handling
+                  $scope.error = false;
                   $state.go('login');
               });
-            });
+            })
+            .catch( function(error) {
+                $log.debug('forget password error: '+error.data);
+
+                $scope.error = true;
+                if (error.status === 404) {
+                    console.log("Email does not exist!");
+                }
+            })
+            ;
         }
     }
 })();
