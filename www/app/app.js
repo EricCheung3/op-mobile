@@ -4,6 +4,7 @@
 
     angular.module('openprice.mobile', [
         'ionic',
+        'ionic-ratings',
         'ngMessages',
         'angular-hal',
         'base64',

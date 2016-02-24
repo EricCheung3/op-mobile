@@ -26,14 +26,43 @@
         vm.receiptImages = [];
         vm.receiptItems = [];
 
-        $scope.ratingResultY = function() {
-            vm.receipt.$post('feedback', {}, {"rating":1,"comment":""});
+        $scope.ratingsObject = {
+          // iconOn: 'ion-ios-heart',            //Optional
+          // iconOff: 'ion-ios-heart-outline',   //Optional
+          iconOnColor: 'red',                 //Optional
+          iconOffColor: 'rgb(200, 100, 100)', //Optional
+
+          callback: function(rating) {
+            // popup to input comment
+            $scope.inputFeedback(rating);
+          }
+        };
+
+        $scope.inputFeedback = function(rating) {
+          $scope.feedback = {
+              comment: "",
+              rating: rating
+              };
+          var myPopup = $ionicPopup.show({
+            title: 'Give us your feedback',
+            template: '<input type="text" ng-model="feedback.comment">',
+            scope: $scope,
+            buttons: [
+              {
+                text: 'Submit',
+                type: 'button-positive',
+                onTap: function(e) { return $scope.feedback; }
+              }
+            ]
+          });
+
+          myPopup.then(function(feedback) {
+            console.log(feedback);
+            vm.receipt.$post('feedback', {}, {"rating":feedback.rating,"comment":feedback.comment});
             vm.needFeedback = false;
-        }
-        $scope.ratingResultN = function() {
-            vm.receipt.$post('feedback', {}, {"rating":0, "comment":""});
-            vm.needFeedback = false;
-        }
+          });
+        };
+
 
         // load receipt data from database
         UserReceiptData
