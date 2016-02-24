@@ -31,21 +31,26 @@
           // iconOff: 'ion-ios-heart-outline',   //Optional
           iconOnColor: 'red',                 //Optional
           iconOffColor: 'rgb(200, 100, 100)', //Optional
-
           callback: function(rating) {
-            // popup to input comment
             $scope.inputFeedback(rating);
           }
         };
 
         $scope.inputFeedback = function(rating) {
-          $scope.feedback = {
-              comment: "",
-              rating: rating
-              };
+          $scope.ratings = {
+            iconOnColor: 'red',
+            iconOffColor: 'rgb(200, 100, 100)',
+            rating: rating,
+            callback: function(rating) {
+              $scope.feedback = {
+                  comment: "",
+                  rating: rating
+                  };
+            }
+          };
           var myPopup = $ionicPopup.show({
             title: 'Give us your feedback',
-            template: '<input type="text" ng-model="feedback.comment">',
+            templateUrl: 'app/receipts/receipt-rating.tmpl.html',
             scope: $scope,
             buttons: [
               {
