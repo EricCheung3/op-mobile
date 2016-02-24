@@ -37,15 +37,16 @@
         };
 
         $scope.inputFeedback = function(rating) {
+          $scope.feedback = {
+              comment: "",
+              rating: rating
+              };
           $scope.ratings = {
             iconOnColor: 'red',
             iconOffColor: 'rgb(200, 100, 100)',
             rating: rating,
             callback: function(rating) {
-              $scope.feedback = {
-                  comment: "",
-                  rating: rating
-                  };
+                $scope.feedback.rating = rating;
             }
           };
           var myPopup = $ionicPopup.show({
@@ -55,7 +56,7 @@
             buttons: [
               {
                 text: 'Submit',
-                type: 'button-positive',
+                type: 'button button-small button-positive',
                 onTap: function(e) { return $scope.feedback; }
               }
             ]
