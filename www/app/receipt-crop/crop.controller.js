@@ -53,24 +53,24 @@
 
         function multiReceiptPopup(){
           var popup = $ionicPopup.confirm({
-            title: 'Upload Receipt Success',
-            template: 'Did you finish scaning the same receipt?',
+            title: 'Receipt Upload Successful',
+            template: 'Are you done scanning your receipt?',
             buttons: [
               {
-                text: 'Finish' ,
-                onTap: function(e) {
-                    console.log("Finish and send request to server to get receipt items");
-                    vm.receiptImages = null;
-                    $state.go('app.dashboard.receipts', {}, {reload: true});
-                }
-              },
-              {
-                text: '<b>Continue</b>',
+                text: '<b>Scan more</b>',
                 type: 'button-positive',
                 onTap: function(e) {
                     //console.log("call crop receipt function");
                     vm.cropFromGallery();
                     popup.close();
+                }
+              },
+              {
+                text: 'Done' ,
+                onTap: function(e) {
+                    console.log("Finish and send request to server to get receipt items");
+                    vm.receiptImages = null;
+                    $state.go('app.dashboard.receipts', {}, {reload: true});
                 }
               }
             ]
@@ -117,7 +117,7 @@
                 });
 
             }else{
-                console.log("Please snap a receipt ");
+                console.log("Please snap your receipt ");
                 $state.go('app.dashboard.receipts');
             }
 
