@@ -58,6 +58,9 @@
             if (index > -1) {
                 vm.groups[group.key].receipts.splice(index, 1);
             }
+            if (vm.groups[group.key].receipts.length === 0) {
+                delete vm.groups[group.key];
+            }
         };
 
     } // end of function receiptsController
