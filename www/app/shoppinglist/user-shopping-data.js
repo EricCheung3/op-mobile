@@ -17,7 +17,8 @@
             'loadFirstPage' : loadFirstPage,
             'hasNextPage' : hasNextPage,
             'loadNextPage' : loadNextPage,
-            'loadShoppingStoreById' : loadShoppingStoreById
+            'loadShoppingStoreById' : loadShoppingStoreById,
+            'createDefaultStores' : createDefaultStores //Hack to add stores
         };
 
         function Store(resource) {
@@ -43,7 +44,7 @@
         };
 
         function loadFirstPage() {
-            console.log('==>UserShoppingData.loadFirstPage()');
+            createDefaultStores();
             vmUserShoppingData.userShoppingStores = [];
             return new Promise( function(resolve) {
                 apiService
@@ -66,6 +67,28 @@
                     }
                     resolve(vmUserShoppingData.userShoppingStores);
                 });
+            });
+        };
+
+        function createDefaultStores() {
+            console.log('==>UserShoppingData.createDefaultStores()');
+            var shoppingList = [];
+            shoppingList.superstore = { "chainCode" : "rcss",
+                                        "items" : []
+                                      };
+            shoppingList.safeway = { "chainCode" : "safeway",
+                                     "items" : []
+                                   };
+            shoppingList.costco = { "chainCode" : "costco",
+                                    "items" : []
+                                  };
+
+            apiService
+            .getUserResource()
+            .then(function (userResource) {
+                userResource.$post('shoppingList', {}, shoppingList.superstore);
+                userResource.$post('shoppingList', {}, shoppingList.safeway);
+                userResource.$post('shoppingList', {}, shoppingList.costco);
             });
         };
 
