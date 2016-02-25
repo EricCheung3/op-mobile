@@ -43,7 +43,7 @@
         };
 
         function loadFirstPage() {
-            // createDefaultStores();
+            console.log('==>UserShoppingData.loadFirstPage()');
             vmUserShoppingData.userShoppingStores = [];
             return new Promise( function(resolve) {
                 apiService
