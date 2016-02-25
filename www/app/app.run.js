@@ -5,9 +5,9 @@
         .module('openprice.mobile')
         .run(run);
 
-    run.$inject = ['$log', '$rootScope', '$ionicPlatform', '$state', '$stateParams', 'apiService', 'EnvironmentConfig', 'ngFB']
+    run.$inject = ['$log', '$rootScope', '$ionicPlatform', '$state', '$stateParams', 'apiService', 'EnvironmentConfig', 'UserReceiptData']
 
-    function run(   $log,   $rootScope,   $ionicPlatform,   $state,   $stateParams,   apiService,   EnvironmentConfig,   ngFB) {
+    function run(   $log,   $rootScope,   $ionicPlatform,   $state,   $stateParams,   apiService,   EnvironmentConfig,   UserReceiptData) {
 
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
@@ -27,6 +27,7 @@
         });
 
         $rootScope.logout = function() {
+            UserReceiptData.refresh();
             apiService.clear();
             $state.go('login');
         };
