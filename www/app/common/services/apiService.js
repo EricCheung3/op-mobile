@@ -20,7 +20,8 @@
             'reload' : reload,
             'getResource' : getResource,
             'getWebsiteResource' : getWebsiteResource,
-            'getUserResource' : getUserResource
+            'getUserResource' : getUserResource,
+            'createDefaultStores' : createDefaultStores
         };
 
         function init(host) {
@@ -82,5 +83,26 @@
             }
             return userResource;
         };
+
+        function createDefaultStores() {
+            console.log('==>UserShoppingData.createDefaultStores()');
+            var shoppingList = [];
+            shoppingList.superstore = { "chainCode" : "rcss",
+                                        "items" : []
+                                      };
+            shoppingList.safeway = { "chainCode" : "safeway",
+                                     "items" : []
+                                   };
+            shoppingList.costco = { "chainCode" : "costco",
+                                    "items" : []
+                                  };
+            getUserResource()
+            .then(function (userResource) {
+                userResource.$post('shoppingList', {}, shoppingList.superstore);
+                userResource.$post('shoppingList', {}, shoppingList.safeway);
+                userResource.$post('shoppingList', {}, shoppingList.costco);
+            });
+        };
+
     };
 })();

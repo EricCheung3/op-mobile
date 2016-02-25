@@ -31,6 +31,13 @@
                         content: 'Thank you for registering to OpenPrice.'
                     }).then(function(res) {
                         $log.debug('successfully registered, go to login page.');
+                        //FIXME: HACK to add default stores
+                        var credentials = {username: registration.email, password: registration.password};
+                        apiService.authenticate(credentials, function(authenticated) {
+                          if (authenticated) {
+                              apiService.createDefaultStores();
+                          }
+                        });
                         $state.go('login');
                     });
 
