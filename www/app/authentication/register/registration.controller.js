@@ -36,9 +36,9 @@
                         apiService.authenticate(credentials, function(authenticated) {
                           if (authenticated) {
                               apiService.createDefaultStores();
+                              $state.go("app.dashboard.receipts");
                           }
                         });
-                        $state.go('login');
                     });
 
                 })
