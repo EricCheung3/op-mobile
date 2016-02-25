@@ -49,11 +49,11 @@
 
         function multiReceiptPopup(){
           var popup = $ionicPopup.confirm({
-            title: 'Upload Receipt Success',
-            template: 'Did you finish scaning the same receipt?',
+            title: 'Receipt Upload Successful',
+            template: 'Are you done scanning your receipt?',
             buttons: [
               {
-                text: '<b>Continue</b>',
+                text: '<b>Done</b>',
                 onTap: function(e) {
                     //console.log("call snap receipt function");
                     vm.takePicture();
@@ -61,7 +61,7 @@
                 }
               },
               {
-                text: 'Finish' ,
+                text: 'Scan more' ,
                 type: 'button-positive',
                 onTap: function(e) {
                     console.log("Finish and send request to server to get receipt items");
