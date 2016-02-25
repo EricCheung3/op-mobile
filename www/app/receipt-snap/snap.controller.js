@@ -53,7 +53,7 @@
             template: 'Are you done scanning your receipt?',
             buttons: [
               {
-                text: '<b>Done</b>',
+                text: '<b>Scan more</b>',
                 onTap: function(e) {
                     //console.log("call snap receipt function");
                     vm.takePicture();
@@ -61,7 +61,7 @@
                 }
               },
               {
-                text: 'Scan more' ,
+                text: 'Done' ,
                 type: 'button-positive',
                 onTap: function(e) {
                     console.log("Finish and send request to server to get receipt items");
