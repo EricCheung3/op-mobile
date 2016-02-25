@@ -49,7 +49,7 @@
 
         function multiReceiptPopup(){
           var popup = $ionicPopup.confirm({
-            title: 'Upload Receipt Success',
+            title: 'Receipt Upload Successful',
             template: 'Are you done scanning your receipt?',
             buttons: [
               {
