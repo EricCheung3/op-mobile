@@ -1,0 +1,42 @@
+<ion-view view-title="Timeline">
+    <ion-content class="home-page grey-background">
+
+        <ion-refresher
+          pulling-text="Loading latest receipts..."
+          on-refresh="vm.pullToRefresh()">
+        </ion-refresher>
+
+        <ion-list show-delete="false"
+                  can-swipe="true"
+                  swipe-direction="left">
+            <div ng-repeat="group in vm.groups | object2Array | orderBy:'-key'">
+
+                <div class="item item-divider"> {{group.weekDay}} - {{group.month}} {{group.day}}, {{group.year}}</div>
+
+                <div ng-repeat="(index,receipt) in group.receipts">
+                    <ion-item class="item myreceipts" ng-show="receipt.status === 'HAS_RESULT'"
+                                ng-click="vm.showReceipt(receipt)">
+                        <img class="store-icon"
+                            ng-src="img/store_icons/{{receipt.chainCode}}-blue.png">
+                        <h2 class="store-name">{{receipt.storeName}}</h2>
+                        <p class="receipt-detail">${{receipt.total}}</p>
+                        <ion-option-buttons side="right" class="button-assertive swipe-button"
+                                ng-click="vm.deleteReceipt(group,index,receipt)">
+                             <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
+                    </ion-item>
+
+                    <ion-item class="item myreceipts" ng-show="receipt.status === 'WAIT_FOR_RESULT'">
+                        <ion-spinner></ion-spinner>
+                        <h2 class="store-name">Still processing, please refresh later!</h2>
+                    </ion-item>
+
+                    <ion-item class="item myreceipts" ng-show="receipt.status === 'OCR_ERROR' || receipt.status === 'PARSER_ERROR'">
+                        <h2 class="store-name error">Cannot recognize the receipt!</h2>
+                    </ion-item>
+
+                </div>
+
+            </div>
+        </ion-list>
+    </ion-content>
+</ion-view>

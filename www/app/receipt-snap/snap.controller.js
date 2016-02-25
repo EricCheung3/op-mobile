@@ -25,23 +25,23 @@
             document.addEventListener("deviceready", function () {
                 var options = {
                     quality:50,
-                    allowEdit:true,
+                    allowEdit:false,
                     destinationType:Camera.DestinationType.DATA_URL,
                     sourceType:Camera.PictureSourceType.Camera,
                     encodingType:Camera.EncodingType.JPEG,
-                    popoverOptions:CameraPopoverOptions,
                     correctOrientation:true,
                     saveToPhotoAlbum:true
                 };
 
-                /*  BUG [solved]: imgURI is not defined*/
-                $cordovaCamera.getPicture(options).then( function(imageData) {
+                $cordovaCamera
+                .getPicture(options)
+                .then( function(imageData) {
                     vm.imgURI = "data:image/jpeg;base64,"+ imageData; //[DATA_URL]
                     vm.imgUpload = imageData;
-                    console.log('imgURI_takePicture====>'+vm.imgURI);
-                },function(err){
+                }, function(err) {
                     console.log(err);
-                }).then(function(){
+                })
+                .then(function() {
                     vm.upload();
                 });
             }, false);
@@ -53,20 +53,20 @@
             template: 'Did you finish scaning the same receipt?',
             buttons: [
               {
+                text: '<b>Continue</b>',
+                onTap: function(e) {
+                    //console.log("call snap receipt function");
+                    vm.takePicture();
+                    popup.close();
+                }
+              },
+              {
                 text: 'Finish' ,
+                type: 'button-positive',
                 onTap: function(e) {
                     console.log("Finish and send request to server to get receipt items");
                     vm.newReceipt = null;
                     $state.go('app.dashboard.receipts',{}, {reload: true});
-                }
-              },
-              {
-                text: '<b>Continue</b>',
-                type: 'button-positive',
-                onTap: function(e) {
-                    console.log("call snap receipt function");
-                    vm.takePicture();
-                    popup.close();
                 }
               }
             ]

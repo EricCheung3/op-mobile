@@ -5,6 +5,9 @@
       <div class="login-logo">
           <img id="login-logo-img" src="img/login/login-logo.png">
       </div>
+      <div class="forgot-pass" ng-show = "error" >
+          <p> The Email and password doesn't match, please try again! </p>
+      </div>
 
       <form class="login-register-form" ng-submit="vm.login(vm.credentials)">
           <div class="list list-inset">
@@ -17,7 +20,7 @@
                   ng-model="vm.credentials.password">
               </label>
           </div>
-          <input class="remember-me" type="checkbox" name="rememberme" value="remember" checked> Remember Me
+          <!-- <input class="remember-me" type="checkbox" name="rememberme" value="remember" checked> Remember Me -->
           <div class="login-button margin-top-medium">
             <button class="button button-block button-positive" type="submit">Log in</button>
           </div>

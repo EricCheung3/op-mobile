@@ -6,18 +6,17 @@
   </ion-nav-buttons> -->
 
   <ion-content>
-    <ion-refresher
+    <!-- <ion-refresher
       pulling-text="Pull to refresh..."
       on-refresh="vm.pullToRefresh()">
-    </ion-refresher>
-    <ion-list show-delete="vm.shouldShowDelete" can-swipe="vm.listCanSwipe" swipe-direction="left">
+    </ion-refresher> -->
 
-      <ion-item class="mystores" ng-repeat="(index, store) in vm.stores" ng-click="vm.showStoreItems(store.id)" >
-        <img class="inline category-icon" ng-src="img/store_icons/{{store.chainCode}}-blue.png">
-        <div class="inline store-name"> {{store.displayName}}</div>
-        <!-- Csaba said the pencil icon is too confusing, makes the user think they can click on it and edit the store name
-        <div class="inline float-right"> <i class="icon icon-medium positive ion-edit"></i> </div>-->
-        <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteStore(index)"> <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
+    <ion-list show-delete="false" can-swipe="true" swipe-direction="left">
+      <ion-item class="mystores" ng-repeat="store in vm.stores" ng-click="vm.showShoppingStore(store)" >
+        <img class="inline category-icon" ng-src="img/store_icons/{{store.resource.chainCode}}-blue.png">
+        <div class="inline store-name"> {{store.resource.displayName}}</div>
+        <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteStore(store)">
+            <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
       </ion-item>
     </ion-list>
 

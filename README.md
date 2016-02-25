@@ -73,7 +73,7 @@ ionic platform add android
 You also need to install several cordova plugs:
 ```
 ionic plugin add https://github.com/apache/cordova-plugin-whitelist.git
-cordova plugin add https://github.com/EricCheung3/cordova-plugin-camera.git
+cordova plugin add https://github.com/jiwhiz/cordova-plugin-camera.git
 cordova plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git
 cordova plugin add org.apache.cordova.splashscreen
 ```

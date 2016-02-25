@@ -20,8 +20,8 @@
                     }
                 }
             })
-            .state('app.dashboard.shoppinglist', {
-                url: '/shoppinglist',
+            .state('app.dashboard.stores', {
+                url: '/shoppingstores',
                 cache: false,
                 views: {
                     'shoppinglist-tab': {
@@ -31,8 +31,8 @@
                 }
             })
             .state('app.dashboard.store', {
-                url: '/shoppingstore/:storeId',
-                cache: false,
+                url: '/shoppingstores/:storeId',
+                cache: true, // FIXME:should be false because of re-parsed result
                 views: {
                     'shoppinglist-tab': {
                         templateUrl: 'app/shoppinglist/store-shoppinglist.tmpl.html',
@@ -45,14 +45,14 @@
                 cache: false,
                 views: {
                     'receipt-tab': {
-                        templateUrl: 'app/receipts/list-receipts.tmpl.html',
-                        controller: 'ReceiptListController as vm'
+                        templateUrl: 'app/receipts/timeline.tmpl.html',
+                        controller: 'TimelineController as vm'
                     }
                 }
             })
             .state('app.dashboard.receipt', {
                 url: '/receipts/:receiptId',
-                cache: false,
+                cache: true,
                 views: {
                     'receipt-tab': {
                         templateUrl: 'app/receipts/display-receipt.tmpl.html',
