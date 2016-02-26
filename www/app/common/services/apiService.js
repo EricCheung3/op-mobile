@@ -100,7 +100,7 @@
             .then(function (userResource) {
                 userResource.$post('shoppingList', {}, shoppingList.superstore);
                 userResource.$post('shoppingList', {}, shoppingList.safeway);
-                userResource.$post('shoppingList', {}, shoppingList.costco);
+                // userResource.$post('shoppingList', {}, shoppingList.costco);
             });
         };
 
