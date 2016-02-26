@@ -82,7 +82,7 @@
             console.log('call upload()');
 
             if(vm.imgUpload!=null){
-              $ionicLoading.show({template: '<p>Uploading to server ...</p><ion-spinner></ion-spinner>'});
+              $ionicLoading.show({template: '<p>Uploading to server ...</p><progress></progress>'});
               apiService
                 .getUserResource()
                 .then( function( userResource ) {
