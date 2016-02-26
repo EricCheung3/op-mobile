@@ -61,6 +61,8 @@
             if (vm.groups[group.key].receipts.length === 0) {
                 delete vm.groups[group.key];
             }
+            UserReceiptData.refresh();
+            updateGroups();
         };
 
     } // end of function receiptsController
