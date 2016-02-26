@@ -57,8 +57,7 @@
             template: 'Are you done scanning your receipt?',
             buttons: [
               {
-                text: '<b>Scan more</b>',
-                type: 'button-positive',
+                text: '<b>Upload more</b>',
                 onTap: function(e) {
                     //console.log("call crop receipt function");
                     vm.cropFromGallery();
@@ -66,7 +65,8 @@
                 }
               },
               {
-                text: 'Done' ,
+                text: 'Done',
+                type: 'button-positive',
                 onTap: function(e) {
                     console.log("Finish and send request to server to get receipt items");
                     vm.receiptImages = null;
