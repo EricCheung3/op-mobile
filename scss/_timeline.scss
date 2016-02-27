@@ -12,7 +12,6 @@
    max-height: 40px;
    width: 100%;
    height: 100%;
-   border-radius: 50%;
  }
 
  .store-name {
@@ -22,3 +21,8 @@
  .receipt-detail {
    padding-left: 44px;
  }
+
+.spinner svg {
+  height: 20px !important;
+  width: 20px !important;
+}
