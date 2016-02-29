@@ -87,8 +87,6 @@
   <!-- ShoppingMode, display list and user can check -->
   <ion-content ng-show="vm.shoppingMode">
 
-    <ion-refresher on-refresh="vm.pullToSearch()">  </ion-refresher>
-
     <ion-list show-delete="false" can-swipe="false">
       <div  ng-repeat="category in vm.categoryMap | object2Array | orderBy:'code'">
         <ion-item class="category item-dark" ng-click="category.showDetail = !category.showDetail">
