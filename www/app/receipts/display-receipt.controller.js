@@ -150,19 +150,19 @@
                 userResource
                 .$post('shoppingList', {}, shoppingList)
                 .then( function(location){
-                      // FIXME: [should be ionic1 bug]: jump to shopping list page
-                      // var shoppingStoreId = location.substring(location.lastIndexOf('/') + 1);
-                      // console.log('upload shopping list success! shoppingStoreId is', shoppingStoreId);
-                      // vm.selectItemMode = false; // clear selec mode
-                      // $state.go('app.dashboard.store', {'storeId':shoppingStoreId});
-
+                      var shoppingStoreId = location.substring(location.lastIndexOf('/') + 1);
+                      console.log('upload shopping list success! shoppingStoreId is', shoppingStoreId);
                       vm.storeName = vm.receipt.chainCode=='rcss' ? 'Superstore' : vm.receipt.chainCode;
                       $ionicPopup.alert({
                           title: 'Switch to ' + vm.storeName.toUpperCase() +' to check items',
                           cssClass: 'success'
                       }).then(function(response) {
                           //switch to store list
-                          $state.go('app.dashboard.stores');
+                          $state.go('app.dashboard.stores')
+                          .then(function (argument) {
+                            vm.selectItemMode = false; // clear selec mode
+                            $state.go('app.dashboard.store', {'storeId':shoppingStoreId});
+                          });
                       });
 
                   });
