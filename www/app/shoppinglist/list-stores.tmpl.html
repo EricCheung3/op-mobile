@@ -12,8 +12,8 @@
     </ion-refresher> -->
 
     <ion-list show-delete="false" can-swipe="true" swipe-direction="left">
-      <ion-item class="mystores" ng-repeat="store in vm.stores" ng-click="vm.showShoppingStore(store)" >
-        <img class="inline category-icon" ng-src="img/store_icons/{{store.resource.chainCode}}-blue.png">
+      <ion-item class="mystores padding-vertical-medium" ng-repeat="store in vm.stores" ng-click="vm.showShoppingStore(store)" >
+        <img class="inline store-icon" ng-src="img/store_icons/{{store.resource.chainCode}}-blue.png">
         <div class="inline store-name"> {{store.resource.displayName}}</div>
         <ion-option-buttons side="right" class="button-assertive swipe-button" ng-click="vm.deleteStore(store)">
             <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
