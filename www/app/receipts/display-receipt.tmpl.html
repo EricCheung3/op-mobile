@@ -2,10 +2,10 @@
 
     <!-- fix the select mode selection -->
     <ion-header-bar class="bar bar-subheader">
-      <ion-toggle ng-model="vm.selectItemMode" class="bar select-items-bar">Select items</ion-toggle>
+      <ion-toggle ng-model="vm.selectItemMode" class="bar select-items-bar shadow-level2">Select items</ion-toggle>
     </ion-header-bar>
 
-    <ion-content class="home-page grey-background">
+    <ion-content class="parsed-page grey-background">
 
       <div ng-show="vm.selectItemMode">
         <ion-list >
@@ -26,7 +26,7 @@
 
       <div ng-hide="vm.selectItemMode">
         <ion-list show-delete="false" can-swipe="true" swipe-direction="left">
-          <ion-item ng-repeat="(index,item) in vm.receipt.items">
+          <ion-item class="parsed-items" ng-repeat="(index,item) in vm.receipt.items">
               <div class="store-items list-border">
                   <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.displayName}}</p>
                   <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large"> ${{item.displayPrice }} </p>

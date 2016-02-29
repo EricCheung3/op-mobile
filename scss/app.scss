@@ -40,6 +40,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 @import "www/lib/ionic/scss/ionic";
 
 
+.font14 {
+  font-size: 14px !important;
+}
+
 
 // --------------------------MARGINS
 
@@ -49,83 +53,83 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // --------LARGE
 .margin-horizontal-large {
-  margin-right: $large;
-  margin-left: $large;
+  margin-right: $large !important;
+  margin-left: $large !important;
 }
 
 .margin-vertical-large {
-  margin-top: $large;
-  margin-bottom: $large;
+  margin-top: $large !important;
+  margin-bottom: $large !important;
 }
 
 .margin-top-large {
-  margin-top: $large;
+  margin-top: $large !important;
 }
 
 .margin-bottom-large {
-  margin-bottom: $large;
+  margin-bottom: $large !important;
 }
 
 .margin-left-large {
-  margin-left: $large;
+  margin-left: $large !important;
 }
 
 .margin-right-large {
-  margin-right: $large;
+  margin-right: $large !important;
 }
 
 //-------MEDIUM
 .margin-horizontal-medium {
-  margin-right: $medium;
-  margin-left: $medium;
+  margin-right: $medium !important;
+  margin-left: $medium !important;
 }
 
 .margin-vertical-medium {
-  margin-top: $medium;
-  margin-bottom: $medium;
+  margin-top: $medium !important;
+  margin-bottom: $medium !important;
 }
 
 .margin-top-medium {
-  margin-top: $medium;
+  margin-top: $medium !important;
 }
 
 .margin-bottom-medium {
-  margin-bottom: $medium;
+  margin-bottom: $medium !important;
 }
 
 .margin-left-medium {
-  margin-left: $medium;
+  margin-left: $medium !important;
 }
 
 .margin-right-medium {
-  margin-right: $medium;
+  margin-right: $medium !important;
 }
 
 //-------SMALL
 .margin-horizontal-small {
-  margin-right: $small;
-  margin-left: $small;
+  margin-right: $small !important;
+  margin-left: $small !important;
 }
 
 .margin-vertical-small {
-  margin-top: $small;
-  margin-bottom: $small;
+  margin-top: $small !important;
+  margin-bottom: $small !important;
 }
 
 .margin-top-small {
-  margin-top: $small;
+  margin-top: $small !important;
 }
 
 .margin-bottom-small {
-  margin-bottom: $small;
+  margin-bottom: $small !important;
 }
 
 .margin-left-small {
-  margin-left: $small;
+  margin-left: $small !important;
 }
 
 .margin-right-small {
-  margin-right: $small;
+  margin-right: $small !important;
 }
 
 
@@ -137,83 +141,83 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // --------LARGE
 .padding-horizontal-large {
-  padding-right: $large;
-  padding-left: $large;
+  padding-right: $large !important;
+  padding-left: $large !important;
 }
 
 .padding-vertical-large {
-  padding-top: $large;
-  padding-bottom: $large;
+  padding-top: $large !important;
+  padding-bottom: $large !important;
 }
 
 .padding-top-large {
-  padding-top: $large;
+  padding-top: $large !important;
 }
 
 .padding-bottom-large {
-  padding-bottom: $large;
+  padding-bottom: $large !important;
 }
 
 .padding-left-large {
-  padding-left: $large;
+  padding-left: $large !important;
 }
 
 .padding-right-large {
-  padding-right: $large;
+  padding-right: $large !important;
 }
 
 //-------MEDIUM
 .padding-horizontal-medium {
-  padding-right: $medium;
-  padding-left: $medium;
+  padding-right: $medium !important;
+  padding-left: $medium !important;
 }
 
 .padding-vertical-medium {
-  padding-top: $medium;
-  padding-bottom: $medium;
+  padding-top: $medium !important;
+  padding-bottom: $medium !important;
 }
 
 .padding-top-medium {
-  padding-top: $medium;
+  padding-top: $medium !important;
 }
 
 .padding-bottom-medium {
-  padding-bottom: $medium;
+  padding-bottom: $medium !important;
 }
 
 .padding-left-medium {
-  padding-left: $medium;
+  padding-left: $medium !important;
 }
 
 .padding-right-medium {
-  padding-right: $medium;
+  padding-right: $medium !important;
 }
 
 //-------SMALL
 .padding-horizontal-small {
-  padding-right: $small;
-  padding-left: $small;
+  padding-right: $small !important;
+  padding-left: $small !important;
 }
 
 .padding-vertical-small {
-  padding-top: $small;
-  padding-bottom: $small;
+  padding-top: $small !important;
+  padding-bottom: $small !important;
 }
 
 .padding-top-small {
-  padding-top: $small;
+  padding-top: $small !important;
 }
 
 .padding-bottom-small {
-  padding-bottom: $small;
+  padding-bottom: $small !important;
 }
 
 .padding-left-small {
-  padding-left: $small;
+  padding-left: $small !important;
 }
 
 .padding-right-small {
-  padding-right: $small;
+  padding-right: $small !important;
 }
 
 
