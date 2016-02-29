@@ -78,7 +78,8 @@
 
             popup.then(function (chainCode) {
                 var store = {};
-                if(vm.defaultStoreListChainCode.indexOf(chainCode)!==-1){
+                console.log('chainCode',chainCode);
+                if(vm.defaultStoreListChainCode.indexOf(chainCode.toLowerCase())!==-1){
                   store.chainCode = chainCode.toLowerCase();
                   store.items = [];
                   apiService
