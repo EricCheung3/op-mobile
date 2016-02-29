@@ -21,7 +21,7 @@
                     $log.debug("already logged in, go to main screen home tab");
                     $rootScope.authenticated = true;
                     $rootScope.currentUser = websiteResource.currentUser;
-                    $state.go("app.dashboard.receipts");
+                    $state.go("app.dashboard.stores");
                 } else if (websiteResource.serverError) {
                     $log.debug("error with api service, redirect to login");
                     //TODO add error messages
