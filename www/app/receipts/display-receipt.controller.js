@@ -69,14 +69,20 @@
           });
         };
 
+        loadReceiptData();
 
         // load receipt data from database
-        UserReceiptData
-        .loadReceiptById($stateParams.receiptId)
-        .then( function(receipt) {
-            vm.receipt = receipt;
-            vm.needFeedback = vm.receipt.needFeedback;
-        })
+        function loadReceiptData (argument) {
+            UserReceiptData
+            .loadReceiptById($stateParams.receiptId)
+            .then( function(receipt) {
+                $scope.$apply(function () {
+                    vm.receipt = receipt;
+                    vm.needFeedback = vm.receipt.needFeedback;
+                });
+            });
+        };
+
 
         function editItem(item){
             $scope.item1 = {"name":item.displayName,"price":Number(item.displayPrice)};
@@ -106,10 +112,12 @@
                 if (res === undefined ){
                     console.log('cancel');
                 } else if (res.name!==null&&res.price!==null&& res.name!== undefined&&res.price!== undefined) {
-                    item.displayName = res.name;
-                    item.displayPrice = res.price;
                     // update data to server
-                    vm.receipt.$put("item", {itemId:item.id}, res);
+                    vm.receipt.$put("item", {itemId:item.id}, res)
+                    .then(function (res) {
+                        // reload data
+                        loadReceiptData();
+                    });
                 } else {
                     console.log('Input is illegal');
                 }
@@ -119,6 +127,7 @@
         function deleteItem(index,item) {
             vm.receipt.$del("item",{itemId:item.id});
             vm.receiptItems.splice(index, 1);
+            loadReceiptData();
         };
 
         // need to extract it out into a service
@@ -146,7 +155,6 @@
             apiService
             .getUserResource()
             .then(function (userResource) {
-
                 userResource
                 .$post('shoppingList', {}, shoppingList)
                 .then( function(location){
