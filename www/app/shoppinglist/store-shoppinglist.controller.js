@@ -151,7 +151,30 @@
 
         function doneShoppingMode(category){
             vm.shoppingMode = !vm.shoppingMode;
-            $state.go('app.dashboard.stores');
+            var popup = $ionicPopup.show({
+                title: 'Good Job! You can snap your receipt now!',
+                scope: $scope,
+                template: '<p>To keep our app free and most useful we would like to ask you to snap your receipt, which takes only 20 seconds. Do you want to snap your receipt now?</p>',
+                buttons: [
+                    { text: 'Yes' ,
+                      type: 'button-positive',
+                      onTap: function(e) {
+                          $state.go('app.dashboard.stores').
+                          then(function (argument) {
+                            $state.go('app.dashboard.receipts');
+                          });
+
+                      }
+                    },
+                    { text: 'No',
+                      type: 'button-positive',
+                      onTap: function(e) {
+                        $state.go('app.dashboard.stores');
+                      }
+                    }
+                ]
+            });
+
         };
 
         function clearShoppingList(){
