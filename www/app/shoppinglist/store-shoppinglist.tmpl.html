@@ -56,7 +56,7 @@
                         <p class="inline padding-vertical-large vertical-align-bottom padding-left-large">{{item.name}} </p>
                         <i class="inline padding-vertical-large vertical-align-bottom padding-horizontal-small icon ion-ios-close-empty"></i>
                         <p class="inline padding-vertical-large vertical-align-bottom grey-text">{{item.number}}</p>
-                        <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{item.price | number:2}}</p>
+                        <p class="inline float-right padding-vertical-large vertical-align-bottom padding-right-large">$ {{item.price*item.number | number:2}}</p>
                     </div>
                     <ion-option-buttons side="left" class="button-positive swipe-button" ng-click="vm.plusItemNumber(item)"> <i class="icon icon-medium center ion-ios-plus-outline"></i> </ion-option-buttons>
                     <ion-option-buttons side="left" class="button-positive swipe-button quantity-minus" ng-click="vm.minusItemNumber(item)"> <i class="icon icon-medium center ion-ios-minus-outline"></i> </ion-option-buttons>
