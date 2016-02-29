@@ -28,7 +28,8 @@
                     $ionicPopup.alert({
                         title: 'Welcome ' + registration.firstName+' '+registration.lastName,
                         cssClass: 'success',
-                        content: 'Thank you for registering to OpenPrice.'
+                        content: '<div>Dear' + registration.firstName+' '+registration.lastName + ',' +
+                                 '<p>Welcome to OpenPrice. You, or someone on your behalf have registered with the email.</p>Enjoy the app!<p>Sincerely,</p><p>OenPrice Team</p></div>'
                     }).then(function(res) {
                         $log.debug('successfully registered, go to login page.');
                         //FIXME: HACK to add default stores
@@ -36,7 +37,7 @@
                         apiService.authenticate(credentials, function(authenticated) {
                           if (authenticated) {
                               apiService.createDefaultStores();
-                              $state.go("app.dashboard.receipts");
+                              $state.go("app.dashboard.stores");
                           }
                         });
                     });
