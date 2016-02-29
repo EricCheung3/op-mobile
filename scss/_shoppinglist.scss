@@ -2,21 +2,21 @@
   .item-content {
       padding: $large $large $large $large  !important;
     }
+  .store-icon {
+     position: absolute;
+     top: 6px;
+     left: 16px;
+     max-width: 40px;
+     max-height: 40px;
+     width: 100%;
+     height: 100%;
+   }
 
-.store-icon {
-   position: absolute;
-   top: 6px;
-   left: 16px;
-   max-width: 40px;
-   max-height: 40px;
-   width: 100%;
-   height: 100%;
- }
+  .store-name {
+    padding-left: 50px !important;
+  }
 }
 
-.store-name {
-  padding-left: 56px !important;
-}
 
 .store-items {
 	.item-content {
