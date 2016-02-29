@@ -5,8 +5,8 @@
       <div class="login-logo">
           <img id="login-logo-img" src="img/login/login-logo.png">
       </div>
-      <div class="forgot-pass" ng-show = "error" >
-          <p> The email and password don't match, please try again! </p>
+      <div class="wrong-pass padding-top-large" ng-show = "error" >
+          <p> Oops! The email and password don't match, please try again! </p>
       </div>
 
       <form class="login-register-form col col-center" ng-submit="vm.login(vm.credentials)">
@@ -27,7 +27,7 @@
       </form>
 
       <div class="forgot-pass">
-          <p><a ui-sref="forgot row-center padding-bottom-large"> Forgot your password?</a></p>
+          <p><a ui-sref="forgot"> Forgot your password?</a></p>
       </div>
 
       <div class="social-media-login-register">
