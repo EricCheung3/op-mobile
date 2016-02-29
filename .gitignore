@@ -7,3 +7,4 @@ www/lib/
 .DS_Store
 Thumbs.db
 /www/app/config.js
+*.apk
