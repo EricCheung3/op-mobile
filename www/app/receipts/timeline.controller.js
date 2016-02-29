@@ -54,6 +54,7 @@
         };
 
         function deleteReceipt(group, index, receipt) {
+            console.log("receipt",receipt);
             receipt.$del('self');
             if (index > -1) {
                 vm.groups[group.key].receipts.splice(index, 1);
@@ -62,7 +63,6 @@
                 delete vm.groups[group.key];
             }
             UserReceiptData.refresh();
-            updateGroups();
         };
 
     } // end of function receiptsController
