@@ -156,6 +156,13 @@
                 scope: $scope,
                 template: '<p>To keep our app free and most useful we would like to ask you to snap your receipt, which takes only 20 seconds. Do you want to snap your receipt now?</p>',
                 buttons: [
+                    { text: 'No',
+                      type: 'button-positive',
+                      onTap: function(e) {
+                        // $state.go('app.dashboard.stores');
+                        popup.close();
+                      }
+                    },
                     { text: 'Yes' ,
                       type: 'button-positive',
                       onTap: function(e) {
@@ -164,12 +171,6 @@
                             $state.go('app.dashboard.receipts');
                           });
 
-                      }
-                    },
-                    { text: 'No',
-                      type: 'button-positive',
-                      onTap: function(e) {
-                        $state.go('app.dashboard.stores');
                       }
                     }
                 ]
