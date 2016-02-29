@@ -23,7 +23,7 @@
                 if (authenticated) {
                     $log.debug("Login succeeded")
                     $scope.error = false;
-                    $state.go("app.dashboard.receipts");
+                    $state.go("app.dashboard.stores");
                 } else {
                     $log.debug("Login failed")
                     $scope.error = true; //TODO display error messages
