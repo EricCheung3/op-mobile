@@ -1,8 +1,8 @@
-<ion-view view-title="{{vm.store.displayName}}">
+<ion-view view-title="{{vm.store.resource.displayName}}">
   <ion-nav-title>
-    <i ng-show="!vm.shoppingMode" class="icon ion-edit"></i>
+    <!-- <i ng-show="!vm.shoppingMode" class="icon ion-edit"></i> -->
     <i ng-show="vm.shoppingMode" class="icon ion-ios-cart"></i>
-     {{vm.store.displayName}}
+     {{vm.store.resource.displayName}}
   </ion-nav-title>
 
   <ion-nav-buttons side="right">
