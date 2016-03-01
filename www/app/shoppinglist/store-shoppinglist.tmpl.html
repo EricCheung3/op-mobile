@@ -65,10 +65,12 @@
 
                     <div ng-show="item.showDetail" class="shopping-item-details padding-horizontal-large padding-bottom-small">
                         <div ng-if="item.catalog === null">
-                            <p>{{item.name}}  </p>
+                            <p>Name: {{item.name}}  </p>
+                            <p>Unit Price: ${{item.price}}  </p>
                         </div>
                         <div ng-if="item.catalog !== null">
-                            <p>{{item.catalog.naturalName}}  </p>
+                            <p>Name: {{item.catalog.naturalName}}  </p>
+                            <p>Unit Price: ${{item.price}}  </p>
                         </div>
                     </div>
 
