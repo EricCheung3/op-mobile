@@ -298,10 +298,12 @@
             }
 
             vmstore.clearList = function() {
-                vmstore.resource.$del('items')
-                .then(function () {
-                    vm.store.reload();
-                });
+                if(vmstore.resource.items.length !== 0){
+                    vmstore.resource.$del('items')
+                    .then(function () {
+                        vm.store.reload();
+                    });
+              }
             };
 
             vmstore.updateShoppingItem = function(item, reload) {
