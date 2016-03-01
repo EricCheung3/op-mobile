@@ -15,7 +15,11 @@
         vm.pullToRefresh = pullToRefresh;
         vm.showShoppingStore = showShoppingStore;
         vm.deleteStore = deleteStore;
-        vm.addNewStore = addNewStore;
+        vm.searchStoresFromServer = searchStoresFromServer;
+        vm.itemsClicked = itemsClicked;
+        vm.cancelSearch = cancelSearch;
+
+        vm.searchStores = false;
 
         UserShoppingData
         .loadFirstPage()
@@ -50,99 +54,48 @@
             }
         };
 
-        //FIXME: here is a hack to add shopping list store
-        function addNewStore(){
-            console.log("add new store at here");
-            $scope.store = {};
-            var popup = $ionicPopup.show({
-                title: 'Add your favourate Store',
-                // subTitle: 'Please input item name and price',
-                scope: $scope,
-                template: '<input type="text" ng-model="store.chainCode">',
-                buttons: [
-                    {
-                      text: 'Cancel' ,
-                      onTap: function(e) {
-                          popup.close();
-                      }
-                    },
-                    { text: 'OK',
-                      type: 'button-positive',
-                      onTap: function(e) {
-                        // if($scope.store.chainCode)
-                        return $scope.store.chainCode.replace(/ /g,'');
-                      }
-                    }
-                ]
-            });
-
-            popup.then(function (chainCode) {
-                var store = {};
-                console.log('chainCode',chainCode);
-                if(vm.defaultStoreListChainCode.indexOf(chainCode.toLowerCase())!==-1){
-                  store.chainCode = chainCode.toLowerCase();
-                  store.items = [];
-                  apiService
-                  .getUserResource()
-                  .then(function (userResource) {
-                      userResource.$post('shoppingList', {}, store)
-                      .then(function (storeLink) {
-                        // refresh store list
-                          pullToRefresh();
-                      });
-                  });
-                }else {
-                    console.log("no this store chainCode!");
-                    var popup = $ionicPopup.show({
-                        title: 'Sorry we do not support this store',
-                        // subTitle: 'Please input item name and price',
-                        scope: $scope,
-                        template: '<div>We are so sorry that our app does not support this store right now, please send feedback to us, we will fix ASAP!</div>',
-                        buttons: [
-                            {
-                              text: 'OK' ,
-                              type: 'button-positive',
-                              onTap: function(e) {
-                                  popup.close();
-                              }
-                            }
-                          ]
+        function searchStoresFromServer (query) {
+            vm.searchStores = true;
+            if (query && query !== '') {
+                return new Promise( function(resolve) {
+                    UserShoppingData
+                    .storeList(query)
+                    .then(function (stores) {
+                        /* //FIXME: now we only allow user to add stores which existed in our database
+                        if (stores.length === 0) {
+                            resolve({stores: [{'name':query, 'code':query.replace(/ /g,'').toLowerCase()}]});
+                        } else {
+                            resolve({stores: stores});
+                        }
+                        */
+                        resolve({stores: stores});
                     });
-                }
-
+                });
+            }
+            vm.externalModel = [];
+            return [];
+        };
+        function itemsClicked(callback) {
+            var store = {
+                  chainCode: callback.item.code,
+                  items: []
+            };
+            apiService
+            .getUserResource()
+            .then(function (userResource) {
+                userResource.$post('shoppingList', {}, store)
+                .then( function(storeLink) {
+                    pullToRefresh();
+                });
             });
-
+            vm.searchStores = false;
+            vm.externalModel = [];
         };
 
-        vm.defaultStoreListChainCode =
-        [
-          "costco",
-          "dollarama",
-          "dollaratree",
-          "edojapan",
-          "ikea",
-          "londondrugs",
-          "lucky97",
-          "mcdonald",
-          "newyorkfries",
-          "nofrills",
-          "petrocanada",
-          "olanetorganic",
-          "rcss", //should change to superstore
-          "rexall",
-          "rona",
-          "safeway",
-          "sears",
-          "shoppers",
-          "sobeys",
-          "superstore",
-          "tandt",
-          "target",
-          "thaiexpress",
-          "timhortons",
-          "toysrus",
-          "walmart"
-        ];
+        function cancelSearch(callback) {
+            vm.searchStores = false;
+            vm.externalModel = [];
+        };
 
 
     }; // end of StoreListController

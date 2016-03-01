@@ -329,6 +329,7 @@
                         if (items.length === 0) {
                             resolve({items: [{'naturalName':query}]});
                         } else {
+                            items.push({'naturalName':query});
                             resolve({items: items});
                         }
                     });
