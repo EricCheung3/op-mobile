@@ -70,7 +70,7 @@
                       type: 'button-positive',
                       onTap: function(e) {
                         // if($scope.store.chainCode)
-                        return $scope.store.chainCode.replace(/ /g,'');
+                        return $scope.store.chainCode.replace(/ /g,'').toLowerCase();
                       }
                     }
                 ]
@@ -79,8 +79,8 @@
             popup.then(function (chainCode) {
                 var store = {};
                 console.log('chainCode',chainCode);
-                if(vm.defaultStoreListChainCode.indexOf(chainCode.toLowerCase())!==-1){
-                  store.chainCode = chainCode.toLowerCase();
+                if(vm.defaultStoreListChainCode.indexOf(chainCode)!==-1){
+                  store.chainCode = chainCode;
                   store.items = [];
                   apiService
                   .getUserResource()
