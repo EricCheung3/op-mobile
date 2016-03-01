@@ -2,7 +2,7 @@
 
   <!-- temporily hide -->
   <ion-nav-buttons side="right">
-    <button class="button button-icon icon ion-ios-plus-empty" ng-click="vm.addNewStore()"></button>
+    <button class="button button-icon icon ion-ios-plus-empty" ng-click="vm.searchStoresFromServer('Sear')"></button>
   </ion-nav-buttons>
 
   <ion-content>
@@ -10,6 +10,23 @@
       pulling-text="Pull to refresh..."
       on-refresh="vm.pullToRefresh()">
     </ion-refresher> -->
+    <div class="ion-autocomplete shopping-item-search">
+        <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete"
+           ng-show="vm.searchStores"
+           autocomplete="off"
+           ng-model="vm.model"
+           external-model="vm.externalModel"
+           select-items-label="Search results"
+           items-method="vm.searchStoresFromServer(query)"
+           items-method-value-key="stores"
+           item-value-key="code"
+           item-view-value-key="name"
+           placeholder="Search stores to add..."
+           items-clicked-method="vm.itemsClicked(callback)"
+           cancel-label="Cancel"
+           cancel-button-clicked-method="vm.cancelSearch(callback)"
+           max-selected-items="1"/>
+    </div>
 
     <ion-list show-delete="false" can-swipe="true" swipe-direction="left">
       <ion-item class="mystores padding-vertical-medium" ng-repeat="store in vm.stores" ng-click="vm.showShoppingStore(store)" >

@@ -11,9 +11,11 @@
         vmUserShoppingData.userShoppingStores;
         vmUserShoppingData.lastStoreListPage;
         vmUserShoppingData.categoryList = CATEGORY_LIST;
+        vmUserShoppingData.storeList;
 
         return {
             'categoryList' : categoryList,
+            'storeList' : storeList,
             'loadFirstPage' : loadFirstPage,
             'hasNextPage' : hasNextPage,
             'loadNextPage' : loadNextPage,
@@ -38,6 +40,20 @@
                 .then( function(categories) {
                     vmUserShoppingData.categoryList = categories;
                     resolve(vmUserShoppingData.categoryList);
+                });
+            });
+        };
+
+        function storeList (query) {
+            return new Promise( function(resolve) {
+                apiService
+                .getUserResource()
+                .then(function (userResource) {
+                    return userResource.$get('searchStores', {query:query})
+                })
+                .then( function(stores) {
+                    vmUserShoppingData.storeList = stores;
+                    resolve(vmUserShoppingData.storeList);
                 });
             });
         };
