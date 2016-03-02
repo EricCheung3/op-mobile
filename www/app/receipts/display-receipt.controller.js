@@ -125,9 +125,8 @@
         }; // end of editItem()
 
         function deleteItem(index,item) {
+            vm.receipt.items.splice(index, 1);
             vm.receipt.$del("item",{itemId:item.id});
-            vm.receiptItems.splice(index, 1);
-            loadReceiptData();
         };
 
         // need to extract it out into a service
