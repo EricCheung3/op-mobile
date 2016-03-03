@@ -24,12 +24,13 @@
         vm.deleteReceipt = deleteReceipt;
         vm.groups = {};
 
-        UserReceiptData
-        .getTimeline()
-        .then( function(groups) {
-            console.log('init groups: ', groups);
-            vm.groups = groups;
-        });
+        pullToRefresh();
+        // UserReceiptData
+        // .getTimeline()
+        // .then( function(groups) {
+        //     console.log('init groups: ', groups);
+        //     vm.groups = groups;
+        // });
 
         function updateGroups() {
             console.log('==>updateGroups()');
