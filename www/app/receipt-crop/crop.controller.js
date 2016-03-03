@@ -33,7 +33,7 @@
                     sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                     encodingType:Camera.EncodingType.JPEG,
                     correctOrientation:true,
-                    saveToPhotoAlbum: true
+                    saveToPhotoAlbum: false
                 };
 
                 $cordovaCamera
