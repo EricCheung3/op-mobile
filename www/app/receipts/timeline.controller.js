@@ -22,21 +22,24 @@
         vm.pullToRefresh = pullToRefresh;
         vm.showReceipt = showReceipt;
         vm.deleteReceipt = deleteReceipt;
-
         vm.groups = {};
-        updateGroups();
 
+        UserReceiptData
+        .getTimeline()
+        .then( function(groups) {
+            console.log('init groups: ', groups);
+            vm.groups = groups;
+        });
 
         function updateGroups() {
             console.log('==>updateGroups()');
             UserReceiptData
             .getTimeline()
             .then( function(groups) {
-                // console.log('init groups: ', groups);
+                console.log('update groups: ', groups);
                 $scope.$apply(function () {
-                  vm.groups = groups;
+                    vm.groups = groups;
                 });
-                // $scope.$broadcast('scroll.refreshComplete');
             });
         };
 
