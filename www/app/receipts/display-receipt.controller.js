@@ -161,7 +161,7 @@
                       console.log('upload shopping list success! shoppingStoreId is', shoppingStoreId);
                       vm.storeName = vm.receipt.chainCode=='rcss' ? 'Superstore' : vm.receipt.chainCode;
                       $ionicPopup.alert({
-                          title: 'Switch to ' + vm.storeName.toUpperCase() +' to check items',
+                          title: 'Switching to the shopping list of ' + vm.storeName.toUpperCase(),
                           cssClass: 'success'
                       }).then(function(response) {
                           //switch to store list
