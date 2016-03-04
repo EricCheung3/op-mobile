@@ -1,7 +1,7 @@
 {
   "name": "openpriceMobile",
-  "version": "0.3.7",
-  "description": "OpenPrice Mobile App",
+  "version": "0.4.0",
+  "description": "Openprice Mobile App",
   "dependencies": {
     "gulp": "^3.9.0",
     "gulp-sass": "^2.0.4",

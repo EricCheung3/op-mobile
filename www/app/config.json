@@ -11,7 +11,12 @@
   },
   "development": {
     "EnvironmentConfig": {
-      "api": "http://104.154.88.206:7800"
+      "api": "http://dev.theopenprice.com:7800"
+    }
+  },
+  "production": {
+    "EnvironmentConfig": {
+      "api": "http://www.theopenprice.com:8080"
     }
   }
 }

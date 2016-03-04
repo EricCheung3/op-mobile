@@ -1,5 +1,5 @@
 {
-  "name": "OpenPrice",
+  "name": "Openprice",
   "app_id": "4734a10e",
   "gulpStartupTasks": [
     "sass",
