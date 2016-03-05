@@ -33,7 +33,7 @@
                     sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                     encodingType:Camera.EncodingType.JPEG,
                     correctOrientation:true,
-                    saveToPhotoAlbum: true
+                    saveToPhotoAlbum: false
                 };
 
                 $cordovaCamera
@@ -54,7 +54,7 @@
         function multiReceiptPopup(){
           var popup = $ionicPopup.confirm({
             title: 'Receipt Upload Successful',
-            template: 'Are you done uploading your receipt?',
+            template: 'Done uploading your receipts?',
             buttons: [
               {
                 text: '<b>Upload more</b>',

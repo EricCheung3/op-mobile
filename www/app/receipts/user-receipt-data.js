@@ -54,9 +54,8 @@ var months = ['January','February','March','April','May','June','July','August',
 
         function Group(key, receiptDate) {
             var vmgroup = this;
-
             vmgroup.key = key;
-            vmgroup.receiptDate = new Date(receiptDate[0], receiptDate[1], receiptDate[2]);
+            vmgroup.receiptDate = new Date(receiptDate[0], receiptDate[1]-1, receiptDate[2]);
             vmgroup.receipts = [];
 
             vmgroup.weekDay = days[vmgroup.receiptDate.getDay()];
