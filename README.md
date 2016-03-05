@@ -2,7 +2,7 @@
 
 This README would normally document whatever steps are necessary to get your application up and running.
 
-### This is the repo for OpenPrice Mobile App code. ###
+### This is the repo for Openprice Mobile App code. ###
 
 Developer Guide
 ================
@@ -58,7 +58,7 @@ Create a local folder for `~/groundtruth/git`, and check out the code from Githu
 ```
 git clone git@github.com:opgt/op-mobile.git
 ```
-## Run OpenPrice Mobile Project locally first time ##
+## Run Openprice Mobile Project locally first time ##
 
 ### Install dependencies ###
 
@@ -79,7 +79,7 @@ cordova plugin add org.apache.cordova.splashscreen
 ```
 
 ### Run with Browser ###
-You can run OpenPrice mobile app inside browser with Ionic:
+You can run Openprice mobile app inside browser with Ionic:
 ```
 ionic serve
 ```
