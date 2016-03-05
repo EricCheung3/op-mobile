@@ -33,7 +33,7 @@
                     sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                     encodingType:Camera.EncodingType.JPEG,
                     correctOrientation:true,
-                    saveToPhotoAlbum: true
+                    saveToPhotoAlbum: false
                 };
 
                 $cordovaCamera
@@ -54,7 +54,7 @@
         function multiReceiptPopup(){
           var popup = $ionicPopup.confirm({
             title: 'Receipt Upload Successful',
-            template: 'Are you done uploading your receipt?',
+            template: 'Done uploading your receipts?',
             buttons: [
               {
                 text: '<b>Upload more</b>',
@@ -93,7 +93,6 @@
                     if(vm.receiptImages == null){
                         userResource.$post('receipts', {}, form).then(function(receiptUrl){
                         $ionicLoading.hide();
-                        //receiptUrl:http://104.197.47.140/api/user/receipts/6fe81a5b-f933-4fe6-8769-bce41677afeb
                         // A confirm dialog for multi-receipt upload
                         apiService.getResource(receiptUrl)
                           .then(function(receiptResource) {
@@ -106,7 +105,6 @@
                     }else{
                         vm.receiptImages.$post('images', {}, form).then(function(receiptUrl){
                         $ionicLoading.hide();
-                        //http://104.197.47.140/api/user/receipts/6fe81a5b-f933-4fe6-8769-bce41677afeb
                         vm.multiReceiptPopup();
                       });
                     }
@@ -117,7 +115,7 @@
                 });
 
             }else{
-                console.log("Please snap your receipt ");
+                //console.log("Please snap your receipt ");
                 $state.go('app.dashboard.receipts');
             }
 

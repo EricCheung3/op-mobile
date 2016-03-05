@@ -87,7 +87,7 @@
 
         function hasNextPage() {
             if (vmUserShoppingData.lastStoreListPage) {
-                return lvmUserShoppingData.astStoreListPage.$has('next');
+                return vmUserShoppingData.lastStoreListPage.$has('next');
             }
             return false;
         };

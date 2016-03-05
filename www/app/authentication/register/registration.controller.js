@@ -28,7 +28,7 @@
                     $ionicPopup.alert({
                         title: 'Welcome ' + registration.firstName+' '+registration.lastName,
                         cssClass: 'success',
-                        content: 'Thank you for registering to Openprice!'
+                        content: 'Thank you for registering to Openprice.'
                     }).then(function(res) {
                         $log.debug('successfully registered, go to login page.');
                         //FIXME: HACK to add default stores

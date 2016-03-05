@@ -25,10 +25,20 @@
         .loadFirstPage()
         .then( function(stores) {
             console.log('init : ', stores);
-            $scope.$apply(function () {
-              vm.stores = stores;
-            });
-
+            if(UserShoppingData.hasNextPage()){
+                UserShoppingData
+                .loadNextPage()
+                .then(function (stores) {
+                  console.log('next : ', stores);
+                  $scope.$apply(function () {
+                    vm.stores = stores;
+                  });
+                });
+            }else {
+                $scope.$apply(function () {
+                  vm.stores = stores;
+                });
+            }
         });
 
         function pullToRefresh(){
