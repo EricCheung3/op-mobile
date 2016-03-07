@@ -35,8 +35,9 @@
                         var credentials = {username: registration.email, password: registration.password};
                         apiService.authenticate(credentials, function(authenticated) {
                           if (authenticated) {
-                              apiService.createDefaultStores();
-                              $state.go("app.dashboard.stores");
+                              apiService.createDefaultStores(function() {
+                                  $state.go("app.dashboard.stores");
+                              });
                           }
                         });
                     });
