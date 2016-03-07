@@ -148,6 +148,8 @@
         function goShoppingMode(){
             if(vm.store.resource.items.length !== 0){
                 vm.shoppingMode = !vm.shoppingMode;
+            }else {
+              // toast: no items
             }
         };
 
@@ -203,6 +205,7 @@
                   ]
                 });
             }else {
+                //toast is better
                 var popup = $ionicPopup.confirm({
                   title: '<div class="text-center">No items in the shopping list! </div>',
                   buttons: [
