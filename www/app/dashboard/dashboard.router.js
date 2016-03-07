@@ -32,7 +32,7 @@
             })
             .state('app.dashboard.store', {
                 url: '/shoppingstores/:storeId',
-                cache: true, // FIXME:should be false because of re-parsed result
+                cache: false, 
                 views: {
                     'shoppinglist-tab': {
                         templateUrl: 'app/shoppinglist/store-shoppinglist.tmpl.html',
