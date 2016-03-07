@@ -179,26 +179,40 @@
         };
 
         function clearShoppingList(){
-            var popup = $ionicPopup.confirm({
-              // title: 'clear the ShoppingList',
-              title: '<div class="text-center"> Are you sure you want to delete this shopping list?</div>',
-              buttons: [
-                { text: 'Cancel' ,
-                  type: 'button-positive',
-                  onTap: function(e) {
-                      popup.close();
-                  }
-                },
-                { text: 'Delete',
-                  type: 'button-positive',
-                  onTap: function(e) {
-                      console.log("clear the ShoppingList");
-                      vm.store.clearList();
-                      popup.close();
-                  }
-                }
-              ]
-            });
+            if(vm.store.resource.items.length !== 0){
+                var popup = $ionicPopup.confirm({
+                  // title: 'clear the ShoppingList',
+                  title: '<div class="text-center"> Are you sure you want to delete this shopping list?</div>',
+                  buttons: [
+                    { text: 'Cancel' ,
+                      type: 'button-positive',
+                      onTap: function(e) {
+                          popup.close();
+                      }
+                    },
+                    { text: 'Delete',
+                      type: 'button-positive',
+                      onTap: function(e) {
+                          console.log("clear the ShoppingList");
+                          vm.store.clearList();
+                          popup.close();
+                      }
+                    }
+                  ]
+                });
+            }else {
+                var popup = $ionicPopup.confirm({
+                  title: '<div class="text-center">No items in the shopping list! </div>',
+                  buttons: [
+                    { text: 'OK' ,
+                      type: 'button-positive',
+                      onTap: function(e) {
+                          popup.close();
+                      }
+                    }
+                  ]
+                });
+            }
         };
 
         // ---------------------------------------------------------------------
@@ -298,12 +312,10 @@
             }
 
             vmstore.clearList = function() {
-                if(vmstore.resource.items.length !== 0){
-                    vmstore.resource.$del('items')
-                    .then(function () {
-                        vm.store.reload();
-                    });
-              }
+                vmstore.resource.$del('items')
+                .then(function () {
+                    vm.store.reload();
+                });
             };
 
             vmstore.updateShoppingItem = function(item, reload) {
