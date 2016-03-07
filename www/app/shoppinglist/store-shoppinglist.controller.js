@@ -146,7 +146,9 @@
 
         // ---------- Shopping Mode ----------
         function goShoppingMode(){
-            vm.shoppingMode = !vm.shoppingMode;
+            if(vm.store.resource.items.length !== 0){
+                vm.shoppingMode = !vm.shoppingMode;
+            }
         };
 
         function doneShoppingMode(category){
