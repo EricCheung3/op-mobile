@@ -211,9 +211,6 @@
             }
         };
 
-        $scope.hideToast = function(){
-          ionicToast.hide();
-        };
         // ---------------------------------------------------------------------
         // private functions
 
