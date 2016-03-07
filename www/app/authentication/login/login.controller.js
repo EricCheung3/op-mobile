@@ -5,9 +5,9 @@
         .module('openprice.mobile')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$log', '$rootScope', '$scope', '$state', 'apiService', 'ngFB'];
+    LoginController.$inject = ['$log', '$rootScope', '$scope', '$state', 'apiService', 'ngFB', 'ionicToast'];
 
-    function LoginController(   $log,   $rootScope,   $scope,   $state,   apiService,   ngFB ) {
+    function LoginController(   $log,   $rootScope,   $scope,   $state,   apiService,   ngFB,   ionicToast ) {
         $log.debug('==> LoginController');
 
         /* jshint validthis: true */
@@ -27,6 +27,7 @@
                 } else {
                     $log.debug("Login failed")
                     $scope.error = true; //TODO display error messages
+                    ionicToast.show("Oops! The email and password don't match, please try again!", "top", false, 1500);
                 }
             });
         }
