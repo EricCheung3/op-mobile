@@ -18,8 +18,6 @@
         vm.upload = upload;
         vm.multiReceiptPopup = multiReceiptPopup;
 
-        // receiptImages to control multi-upload
-        vm.receiptImages = null;
         vm.cropFromGallery();
 
         function cropFromGallery() {
@@ -51,6 +49,7 @@
             }, false);
         };
 
+        //NOTE: issue#59, no need anymore
         function multiReceiptPopup(){
           var popup = $ionicPopup.confirm({
             title: 'Receipt Upload Successful',
@@ -69,7 +68,7 @@
                 type: 'button-positive',
                 onTap: function(e) {
                     console.log("Finish and send request to server to get receipt items");
-                    vm.receiptImages = null;
+                    // vm.receiptImages = null;
                     $state.go('app.dashboard.receipts', {}, {reload: true});
                 }
               }
@@ -80,7 +79,6 @@
 
         function upload() {
             console.log('call upload()');
-
             if(vm.imgUpload!=null){
               $ionicLoading.show({template: '<p>Uploading to server ...</p><progress></progress>'});
               apiService
@@ -89,25 +87,11 @@
                     var form = {
                         base64String : vm.imgUpload
                     };
-                    // first upload
-                    if(vm.receiptImages == null){
-                        userResource.$post('receipts', {}, form).then(function(receiptUrl){
+                    userResource.$post('receipts', {}, form)
+                    .then(function(receiptUrl) {
                         $ionicLoading.hide();
-                        // A confirm dialog for multi-receipt upload
-                        apiService.getResource(receiptUrl)
-                          .then(function(receiptResource) {
-                            // first upload or not
-                            vm.receiptImages = receiptResource;
-                          })
-                        // multi-receipt continue or not
-                        vm.multiReceiptPopup();
-                      });
-                    }else{
-                        vm.receiptImages.$post('images', {}, form).then(function(receiptUrl){
-                        $ionicLoading.hide();
-                        vm.multiReceiptPopup();
-                      });
-                    }
+                        $state.go('app.dashboard.receipts',{}, {reload: true});
+                    });
 
                 }, function(err) {
                     $ionicLoading.hide();
@@ -115,10 +99,8 @@
                 });
 
             }else{
-                //console.log("Please snap your receipt ");
                 $state.go('app.dashboard.receipts');
             }
-
         };
 
     };

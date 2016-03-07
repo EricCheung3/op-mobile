@@ -17,7 +17,7 @@
         vm.takePicture = takePicture;
         vm.upload = upload;
         vm.multiReceiptPopup = multiReceiptPopup;
-        vm.newReceipt = null;
+
         vm.takePicture();
 
         function takePicture() {
@@ -47,6 +47,7 @@
             }, false);
         };
 
+        // NOTE:issue#59, no need anymore
         function multiReceiptPopup(){
           var popup = $ionicPopup.confirm({
             title: 'Receipt Upload Successful',
@@ -65,7 +66,7 @@
                 type: 'button-positive',
                 onTap: function(e) {
                     console.log("Finish and send request to server to get receipt items");
-                    vm.newReceipt = null;
+                    // vm.newReceipt = null;
                     $state.go('app.dashboard.receipts',{}, {reload: true});
                 }
               }
@@ -85,34 +86,17 @@
                     var form = {
                         base64String : vm.imgUpload
                     };
-                    if(vm.newReceipt === null){
-                        // first image for new receipt
-                        userResource
-                        .$post('receipts', {}, form)
-                        .then( function(receiptUrl) {
-                            $ionicLoading.hide();
-                            apiService.getResource(receiptUrl)
-                              .then(function(receiptResource) {
-                                vm.newReceipt = receiptResource;
-                              })
-                            // multi-receipt continue or not
-                            vm.multiReceiptPopup();
-                        });
-                    } else {
-                        // upload more image
-                        vm.newReceipt
-                        .$post('images', {}, form)
-                        .then( function(receiptUrl) {
-                            $ionicLoading.hide();
-                            vm.multiReceiptPopup();
-                        });
-                    }
+                    userResource.$post('receipts', {}, form)
+                    .then(function(receiptUrl) {
+                        $ionicLoading.hide();
+                        $state.go('app.dashboard.receipts',{}, {reload: true});
+                    });
 
                 }, function(err) {
                     $ionicLoading.hide();
                     alert("An error has occurred: Code = " + err.code);
                 });
-
+                
             } else {
                 $state.go('app.dashboard.receipts');
             }
