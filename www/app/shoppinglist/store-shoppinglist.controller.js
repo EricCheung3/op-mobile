@@ -14,9 +14,9 @@
         })
         .controller('StoreShoppingListController', StoreShoppingListController);
 
-    StoreShoppingListController.$inject = ['$log', '$rootScope', '$scope', 'apiService', '$stateParams', '$ionicPopup', '$state', 'UserShoppingData'];
+    StoreShoppingListController.$inject = ['$log', '$rootScope', '$scope', 'apiService', '$stateParams', '$ionicPopup', '$state', 'UserShoppingData', 'ionicToast'];
 
-    function StoreShoppingListController(   $log,   $rootScope,   $scope,   apiService ,  $stateParams ,  $ionicPopup ,  $state,   UserShoppingData) {
+    function StoreShoppingListController(   $log,   $rootScope,   $scope,   apiService ,  $stateParams ,  $ionicPopup ,  $state,   UserShoppingData,   ionicToast) {
         $log.debug('==> StoreShoppingListController');
 
         var vm = this;
@@ -149,7 +149,8 @@
             if(vm.store.resource.items.length !== 0){
                 vm.shoppingMode = !vm.shoppingMode;
             }else {
-              // toast: no items
+                // toast: no items
+                ionicToast.show('No items in the shopping list.', 'middle', false, 1500);
             }
         };
 
@@ -206,20 +207,13 @@
                 });
             }else {
                 //toast is better
-                var popup = $ionicPopup.confirm({
-                  title: '<div class="text-center">No items in the shopping list! </div>',
-                  buttons: [
-                    { text: 'OK' ,
-                      type: 'button-positive',
-                      onTap: function(e) {
-                          popup.close();
-                      }
-                    }
-                  ]
-                });
+                ionicToast.show('No items in the shopping list.', 'middle', false, 1500);
             }
         };
 
+        $scope.hideToast = function(){
+          ionicToast.hide();
+        };
         // ---------------------------------------------------------------------
         // private functions
 

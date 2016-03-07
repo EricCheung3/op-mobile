@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "ion-autocomplete": "~0.3.1",
-    "ionic-ratings": "~0.2.0"
+    "ionic-ratings": "~0.2.0",
+    "ionic-toast": "~0.2.0"
   },
   "resolutions": {
     "angular": "1.4.9",
