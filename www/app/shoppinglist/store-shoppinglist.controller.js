@@ -173,7 +173,7 @@
                       onTap: function(e) {
                           $state.go('app.dashboard.stores').
                           then(function (argument) {
-                            $state.go('app.dashboard.receipts');
+                            $state.go('app.dashboard.snap');
                           });
 
                       }
