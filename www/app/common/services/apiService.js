@@ -84,7 +84,7 @@
             return userResource;
         };
 
-        function createDefaultStores() {
+        function createDefaultStores(callback) {
             console.log('==>UserShoppingData.createDefaultStores()');
             var shoppingList = [];
             shoppingList.superstore = { "chainCode" : "rcss",
@@ -93,14 +93,13 @@
             shoppingList.safeway = { "chainCode" : "safeway",
                                      "items" : []
                                    };
-            shoppingList.costco = { "chainCode" : "costco",
-                                    "items" : []
-                                  };
+
             getUserResource()
             .then(function (userResource) {
                 userResource.$post('shoppingList', {}, shoppingList.superstore);
                 userResource.$post('shoppingList', {}, shoppingList.safeway);
-                // userResource.$post('shoppingList', {}, shoppingList.costco);
+            }).then(function () {
+                callback && callback(true);
             });
         };
 

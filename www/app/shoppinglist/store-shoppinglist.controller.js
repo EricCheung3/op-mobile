@@ -14,9 +14,9 @@
         })
         .controller('StoreShoppingListController', StoreShoppingListController);
 
-    StoreShoppingListController.$inject = ['$log', '$rootScope', '$scope', 'apiService', '$stateParams', '$ionicPopup', '$state', 'UserShoppingData'];
+    StoreShoppingListController.$inject = ['$log', '$rootScope', '$scope', 'apiService', '$stateParams', '$ionicPopup', '$state', 'UserShoppingData', 'ionicToast'];
 
-    function StoreShoppingListController(   $log,   $rootScope,   $scope,   apiService ,  $stateParams ,  $ionicPopup ,  $state,   UserShoppingData) {
+    function StoreShoppingListController(   $log,   $rootScope,   $scope,   apiService ,  $stateParams ,  $ionicPopup ,  $state,   UserShoppingData,   ionicToast) {
         $log.debug('==> StoreShoppingListController');
 
         var vm = this;
@@ -146,7 +146,12 @@
 
         // ---------- Shopping Mode ----------
         function goShoppingMode(){
-            vm.shoppingMode = !vm.shoppingMode;
+            if(vm.store.resource.items.length !== 0){
+                vm.shoppingMode = !vm.shoppingMode;
+            }else {
+                // toast: no items
+                ionicToast.show('No items in the shopping list.', 'middle', false, 1500);
+            }
         };
 
         function doneShoppingMode(category){
@@ -179,26 +184,31 @@
         };
 
         function clearShoppingList(){
-            var popup = $ionicPopup.confirm({
-              // title: 'clear the ShoppingList',
-              title: '<div class="text-center"> Are you sure you want to delete this shopping list?</div>',
-              buttons: [
-                { text: 'Cancel' ,
-                  type: 'button-positive',
-                  onTap: function(e) {
-                      popup.close();
-                  }
-                },
-                { text: 'Delete',
-                  type: 'button-positive',
-                  onTap: function(e) {
-                      console.log("clear the ShoppingList");
-                      vm.store.clearList();
-                      popup.close();
-                  }
-                }
-              ]
-            });
+            if(vm.store.resource.items.length !== 0){
+                var popup = $ionicPopup.confirm({
+                  // title: 'clear the ShoppingList',
+                  title: '<div class="text-center"> Are you sure you want to delete this shopping list?</div>',
+                  buttons: [
+                    { text: 'Cancel' ,
+                      type: 'button-positive',
+                      onTap: function(e) {
+                          popup.close();
+                      }
+                    },
+                    { text: 'Delete',
+                      type: 'button-positive',
+                      onTap: function(e) {
+                          console.log("clear the ShoppingList");
+                          vm.store.clearList();
+                          popup.close();
+                      }
+                    }
+                  ]
+                });
+            }else {
+                //toast is better
+                ionicToast.show('No items in the shopping list.', 'middle', false, 1500);
+            }
         };
 
         // ---------------------------------------------------------------------
@@ -298,12 +308,10 @@
             }
 
             vmstore.clearList = function() {
-                if(vmstore.resource.items.length !== 0){
-                    vmstore.resource.$del('items')
-                    .then(function () {
-                        vm.store.reload();
-                    });
-              }
+                vmstore.resource.$del('items')
+                .then(function () {
+                    vm.store.reload();
+                });
             };
 
             vmstore.updateShoppingItem = function(item, reload) {
