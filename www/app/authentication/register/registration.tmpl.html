@@ -55,7 +55,7 @@
         </div>
         <div class="margin-top-medium">
             <button class="button button-block button-positive" type="submit"
-                ng-disabled="userRegistrationForm.$invalid">
+                ng-disabled="userRegistrationForm.$invalid || vm.processing">
                 Register Now
             </button>
         </div>

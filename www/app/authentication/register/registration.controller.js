@@ -12,12 +12,12 @@
 
         /* jshint validthis: true */
         var vm = this;
+        vm.processing = false;
         vm.registration = {firstName: '', lastName: '', email: '', password: '', confirmPassword: ''};
         vm.register = register;
 
         function register(registration) {
-            $log.debug('==> register() for '+registration.firstName+' '+registration.lastName);
-            $log.debug('new username is '+registration.email);
+            vm.processing = true;
 
             apiService
                 .getWebsiteResource()
@@ -25,6 +25,7 @@
                     return websiteResource.$post('registration', {}, registration);
                 })
                 .then( function() {
+                    vm.processing = false;
                     $ionicPopup.alert({
                         title: 'Welcome ' + registration.firstName + '!',
                         cssClass: 'success',
@@ -44,6 +45,7 @@
                 })
                 .catch( function(error) {
                     $log.debug('registration error: '+error.data);
+                    vm.processing = false;
                     if (error.status === 409) {
                         $ionicPopup.alert({
                             title: 'Error',
