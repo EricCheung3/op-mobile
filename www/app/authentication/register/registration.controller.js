@@ -26,11 +26,10 @@
                 })
                 .then( function() {
                     $ionicPopup.alert({
-                        title: 'Welcome ' + registration.firstName+' '+registration.lastName,
+                        title: 'Welcome ' + registration.firstName + '!',
                         cssClass: 'success',
-                        content: 'Thank you for registering to Openprice.'
+                        content: 'Thanks for joining the community of Openprice users.'
                     }).then(function(res) {
-                        $log.debug('successfully registered, go to login page.');
                         //FIXME: HACK to add default stores
                         var credentials = {username: registration.email, password: registration.password};
                         apiService.authenticate(credentials, function(authenticated) {
