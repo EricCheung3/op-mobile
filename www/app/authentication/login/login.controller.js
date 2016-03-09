@@ -27,7 +27,7 @@
                 } else {
                     $log.debug("Login failed")
                     $scope.error = true; //TODO display error messages
-                    ionicToast.show("Oops! The email and password don't match, please try again!", "top", false, 1500);
+                    ionicToast.show("Oops! The email and password don't match, please try again!", "top", false, 2000);
                 }
             });
         }
