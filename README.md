@@ -25,7 +25,7 @@ npm install -g bower
 Install Cordova and Ionic
 ~~~
 npm install -g cordova
-npm install -g ionic
+pm install -g ionic
 ~~~
 
 ### ATOM ###
