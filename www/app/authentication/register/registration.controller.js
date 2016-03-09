@@ -37,6 +37,7 @@
                           if (authenticated) {
                               apiService.createDefaultStores(function() {
                                   $state.go("app.dashboard.stores");
+                                  document.activeElement.blur();
                               });
                           }
                         });
