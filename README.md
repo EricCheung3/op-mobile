@@ -24,11 +24,14 @@ npm install -g bower
 
 Install Cordova and Ionic
 ~~~
-npm install -g cordova ionic
+npm install -g cordova
+pm install -g ionic
 ~~~
 
 ### ATOM ###
-Install [ATOM Text Editor](https://atom.io/)
+Install [ATOM Text Editor](https://atom.io/).
+
+Or [MS Visual Studio Code](https://code.visualstudio.com/).
 
 This is optional. You can choose whatever Text Editor tool for Web development.
 
@@ -70,7 +73,17 @@ ionic platform add ios
 ionic platform add android
 ```
 
-You also need to install several cordova plugs:
+Then check your cordova platform by
+```
+cordova platform list
+```
+
+If the output says android version is less than 5.0.x, please upgrade cordova:
+```
+cordova platform update android@5.0.0
+```
+
+After making sure you have cordova android platform > 5.0, you can install several cordova plugins:
 ```
 ionic plugin add https://github.com/apache/cordova-plugin-whitelist.git
 cordova plugin add https://github.com/jiwhiz/cordova-plugin-camera.git

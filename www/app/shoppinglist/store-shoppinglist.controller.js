@@ -150,7 +150,7 @@
                 vm.shoppingMode = !vm.shoppingMode;
             }else {
                 // toast: no items
-                ionicToast.show('No items in the shopping list.', 'middle', false, 1500);
+                ionicToast.show('You have no items in the shopping list.', 'middle', false, 1500);
             }
         };
 
@@ -207,7 +207,7 @@
                 });
             }else {
                 //toast is better
-                ionicToast.show('No items in the shopping list.', 'middle', false, 1500);
+                ionicToast.show('You have no items in the shopping list.', 'middle', false, 1500);
             }
         };
 
