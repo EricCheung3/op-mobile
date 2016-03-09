@@ -24,7 +24,7 @@
             $log.debug('call takePicture()');
             document.addEventListener("deviceready", function () {
                 var options = {
-                    quality:10,
+                    quality:25,
                     allowEdit:false,
                     destinationType:Camera.DestinationType.DATA_URL,
                     sourceType:Camera.PictureSourceType.Camera,
