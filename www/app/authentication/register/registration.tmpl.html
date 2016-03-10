@@ -14,7 +14,7 @@
                 ng-class="{ 'has-error' : userRegistrationForm.firstName.$invalid,
                         'valid-input' : userRegistrationForm.firstName.$valid}">
                 <input type="text" placeholder="First Name" name="firstName"
-                    ng-model="vm.registration.firstName" required>
+                    ng-model="vm.registration.firstName" style="height:20px;" required>
             </label>
 
             <!-- last name -->
@@ -22,7 +22,7 @@
                 ng-class="{ 'has-error' : userRegistrationForm.lastName.$invalid,
                         'valid-input' : userRegistrationForm.lastName.$valid}">
                 <input type="text" placeholder="Last Name" name="lastName"
-                    ng-model="vm.registration.lastName" required>
+                    ng-model="vm.registration.lastName" style="height:20px;" required>
             </label>
 
             <!-- email -->
@@ -30,7 +30,7 @@
                 ng-class="{ 'has-error' : userRegistrationForm.email.$invalid,
                         'valid-input' : userRegistrationForm.email.$valid}">
                 <input type="email" placeholder="Your Email" name="email"
-                    ng-model="vm.registration.email" required>
+                    ng-model="vm.registration.email" style="height:20px;" required>
             </label>
 
             <!-- password -->
@@ -38,7 +38,7 @@
                 ng-class="{ 'has-error' : userRegistrationForm.password.$invalid,
                         'valid-input' : userRegistrationForm.password.$valid}">
                 <input type="password" placeholder="Password" name="password"
-                    ng-model="vm.registration.password" required>
+                    ng-model="vm.registration.password" style="height:20px;" required>
             </label>
 
             <!-- confirm password -->
@@ -46,7 +46,7 @@
                 ng-class="{ 'has-error' : userRegistrationForm.confirmPassword.$invalid,
                         'valid-input' : userRegistrationForm.confirmPassword.$valid}">
                 <input type="password" placeholder="Confirm Password" name="confirmPassword"
-                    ng-model="vm.registration.confirmPassword" compare-to="vm.registration.password">
+                    ng-model="vm.registration.confirmPassword" style="height:20px;" compare-to="vm.registration.password">
             </label>
             <ng-messages for="userRegistrationForm.confirmPassword.$error" role="alert">
                 <ng-messages-include src="app/common/templates/form-errors.html"></ng-messages-include>
@@ -54,8 +54,8 @@
             </ng-messages>
         </div>
         <div class="margin-top-medium">
-            <button class="button button-block button-positive" type="submit"
-                ng-disabled="userRegistrationForm.$invalid || vm.processing">
+            <button class="button button-block button-positive register-button" type="submit"
+                ng-disabled="userRegistrationForm.$invalid || vm.processing" >
                 Register Now
             </button>
         </div>

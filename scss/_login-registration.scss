@@ -34,7 +34,7 @@
 
   .login-logo {
     height: 80px;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
     margin-top: 15%;
 
     #login-logo-img {
@@ -47,6 +47,7 @@
     .list {
       margin: 0px;
     }
+    margin-top: 5%;
   }
 
   h5, h4 {
@@ -55,13 +56,14 @@
   }
 
   .forgot-pass {
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
+    margin-top: 5%;
   }
 
   .social-media-login-register {
     display: block;
     text-align: center;
-
+    margin-top: 0%;
     img {
       margin-left: 5px;
       margin-right: 5px;
@@ -71,10 +73,15 @@
   }
 
   .signup {
-    margin-top: 30px;
+    margin-top: 5%;
   }
 
   .login {
-    margin-top: 30px;
+    margin-top: 5%;
+  }
+
+  .register-button{
+      line-height: 40px !important;
+      min-height: 30px !important;
   }
 }
