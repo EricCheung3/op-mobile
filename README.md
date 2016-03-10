@@ -87,7 +87,6 @@ After making sure you have cordova android platform > 5.0, you can install sever
 ```
 ionic plugin add https://github.com/apache/cordova-plugin-whitelist.git
 cordova plugin add https://github.com/jiwhiz/cordova-plugin-camera.git
-cordova plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git
 cordova plugin add org.apache.cordova.splashscreen
 ```
 
