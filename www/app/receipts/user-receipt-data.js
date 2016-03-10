@@ -161,16 +161,27 @@ var months = ['January','February','March','April','May','June','July','August',
                     return userResource.$get('receipt', {'receiptId': receiptId});
                 })
                 .then( function(receipt) {
-                    receipt.$get('receiptImages')
+                    // receipt.$get('receiptImages')
+                    // .then( function(images) {
+                    //     receipt.images = images;
+                    //     images.forEach( function(image) {
+                    //         getImageBase64Data(image.base64Url)
+                    //         .then( function(imageData){
+                    //             image.path = imageData;
+                    //         });
+                    //     });
+                    // });
+                    receipt.$get('images')
                     .then( function(images) {
-                        receipt.images = images;
-                        images.forEach( function(image) {
-                            getImageBase64Data(image.base64Url)
-                            .then( function(imageData){
-                                image.path = imageData;
-                            });
-                        });
+                        return images.$get("receiptImages");
+                    })
+                    .then( function(receiptImages) {
+                        receipt.images = receiptImages;
+                        receipt.images.forEach( function(image) {
+                            image.path = "data:image/jpeg;base64," + image.base64;
+                        })
                     });
+
                     receipt.$get('receiptItems')
                     .then( function(items) {
                         receipt.items = items;
