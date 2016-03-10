@@ -24,7 +24,7 @@
             $log.debug('call takePicture()');
             document.addEventListener("deviceready", function () {
                 var options = {
-                    quality:50,
+                    quality:25,
                     allowEdit:false,
                     destinationType:Camera.DestinationType.DATA_URL,
                     sourceType:Camera.PictureSourceType.Camera,
@@ -96,7 +96,7 @@
                     $ionicLoading.hide();
                     alert("An error has occurred: Code = " + err.code);
                 });
-                
+
             } else {
                 $state.go('app.dashboard.receipts');
             }

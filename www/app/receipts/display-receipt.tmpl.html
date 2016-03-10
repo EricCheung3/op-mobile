@@ -44,7 +44,7 @@
       </div>
 
       <!-- receipt image dislay part-->
-      <p class="padding-left-small padding-top-medium padding-bottom-medium">Original photo</p>
+      <p ng-hide="vm.selectItemMode" class="padding-left-small padding-top-medium padding-bottom-medium">Original photo</p>
       <ion-item ng-hide="vm.selectItemMode" ng-repeat="image in vm.receipt.images" >
         <img class="vertical-align-bottom" ng-src="{{image.path}}">
       </ion-item>

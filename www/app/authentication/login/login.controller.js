@@ -24,6 +24,7 @@
                     $log.debug("Login succeeded")
                     $scope.error = false;
                     $state.go("app.dashboard.stores");
+                    document.activeElement.blur();
                 } else {
                     $log.debug("Login failed")
                     $scope.error = true; //TODO display error messages
