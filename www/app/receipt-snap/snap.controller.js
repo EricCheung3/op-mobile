@@ -90,11 +90,20 @@
                     .then(function(receiptUrl) {
                         $ionicLoading.hide();
                         $state.go('app.dashboard.receipts',{}, {reload: true});
+                    }, function(error) {
+                        $ionicLoading.hide();
+                        if(error.status === 413){
+                            alert("Sorry, the image is too large, it's not allowed! Please take a picture again!");
+                        }else {
+                            alert("Unknown error.");
+                        }
+                        $state.go('app.dashboard.receipts');
                     });
 
                 }, function(err) {
                     $ionicLoading.hide();
                     alert("An error has occurred: Code = " + err.code);
+                    $state.go('app.dashboard.receipts');
                 });
 
             } else {
