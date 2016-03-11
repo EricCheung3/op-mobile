@@ -77,7 +77,8 @@ var months = ['January','February','March','April','May','June','July','August',
                     return groups;
                 }
                 data.forEach( function(receipt) {
-                    var key = receipt.receiptDate.join('_');
+                    //var key = receipt.receiptDate.join('_');
+                    var key = new Date(receipt.receiptDate[0], receipt.receiptDate[1]-1, receipt.receiptDate[2])
 
                     var group = groups[key];
                     if (group === undefined) {
