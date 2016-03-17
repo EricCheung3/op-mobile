@@ -14,18 +14,7 @@
                 <div class="item item-divider no-border font14"> {{group.weekDay}} - {{group.month}} {{group.day}}, {{group.year}}</div>
 
                 <div ng-repeat="(index,receipt) in group.receipts">
-                    <ion-item class="item myreceipts" ng-show="receipt.status === 'HAS_RESULT' && receipt.needFeedback" ng-click="vm.showReceipt(receipt)">
-                        <img class="store-icon"
-                            ng-src="img/store_icons/{{receipt.icon}}-blue.png">
-                        <!-- for the 'new receipt' see issue #173 -->
-                        <!-- <h2 class="store-name margin-left-medium">{{receipt.storeName}} <font color="red">new</h2> -->
-                        <p class="receipt-detail margin-left-medium">${{receipt.total}}</p>
-                        <ion-option-buttons side="right" class="button-assertive swipe-button"
-                                ng-click="vm.deleteReceipt(group,index,receipt)">
-                             <i class="icon icon-medium center ion-ios-trash-outline"></i> </ion-option-buttons>
-                    </ion-item>
-
-                    <ion-item class="item myreceipts" ng-show="receipt.status === 'HAS_RESULT' && !receipt.needFeedback" ng-click="vm.showReceipt(receipt)">
+                    <ion-item class="item myreceipts" ng-show="receipt.status === 'HAS_RESULT'" ng-click="vm.showReceipt(receipt)">
                         <img class="store-icon"
                             ng-src="img/store_icons/{{receipt.icon}}-blue.png">
                         <h2 class="store-name margin-left-medium">{{receipt.storeName}}</h2>
