@@ -6,7 +6,7 @@
         .controller('ForgotPasswordController', ForgotPasswordController);
 
     /* @ngInject */
-    function ForgotPasswordController($scope, $state, apiService, $ionicPopup, $log) {
+    function ForgotPasswordController($scope, $state, apiService, $ionicPopup, $log, ionicToast) {
         var vm = this;
         vm.user = {
             email: ''
@@ -40,6 +40,21 @@
                 $scope.error = true;
                 if (error.status === 404) {
                     console.log("Email does not exist!");
+                    //NOTE: we can not take user to registration page, because we are not sure
+                    //      the users input wrong email address or have no accounts.
+                    //      just notification seems better.
+                    // Solution A
+                    ionicToast.show("Oops! The Email does not exist, please check your Email address or register first!", "top", false, 3000);
+
+                    /* Solution B
+                    $ionicPopup.alert({
+                        title: 'Oops !!!Register',
+                        cssClass: 'error',
+                        content: 'The Email does not exist, please register first!'
+                    }).then(function(response) {
+                        // $state.go('register');
+                    });
+                    */
                 }
             })
             ;
