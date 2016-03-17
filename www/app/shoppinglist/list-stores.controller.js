@@ -53,15 +53,51 @@
         }
 
         function showShoppingStore(store){
+          UserShoppingData
+          .loadShoppingStoreById(store.resource.id)
+          .then(function (shoppingStore) {
+              console.log(shoppingStore);
+          });
             $state.go('app.dashboard.store',{storeId:store.resource.id});
         };
 
         function deleteStore(store){
-            store.resource.$del('self');
-            var index = vm.stores.indexOf(store);
-            if (index > -1) {
-                vm.stores.splice(index, 1);
-            }
+            UserShoppingData
+            .loadShoppingStoreById(store.resource.id)
+            .then(function (shoppingStore) {
+                if(shoppingStore.items.length !== 0){
+                    var popup = $ionicPopup.show({
+                      title: 'Delete Store',
+                      scope: $scope,
+                      template: '<p>If you delete the store, the shopping list of this store, which currently has ' + shoppingStore.items.length + ' item(s), will be deleted.</p>',
+                      buttons: [
+                          { text: 'Delete' ,
+                            type: 'button-positive',
+                            onTap: function(e) {
+                                store.resource.$del('self');
+                                var index = vm.stores.indexOf(store);
+                                if (index > -1) {
+                                    vm.stores.splice(index, 1);
+                                }
+                            }
+                          },
+                          { text: 'Cancel',
+                            type: 'button-positive',
+                            onTap: function(e) {
+                                popup.close();
+                            }
+                          }
+                      ]
+                  });
+                }else {
+                    store.resource.$del('self');
+                    var index = vm.stores.indexOf(store);
+                    if (index > -1) {
+                        vm.stores.splice(index, 1);
+                    }
+                }
+            });
+
         };
 
         function searchStoresFromServer (query) {
