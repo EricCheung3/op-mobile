@@ -15,11 +15,9 @@
         apiService.init(EnvironmentConfig.api);
 
         $ionicPlatform.ready(function() {
-            document.addEventListener("offline", onOffline, false);
-            function onOffline() {
-                // Handle the offline event
+            document.addEventListener("offline", function(){
                 ionicToast.show('You are offline now, the network is disconnected. Please check your network status and try it again', 'top', false, 5000);
-            }
+            }, false);
 
             if (window.StatusBar) {
                 // org.apache.cordova.statusbar required

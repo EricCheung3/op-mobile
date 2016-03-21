@@ -96,7 +96,7 @@
                         if(error.status === 413){
                             alert("Sorry, the image is too large, it's not allowed! Please select a picture again!");
                         }else {
-                            alert("Unknown error.");  
+                            alert("Unknown error.");
                         }
                         $state.go('app.dashboard.receipts');
                     });
